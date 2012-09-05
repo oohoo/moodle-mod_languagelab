@@ -32,5 +32,6 @@ Installation
 
 Your done. Go into a course, turn editing on and add a language lab activity.
 
+--------------------------------------------------------------------------------
 For more informations, please go to the online documentation => http://oohoo.biz
 
