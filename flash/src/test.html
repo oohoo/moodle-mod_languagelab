@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  dir="ltr" lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>test LanguageLag</title>
+	<script type="text/javascript">
+function getFlashMovieObject(movieName)
+{
+	if (window.document[movieName]) 
+	{
+		return window.document[movieName];
+	}
+	if (navigator.appName.indexOf("Microsoft Internet")==-1)
+	{
+		if (document.embeds && document.embeds[movieName])
+			return document.embeds[movieName]; 
+	}
+	else // if (navigator.appName.indexOf("Microsoft Internet")!=-1)
+	{
+		return document.getElementById(movieName);
+	}
+}
+	</script>
+</head>
+<body>
+<input type="button" onclick="toggleDisplayOptions()" value="Display / Hide options"/>
+<div id="divPlayerOptions" style="width: 400px; position: absolute; top: -1000px;">
+	<div id="divPlayerOptionsText" style="width: 400px;">
+		In order to use the Language Lab, you need to authorize access to your microphone/webcam. To do so:
+		<ol>
+			<li> - On the tab "<img src="privacyIco.png"/> Privacy"</li>
+			<li> - Select <img src="allowIco.png"/> Allow and check the box next to Remember</li>
+			<li> - Click on Close</li>
+			<li> - Click on OK at the bottom of the window to save your changes.</li>
+		</ol>
+	</div>
+	<div id="divPlayerOptionsObj" style="margin-left:120px;text-align:center;">
+		<object type="application/x-shockwave-flash" data="PlayerOptions.swf" width="220" height="140" name="playerOptions" id="playerOptions">
+			<param name="allowScriptAccess" value="always" />
+			<param name="allowFullScreen" value="true" />
+			<param name="wmode" value="window">
+			<param name="movie" value="PlayerOptions.swf" />
+			<param name="quality" value="high" />
+		</object>
+		<br/>
+		<input type="button" onclick="window.location.reload()" value="OK"/>
+	</div>
+	
+	<div style="clear:both;"></div>
+</div>
+
+<div>
+<object type="application/x-shockwave-flash" data="PlayerRecorder.swf" width="350" height="43" name="playerRecorder" id="playerRecorder" style="outline: none;">
+	<param name="allowScriptAccess" value="always" />
+	<param name="allowFullScreen" value="true" />
+	<param name="wmode" value="transparent"> 
+	<param name="movie" value="PlayerRecorder.swf" />
+	<param name="quality" value="high" />
+</object>
+</div>
+<br />
+Player Mode: <br />
+<input type="button" onclick="playerRecorder.setPlayerMode(0)" value="setPlayerMode = None"/>
+<input type="button" onclick="playerRecorder.setPlayerMode(1)" value="setPlayerMode = ReadOnly"/>
+<input type="button" onclick="playerRecorder.setPlayerMode(2)" value="setPlayerMode = Read/Write"/><br />
+<br />
+Prefix for files on the server: <br />
+<input type="text" name="prefixFiles" id="prefixFiles" size="100" value="mdl_dev_nicolas_"/>
+<input type="button" onclick="playerRecorder.set_sPrefixFiles(document.getElementById('prefixFiles').value);" value="Set a Prefix for your files on the server"/><br />
+<br />
+URL of the RTMP Server: <br />
+<input type="text" name="urlRtmpServer" id="urlRtmpServer" size="100" value="rtmp://129.128.136.193/oflaDemo"/>
+<input type="button" onclick="playerRecorder.init_rtmpConnection(document.getElementById('urlRtmpServer').value);" value="Load RTMP SERVER"/>
+<input type="button" onclick="document.getElementById('rtmpConnectionReady').innerHTML = playerRecorder.rtmpConnectionIsReady();" value="Check RTMP Server status"/>&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;" id="rtmpConnectionReady"></span><br/>
+<br />
+Load a file from the RTMP Server: <br />
+<input type="text" name="urlRtmp" id="urlRtmp" size="100" value="flv:mdl_dev_patrick__10_3_1333660478.flv"/>
+<input type="button" onclick="playerRecorder.addURIToNetStreams(document.getElementById('urlRtmp').value);" value="Load RTMP File"/>
+<input type="button" onclick="playerRecorder.addURIToNetStreams(document.getElementById('urlRtmp').value, true);" value="Load RTMP File as MasterTrack"/>
+<input type="button" onclick="playerRecorder.height=250;playerRecorder.addURIToNetStreams(document.getElementById('urlRtmp').value, false, true, 250);" value="Load RTMP File as Video"/>
+<input type="button" onclick="playerRecorder.dropURIToNetStreams(document.getElementById('urlRtmp').value);" value="Remove RTMP File"/>
+<input type="button" onclick="playerRecorder.resetNetStreams();" value="Reset RTMP List"/><br />
+Autres exemples de sons:<br />
+flv:mdl_dev_patrick__10_3_1333660478.flv<br />
+flv:mdl_dev_patrick_271_228_1320249764.flv<br />
+flv:mdl_oohoo_6_20_1331815013.flv<br />
+flv:mdl_dev_patrick__10_3_1331221975.flv<br />
+Video:<br />
+flv:toystory3.flv<br />
+<br />
+Record infos: <br />
+User Live File: <span style="font-weight:bold;" id="userLiveURI"></span><br/>
+User Record File: <span style="font-weight:bold;" id="userRecordURI"></span><br/>
+<br />
+Load a live from the RTMP Server: <br />
+<input type="text" name="urlLive" id="urlLive" size="100" value=""/>
+<input type="button" onclick="playerRecorder.addURIToNetStreamsLive(document.getElementById('urlLive').value);" value="Load & play Live"/>
+<input type="button" onclick="playerRecorder.dropURIToNetStreamsLive(document.getElementById('urlLive').value);" value="Remove Live"/>
+<input type="button" onclick="playerRecorder.resetNetStreamsLive();" value="Reset Live List"/><br />
+
+	<script type="text/javascript">
+		var playerRecorder;
+		var playerOptions;
+		var userLiveURI;
+		var userRecordURI;
+		
+		function toggleDisplayOptions()
+		{
+			if (document.getElementById('divPlayerOptions').style.position == 'relative')
+			{
+				document.getElementById('divPlayerOptions').style.position = 'absolute';
+				document.getElementById('divPlayerOptions').style.top = '-1000px';
+			}
+			else
+			{
+				document.getElementById('divPlayerOptions').style.position = 'relative';
+				document.getElementById('divPlayerOptions').style.top = '0';
+			}
+		}
+		
+		//Run this function when player is ready
+		function playerrecorder_ready()
+		{
+			if (playerRecorder == undefined)
+			{
+				playerRecorder = getFlashMovieObject('playerRecorder');
+			}
+		}
+		
+		//Run this function when player is ready
+		function playeroptions_ready()
+		{
+			if (playerOptions == undefined)
+			{
+				playerOptions = getFlashMovieObject('playerOptions');
+				if(playerOptions.microphoneEnabled())
+				{
+					document.getElementById('divPlayerOptions').style.position = 'absolute';
+					document.getElementById('divPlayerOptions').style.top = '-1000px';
+				}
+				else
+				{
+					document.getElementById('divPlayerOptions').style.position = 'relative';
+					document.getElementById('divPlayerOptions').style.top = '0';
+				}
+			}
+		}
+		
+		//Microphone Status changed in flash security settings so update the flashplayer
+		function microphoneStatusChanged()
+		{
+			playerRecorder.microphoneStatusChanged();
+		}
+		
+		//Put the UserLiveURI in the variable
+		function getUserLiveURI(liveURI)
+		{
+			userLiveURI = liveURI;
+			document.getElementById('userLiveURI').innerHTML = liveURI;
+		}
+		
+		//Put the UserRecordURI in the variable
+		function getUserRecordURI(recordURI)
+		{
+			userRecordURI = recordURI;
+			document.getElementById('userRecordURI').innerHTML = recordURI;
+		}
+	</script>
+	
+<br />
+
+
+</body>
+</html>

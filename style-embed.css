@@ -1,0 +1,107 @@
+/**
+ * *************************************************************************
+ * *             OWLL LANGUAGE LAB Version 3 for Moodle 2                 **
+ * *************************************************************************
+ * @package     mod                                                       **
+ * @subpackage  languagelab                                               **
+ * @name        languagelab                                               **
+ * @copyright   oohoo.biz                                                 **
+ * @link        http://oohoo.biz                                          **
+ * @author      Nicolas Bretin                                            **
+ * @author      Patrick Thibaudeau                                        **
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
+ * *************************************************************************
+ * ************************************************************************ */
+
+#region-post, #region-pre, #header, #page-header, #custommenu, #navcontainer, .navbar, #page-footer, .helplink, .homelink, #dock,
+#frametopright, #framebottomright, #region-header
+{
+    display: none !important;
+}
+
+body, #page-wrap1, #page-wrap2
+{
+    background : transparent !important;
+}
+
+#page, #page-content, #wrapper, #page-content-wrapper, .box
+{
+    border: 0 none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#page-wrapper, #frametop
+{
+    min-width: 700px !important;
+    border: 0 none !important;
+}
+
+#region-main-box, .side-pre-only #page-content #region-main
+{
+    left: 0 !important;
+    margin: 0 !important;
+}
+
+
+#page-content #region-main-box
+{
+    left: 0 !important; 
+    width: inherit !important;
+    position: inherit !important;
+}
+
+.region-content, #region-main, #region-main-pad
+{
+    float: none !important;
+}
+
+.side-pre-only #region-main-wrap, .side-pre-only #region-post-box, .side-pre-only #page-content #region-post-box
+{
+    width: 100% !important;
+    position: relative !important;
+    right: inherit !important;
+    left: 0 !important;
+    margin:0 !important;
+}
+
+.box, .region-content, #region-main, #page-content, #region-main-wrap, #region-post-box, #region-main-box, #page-wrapper, body
+{
+    min-width: 780px !important;
+}
+
+body, html
+{
+    background: transparent !important;
+}
+
+.side-pre-only #region-post-box, .side-pre-only #region-main-pad, #page-content #region-post-box, #page-content #region-main
+{
+    margin: 0 !important;
+    left: 0 !important;
+}
+
+#page-content #region-main-wrap
+{
+    float:left !important;
+}
+
+#descrLabLang
+{
+    display:none !important;
+}
+
+.generalbox
+{
+    margin:0 !important;
+}
+
+.region-content
+{
+    padding:0 !important;
+}
+
+#classMonitor
+{
+    visibility: hidden !important;
+}

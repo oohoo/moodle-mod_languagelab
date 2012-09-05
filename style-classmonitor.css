@@ -1,0 +1,188 @@
+/**
+ * *************************************************************************
+ * *             OWLL LANGUAGE LAB Version 3 for Moodle 2                 **
+ * *************************************************************************
+ * @package     mod                                                       **
+ * @subpackage  languagelab                                               **
+ * @name        languagelab                                               **
+ * @copyright   oohoo.biz                                                 **
+ * @link        http://oohoo.biz                                          **
+ * @author      Nicolas Bretin                                            **
+ * @author      Patrick Thibaudeau                                        **
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
+ * *************************************************************************
+ * ************************************************************************ */
+
+.generalbox
+{
+    border: 0 none;
+}
+
+#blockOptions
+{
+    z-index: 15;
+}
+
+#descrLabLang
+{
+    margin: 0 auto;
+    width: 800px;
+}
+
+.btnDisabled, .btnDisabled:hover
+{
+    background:#EEE;
+    border:1px solid #AAA;
+    color:#AAA;
+    cursor:not-allowed;
+}
+
+#connectionScreen
+{
+    position:absolute;
+    background: #000;
+    z-index: 10;
+    color:#EEE;
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 80px;
+}
+#connectionScreen img
+{
+    vertical-align: middle;
+}
+
+#blockStudentsOnline, #blockStudentsOffline
+{
+    width: 100%;
+    min-height: 200px;
+    padding: 5px;
+    background: #EEEEEE;
+    margin-bottom: 10px;
+}
+
+.titleStudentsOnline, .titleStudentsOffline
+{
+    margin-top:0;
+    margin-bottom:10px;
+    padding: 5px;
+    text-transform:none;
+}
+
+#blockStudentsOnline .classMonitorStudent
+{
+    cursor: pointer;
+}
+
+.classMonitorStudent
+{
+    float:left;
+    width: 150px;
+    height: 140px;
+    border: 1px solid #AAAAAA;
+    margin: 2px;
+    background:#E7E7E7;
+    padding: 5px;
+    position:relative;
+}
+
+.classMonitorStudent_hover
+{
+    background:#eaead7;
+}
+
+.classMonitorStudent_clicked
+{
+    background: #f4f4ba;
+}
+
+.studentName
+{
+    font-weight: bold;
+    height: 35px;
+    display:table-cell;
+    vertical-align: middle;
+}
+
+#buttonsMonitor
+{
+    text-align:left;
+    padding: 5px;
+    background: #EEEEEE;
+    margin-bottom: 10px;
+    width:100%;
+}
+
+#searchField
+{
+    padding:11px 5px;
+}
+
+#micConfig, #stealth, #speakToClass, .talkToStudent, .thumbsUp, #listRecordings
+{
+    text-align:center;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:30px;
+    margin:2px 12px 2px 2px;
+    font-weight: bold;
+}
+
+#micConfig
+{
+    background-image : url('pix/config-ico.png');
+    padding-left:32px;
+    float:right;
+    margin-right:0;
+}
+#stealth
+{
+    background-image : url('pix/stealth-ico.png');
+    margin-right: 0;
+    padding-left: 33px;
+}
+#speakToClass
+{
+    background-image : url('pix/speaktoclass-ico.png');
+    padding-left: 33px;
+    margin-right:0px;
+}
+#listRecordings
+{
+    background-image : url('pix/recordings-ico.png');
+    padding-left: 33px;
+}
+.talkToStudent
+{
+    background-image : url('pix/talktostudent-ico.png');
+    padding-left:20px;
+    margin: 0px;
+}
+.thumbsUp
+{
+    background-image : url('pix/thumbsup-ico.png');
+    padding-left:20px;
+    margin: 0px;
+    margin-left: 6px;
+}
+.menuStudent
+{
+    padding: 5px;
+    position:absolute;
+    bottom: -45px;
+    left: 30px;
+    z-index: 5;
+}
+
+.raiseHandStudent
+{
+    border-color: #FF0000;
+}
+
+.iframeRecordings
+{
+    border: 0 none;
+    width: 780px;
+    height:100%;
+}

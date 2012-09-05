@@ -1,0 +1,12 @@
+
+
+AddType video/x-flv .flv
+AddType application/x-shockwave-flash .swf
+ 
+<filesMatch "\.(flv|mp3)$">
+Header unset Pragma
+FileETag None
+Header unset ETag
+Header unset P3P
+Header set Cache-Control "public"
+</filesMatch>

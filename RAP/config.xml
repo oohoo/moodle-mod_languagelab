@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : config.xml
+    Created on : December 12, 2011, 12:46 PM
+    Author     : patrickt
+    Description:
+        Purpose of the document follows.
+-->
+
+<config>
+    <moodle serverAddress='IP or Domain name of Red5 Server' languagelabPrefix='Prefix from Moodle language lab setup' streamFolderPath='/path/to/red5/oflaDemo/streams/folder/' salt='a mix of letters/numbers/symbols'/>
+
+</config>

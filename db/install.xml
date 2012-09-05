@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/languagelab/db" VERSION="20120518" COMMENT="XMLDB file for Moodle mod/languagelab"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="languagelab" COMMENT="Default comment for languagelab, please edit me" NEXT="languagelab_submissions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="course" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="contentformat"/>
+        <FIELD NAME="contentformat" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timedue"/>
+        <FIELD NAME="timedue" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="contentformat" NEXT="timeavailable"/>
+        <FIELD NAME="timeavailable" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timedue" NEXT="grade"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timeavailable" NEXT="recording_timelimit"/>
+        <FIELD NAME="recording_timelimit" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="grade" NEXT="attempts"/>
+        <FIELD NAME="attempts" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="recording_timelimit" NEXT="video"/>
+        <FIELD NAME="video" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="attempts" NEXT="use_grade_book"/>
+        <FIELD NAME="use_grade_book" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="video" NEXT="group_type"/>
+        <FIELD NAME="group_type" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" COMMENT="Either asynchronis (Discussion) or Dialogue" PREVIOUS="use_grade_book" NEXT="master_track"/>
+        <FIELD NAME="master_track" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="group_type" NEXT="master_track_recording"/>
+        <FIELD NAME="master_track_recording" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="master_track" NEXT="use_mp3"/>
+        <FIELD NAME="use_mp3" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="master_track_recording" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="use_mp3"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="languagelab_submissions" COMMENT="language_lab_submissions table retrofitted from MySQL" PREVIOUS="languagelab" NEXT="languagelab_student_eval">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="languagelab"/>
+        <FIELD NAME="languagelab" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="languagelab" NEXT="groupid"/>
+        <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="path"/>
+        <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="groupid" NEXT="label"/>
+        <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="path" NEXT="message"/>
+        <FIELD NAME="message" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="label" NEXT="parentnode"/>
+        <FIELD NAME="parentnode" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="message" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="parentnode" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="languagelab_ix"/>
+        <KEY NAME="languagelab_ix" TYPE="foreign" FIELDS="languagelab" REFTABLE="languagelab" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="languagelab_student_eval" COMMENT="languagelab_student_evaluation table retrofitted from MySQL" PREVIOUS="languagelab_submissions" NEXT="languagelab_user_live">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="languagelab"/>
+        <FIELD NAME="languagelab" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="languagelab" NEXT="correctionnotes"/>
+        <FIELD NAME="correctionnotes" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="grade"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="11" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="correctionnotes" NEXT="teacher"/>
+        <FIELD NAME="teacher" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="grade" NEXT="timemarked"/>
+        <FIELD NAME="timemarked" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="teacher" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timemarked" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="languagelab_ix"/>
+        <KEY NAME="languagelab_ix" TYPE="foreign" FIELDS="languagelab" REFTABLE="languagelab" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="languagelab_user_live" COMMENT="Table used to keep the current live feed of the user by activity" PREVIOUS="languagelab_student_eval" NEXT="languagelab_user_event">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="languagelab"/>
+        <FIELD NAME="languagelab" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="languagelab" NEXT="live"/>
+        <FIELD NAME="live" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="live"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="languagelab_user_event" COMMENT="Event table for the users" PREVIOUS="languagelab_user_live">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="languagelab"/>
+        <FIELD NAME="languagelab" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="languagelab" NEXT="type"/>
+        <FIELD NAME="type" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="type" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="data"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="languagelab_ix"/>
+        <KEY NAME="languagelab_ix" TYPE="foreign" FIELDS="languagelab" REFTABLE="languagelab" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

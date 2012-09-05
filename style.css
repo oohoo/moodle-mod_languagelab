@@ -1,0 +1,479 @@
+/**
+ * *************************************************************************
+ * *             OWLL LANGUAGE LAB Version 3 for Moodle 2                 **
+ * *************************************************************************
+ * @package     mod                                                       **
+ * @subpackage  languagelab                                               **
+ * @name        languagelab                                               **
+ * @copyright   oohoo.biz                                                 **
+ * @link        http://oohoo.biz                                          **
+ * @author      Nicolas Bretin                                            **
+ * @author      Patrick Thibaudeau                                        **
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
+ * *************************************************************************
+ * ************************************************************************ */
+
+.generalbox
+{
+    border: 0 none;
+}
+
+#blockOptions
+{
+    z-index: 15;
+}
+
+#descrLabLang
+{
+    margin: 0 auto;
+    width: 800px;
+}
+
+#descrLabLang.descrLabLangStudent
+{
+
+}
+
+.btnDisabled, .btnDisabled:hover
+{
+    background:#EEE;
+    border:1px solid #AAA;
+    color:#AAA;
+    cursor:not-allowed;
+}
+
+.jstree ins
+{
+    vertical-align: top;
+}
+
+#divPlayerOptions
+{
+
+}
+
+#connectionScreen
+{
+    position:absolute;
+    background: #000;
+    z-index: 10;
+    color:#EEE;
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 250px;
+}
+#connectionScreen img
+{
+    vertical-align: middle;
+}
+
+/*#################*/
+/*CSS FOR TEACHERS */
+/*#################*/
+
+#languageLabTeacher
+{
+    position:relative;
+    width: 760px;
+}
+
+#languageLabTeacher .blockRecordings .blockHistory
+{
+    width:360px;
+    margin-left: 0;
+    margin-bottom:10px;
+}
+
+#languageLabTeacher #recordings
+{
+    width:350px;
+    height: 150px;
+}
+
+#languageLabTeacher .blockCurrentRecording
+{
+
+}
+
+.blockStudentRecording
+{
+    width:750px;
+    background: #EEEEEE;
+    float:left;
+    font-weight: bold;
+}
+
+.blockStudentRecording .titleStudentRecording
+{
+    margin: 5px;
+}
+
+.blockFeedback
+{
+    width:360px;
+    padding:5px;
+    background: #EEEEEE;
+    float:left;
+    font-weight: bold;
+}
+
+.blockSeparator
+{
+    float:left;
+    padding:0;
+    margin:0;
+    width:10px;
+    height:280px;
+}
+
+.blockGrade
+{
+    width:360px;
+    padding:5px;
+    background: #EEEEEE;
+    float:left;
+    font-weight: bold;
+    position:relative;
+}
+
+#gradeInactif
+{
+    z-index:8;
+    background:#000000;
+    color:#EEE;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.titleGrade
+{
+    margin:0;
+    padding: 5px 0 5px 5px;
+    background: #EEE;
+    text-align: center;
+}
+
+#gradeField, #gradePrivateNote
+{
+    text-align: left;
+}
+#gradeInput
+{
+    border:0;
+    font-weight:bold;
+    background:transparent;
+
+}
+
+#gradeSlider
+{
+    margin: 5px 10px 5px 10px;
+}
+
+#privateNote
+{
+    width:350px;
+    height:115px;
+}
+
+#ajaxSubmitGrade
+{
+    float:right;
+    margin-top:15px;
+    margin-right: 5px;
+}
+
+#submitGrade
+{
+    float:right;
+    text-align:center;
+    padding:10px;
+    margin:5px 0 2px 2px;
+}
+
+#avatarStudent, #avatarTeacher
+{
+    display:block;
+    float:left;
+    text-align:left;
+    width: 360px;
+}
+#imgStudent, #imgTeacher
+{
+    margin-right:10px;
+    margin-left:10px;
+    display:block;
+    float:left;
+}
+#imgTeacher
+{
+    margin-left:30px;
+}
+#recordAgoStudent, #recordAgoTeacher
+{
+    font-style: italic;
+    font-size:0.8em;
+}
+#nameStudent, #nameTeacher
+{
+    font-weight: bold;
+    font-size:1.2em;
+}
+
+#micConfig
+{
+    text-align:center;
+    background-image : url('pix/config-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:32px;
+    margin:7px 12px 2px 2px;
+    font-weight: bold;
+    float:right;
+}
+#classMonitor
+{
+    text-align:center;
+    background-image : url('pix/classmonitor-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:30px;
+    margin:7px 12px 2px 2px;
+    font-weight: bold;
+}
+
+/*#################*/
+/*CSS FOR STUDENTS */
+/*#################*/
+
+#languageLabStudent
+{
+    position:relative;
+    width: 650px;
+}
+
+.blockCurrentRecording
+{
+    width:360px;
+    padding:5px;
+    background: #EEEEEE;
+    float:left;
+    font-weight: bold;
+}
+
+.blockNewRecording
+{
+    text-align:left;
+    margin-bottom:5px;
+}
+
+#newRecording
+{
+    text-align:center;
+
+    background-image : url('pix/mic-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:30px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+}
+#raiseHand
+{
+    text-align:center;
+
+    background-image : url('pix/hand-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px;
+    padding-left:30px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+}
+
+.blockHistory
+{
+    float:left;
+    width:260px;
+    margin-left:5px;
+    padding:5px;
+    background: #EEEEEE;
+    float:left;
+    font-weight: bold;
+}
+
+.titleRecording, .recordingsHistory, .titleStudentRecording
+{
+    margin-top:0;
+    margin-bottom:10px;
+    padding: 5px;
+    text-transform:none;
+}
+
+#titleRecording, #titleFeedback
+{
+    float:right;
+    width: 250px;
+    margin-right: 5px;
+}
+
+.player
+{
+    margin-top:5px;
+}
+
+.description
+{
+
+}
+
+.lblDescriptionRecording
+{
+    text-align:left;
+    padding-left: 8px;
+}
+#descriptionRecording, #descriptionFeedback
+{
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 340px;
+    height: 140px;
+}
+
+
+#ajaxSubmitRecording, #ajaxSubmitFeedback
+{
+    float:right;
+    margin-top:15px;
+    margin-right: 5px;
+}
+
+#submitRecording, #submitFeedback
+{
+    float:right;
+    text-align:center;
+    padding:10px;
+    margin:5px 0 2px 2px;
+}
+
+#listened
+{
+    float:right;
+    margin-top: 2px;
+}
+#thumbsup
+{
+    float:right;
+    margin-top: 2px;
+}
+
+#refreshHistory
+{
+    float:right;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.search
+{
+    text-align:right;
+    background: #EEE;
+    padding:0 5px 5px 5px;
+    margin-bottom: 5px;
+}
+
+#recordings
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 208px;
+    width: 250px;
+    background:#FFFFFF;
+    border: 1px solid #AAAAAA;
+    font-weight: normal;
+}
+
+#recordings ul
+{
+
+}
+
+#recordings li
+{
+    text-align:left;
+    font-size: 0.9em;
+}
+#recordings a
+{
+    white-space:normal;
+    padding: 0 15px 0 1px;
+    border: 1px solid transparent;
+}
+
+#recordings a.jstree-hovered
+{
+    padding: 0 15px 0 1px;
+}
+
+#deleteRecordings
+{
+    float:right;
+    text-align:center;
+
+    background-image : url('pix/bin-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px;
+    padding-left:35px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+}
+
+#downloadRecording
+{
+    float:right;
+    text-align:center;
+
+    background-image : url('pix/download-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px;
+    padding-left:35px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+}
+
+.dialogTeacherPic, .dialogTeacherPic img
+{
+    text-align:center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+#gradeStudent
+{
+    position: absolute;
+    width:123px;
+    height:109px;
+    left: 370px;
+}
+
+/*###########################*/
+/*CSS FOR ACTIVITY EDIT MODE */
+/*###########################*/
+
+#playerRecorderMastertrack
+{
+    vertical-align: top;
+    margin-top: 2px;
+}
+
+#loadPreviousMastertrack, #newMastertrack
+{
+    height: 45px;
+    padding-right: 10px;
+    padding-left: 10px;
+}

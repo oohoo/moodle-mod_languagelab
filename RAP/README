@@ -1,0 +1,62 @@
+Red5 Adapter Plugin (RAP)
+********************************
+
+The Red5 Adapter Plugin is used to manage streamed files on the Red5 server. When ever a teacher or a student
+records themselves, a flv file is created on the Red5 Server in the oflaDemo/streams folder. Without the RAP,
+such as earlier version of Language lab, the stream folder would fill up with, often, unnecessary files or
+previous files from past courses. This resolves the issue by letting Moodle interacte directly with the Red5 server.
+Future version of RAP will also be able to send files to Moodle when creating backups. Other useful functions will be added as requests come in.
+
+INSTALLATION
+***********************************
+Installing RAP is quite simple. You will need a web server on your Red5 server. The examples used within this document,
+are with an ubuntu 10.04 LTS server. This, however, should work on any server that supports PHP 5.x.x.
+
+I will assume that you have already installed the web server. In my case Apache2 with PHP5.
+
+Although not required, installing an SSL certificate for your web server makes it more secure. This can be a self signed certificate.
+You can follow these instructions if you need help creating such a certificate. http://www/akadia.com/services/ssh_test_certificate.html
+
+1. Copy the contents of the RAP folder into the default web folder on the Red5 Server. Usually something like /var/www
+2. Copy the config.xml file to a folder outside of the web folder. This is for security reasons. You wouldn't want someone
+   to access your config file.
+3. Edit the config.php file. Change the $CFG->xml_path= value to the path value of your config.xml file.
+4. Rename the adapter.php file to what ever name you want. Remember to keep the .php extension. It makes the system more secure.
+5. Login to your Moodle server as an administrator. Enter into the Language lab settings by going into the Settings block under 
+   Site Administration->Plugins->Activity Modules->Language lab (If you are hosting a Red5 server for someone else and you do not have access to 
+   their Moodle server, send the Moodle administrator this information.)
+6. Under File name for the Red5 Adapter Plugin, enter the new name that you have given the adapter.php file WITHOUT the .php extension. For example, if you have changed
+   the name to mynewadapter.php, you would enter mynewadapter
+7. Check the Secure access to Red5 Adapter Plugin if your server is using an SSL certificate. Again, not necessary, but it just makes the whole system more secure.
+
+Edit config.xml
+***********************************
+
+In the config.xml, you will find a default moodle tag. You must edit the following attribute values
+
+serverAddress='IP or Domain name of Red5 Server' This is the IP address or Domain name of the Red5 server that you are installing the RAP. You can get this address
+               from your Moodle Language Lab settings under Path to your Red5 server.
+
+languagelabPrefix='Prefix from Moodle language lab setup' This is the prefix found in the Moodle Language Lab settings under Enter a prefix for recorded streams.
+
+streamFolderPath='/path/to/red5/oflaDemo/streams/folder/' This is the path to your oflaDemo stream folder. On ubuntu systems, this is usually /usr/share/red5/webapps/oflaDemo/streams
+                 Do not forget to add the end slash (/).
+
+salt='a mix of letters/numbers/symbols' This is used for security reasons. This password salt must also be entered in the Password salt value in the Moodle Language Lab settings.
+
+Save the file.
+
+If you are hosting more than one Moodle server with the Language lab, you can add another Moodle tag with the appropriately defined attributes. For example you could have your config.xml file look similar to the following.
+
+<config>
+    <moodle serverAddress='my.firstserver.com' languagelabPrefix='mdl_firstserver' streamFolderPath='/path/to/red5/oflaDemo/streams/folder/' salt='abcdefgh123456@#$'/>
+    <moodle serverAddress='my.secondserver.com' languagelabPrefix='mdl_secondserver' streamFolderPath='/path/to/red5/oflaDemo/streams/folder/' salt='ijKLMNOpq09876*&%$'/>
+</config>
+
+You can check your configuration by running a test. Just point your browser to http://your.moodle.site/mod/languagelab/raptest.php
+That's it. I hope you enjoy the Language lab.
+
+
+
+
+ 
