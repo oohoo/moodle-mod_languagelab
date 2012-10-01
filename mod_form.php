@@ -114,7 +114,7 @@ class mod_languagelab_mod_form extends moodleform_mod
             var playerOptions;
             var userLiveURI;
             var userRecordURI;
-            var rtmpserver = "' . $CFG->languagelab_red5serverprotocol . '://$CFG->languagelab_red5server/$CFG->languagelab_red5serverfolder";
+            var rtmpserver = "$CFG->languagelab_red5serverprotocol://$CFG->languagelab_red5server/$CFG->languagelab_red5serverfolder";
             var files_prefix = "$filePrefix";
             var newRecording = $newRecording;
             var fileURI = "$recordingname";
