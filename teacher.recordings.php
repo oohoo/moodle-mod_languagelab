@@ -160,7 +160,7 @@ else
         $elem->metadata->grade = $grade;
         $elem->metadata->gradePrivateNote = $gradePrivateNote;
         $elem->metadata->studentid = $studentinfo->id;
-        $elem->metadata->downloadName = format_name_download_mp3(fullname($student) . '_' . $languagelab->name);
+        $elem->metadata->downloadName = format_name_download(fullname($student) . '_' . $languagelab->name);
 
         if ($selectedelem == 0 && $selecteduser == $studentinfo->id)
         {
@@ -201,7 +201,7 @@ else
             $rec->metadata->grade = $grade;
             $rec->metadata->gradePrivateNote = $gradePrivateNote;
             $rec->metadata->studentid = $studentinfo->id;
-            $rec->metadata->downloadName = format_name_download_mp3(fullname($student) . '_' . $rec->data->title . '_' . $recording->id);
+            $rec->metadata->downloadName = format_name_download(fullname($student) . '_' . $rec->data->title . '_' . $recording->id);
 
             if ($selectedelem != 0 && $selectedelem == $recording->id)
             {
@@ -248,7 +248,7 @@ else
                 $child->metadata->grade = $grade;
                 $child->metadata->gradePrivateNote = $gradePrivateNote;
                 $child->metadata->studentid = $studentinfo->id;
-                $child->metadata->downloadName = format_name_download_mp3(fullname($teacher) . '_' . $child->data->title . '_' . $recording->id);
+                $child->metadata->downloadName = format_name_download(fullname($teacher) . '_' . $child->data->title . '_' . $recording->id);
 
                 if ($selectedelem != 0 && $selectedelem == $childnode->id)
                 {

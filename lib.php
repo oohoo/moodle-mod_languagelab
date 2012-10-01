@@ -91,7 +91,7 @@ function languagelab_add_instance($languagelab, $mform=null) {
                 $languagelab->master_track_recording = $languagelab->master_track;
 
             } else {
-                if(languagelab_convert_mp3_recording($languagelab->master_track_recording) == 1)
+                if(languagelab_convert_recording($languagelab->master_track_recording, 'mp3') == 1)
                 {
                     $languagelab->master_track_recording = 'mp3:'.$languagelab->master_track_recording;
                 }
@@ -166,7 +166,7 @@ function languagelab_update_instance($languagelab, $mform=null) {
                     } else {
                         if(strpos($languagelab->master_track_recording, 'mp3:') === false)
                         {
-                            if(languagelab_convert_mp3_recording($languagelab->master_track_recording) == 1)
+                            if(languagelab_convert_mp3_recording($languagelab->master_track_recording, 'mp3') == 1)
                             {
                                 $languagelab->master_track_recording = 'mp3:'.$languagelab->master_track_recording;
                             }
@@ -213,7 +213,7 @@ function languagelab_delete_instance($id) {
    //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file)) {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -577,12 +577,13 @@ function languagelab_pluginfile($course, $cm, $context, $filearea, $args, $force
 
 /**
  * Convert the file from FLV to MP3
- * @param type $filePath the file path on the server
+ * @param string $filePath the file path on the server
+ * @param string $type The type of recording mp3 or mp4
  */
-function languagelab_convert_mp3_recording($filePath){
+function languagelab_convert_recording($filePath, $type){
     
     require_once('locallib.php');
-    return convert_mp3_recording($filePath);
+    return convert_recording($filePath, $type);
 } 
 
 /**

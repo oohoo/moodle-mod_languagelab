@@ -108,14 +108,18 @@ if ($add)
                 if ($languagelab->video == 0)
                 {
                     //If conversion successful change the path, else, keep the flv file
-                    if (convert_mp3_recording($path) == 1)
+                    if (convert_recording($path, 'mp3') == 1)
                     {
                         $save_recording->path = 'mp3:' . $save_recording->path;
                     }
                 }
                 else
                 {
-                    //Do stuff for the video
+                    //If conversion successful change the path, else, keep the flv file
+                    if (convert_recording($path, 'mp4') == 1)
+                    {
+                        $save_recording->path = 'mp4:' . $save_recording->path;
+                    }
                 }
 
                 $result->success = $DB->insert_record('languagelab_submissions', $save_recording);
@@ -151,14 +155,18 @@ if ($add)
         if ($languagelab->video == 0)
         {
             //If conversion successful change the path, else, keep the flv file
-            if (convert_mp3_recording($path) == 1)
+            if (convert_recording($path, 'mp3') == 1)
             {
                 $save_recording->path = 'mp3:' . $save_recording->path;
             }
         }
         else
         {
-            //Do stuff for the video
+            //If conversion successful change the path, else, keep the flv file
+            if (convert_recording($path, 'mp4') == 1)
+            {
+                $save_recording->path = 'mp4:' . $save_recording->path;
+            }
         }
 
         //If the activity is available

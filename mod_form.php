@@ -114,7 +114,7 @@ class mod_languagelab_mod_form extends moodleform_mod
             var playerOptions;
             var userLiveURI;
             var userRecordURI;
-            var rtmpserver = "rtmp://$CFG->languagelab_red5server/oflaDemo";
+            var rtmpserver = "' . $CFG->languagelab_red5serverprotocol . '://$CFG->languagelab_red5server/$CFG->languagelab_red5serverfolder";
             var files_prefix = "$filePrefix";
             var newRecording = $newRecording;
             var fileURI = "$recordingname";
@@ -194,11 +194,9 @@ HERE;
         $ynoptions = array(0 => get_string('no'), 1 => get_string('yes'));
 
         $mform->addElement('header', 'general', get_string('advanced', 'languagelab'));
-        //$mform->addElement('checkbox','video',get_string('use_video','languagelab'));
-        //$mform->addHelpButton('video', 'video', 'languagelab');
-        //$mform->setDefault('video', false);
-
-        $mform->addElement('static', 'video_disabled', get_string('video_unavailable', 'languagelab'));
+        $mform->addElement('checkbox','video',get_string('use_video','languagelab'));
+        $mform->addHelpButton('video', 'video', 'languagelab');
+        $mform->setDefault('video', false);
 
         //$mform->addElement('select', 'group_type', get_string('group_type','languagelab'), array(0 => get_string('select_group_type','languagelab') , 1 => get_string('async','languagelab') , 2 => get_string('dialogue','languagelab')));
         //$mform->addHelpButton('group_type', 'group_type', 'languagelab');

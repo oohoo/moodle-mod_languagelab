@@ -141,6 +141,7 @@ function playerrecorder_ready_playerRecorderStudent()
     //If Tmode, not publish a live feed
     var tmode = (typeof(teacherMode) != 'undefined' && teacherMode == true);
     playerRecorders['playerRecorderStudent'].set_sPrefixFiles(files_prefix);
+    playerRecorders['playerRecorderStudent'].setVideoMode(videoMode);
     playerRecorders['playerRecorderStudent'].init_rtmpConnection(rtmpserver, !tmode);
 }
 
@@ -148,6 +149,7 @@ function playerrecorder_ready_playerRecorderStudent()
 function playerrecorder_ready_playerRecorderTeacher()
 {
     playerRecorders['playerRecorderTeacher'].set_sPrefixFiles(files_prefix);
+    playerRecorders['playerRecorderTeacher'].setVideoMode(videoMode);
     playerRecorders['playerRecorderTeacher'].init_rtmpConnection(rtmpserver, false);
 }
 
@@ -300,8 +302,8 @@ function loadStudentRecord(elem)
     playerRecorders['playerRecorderStudent'].setPlayerMode(1);
     $("#titleRecording").val(elem.data('title'));
     $("#descriptionRecording").val(elem.data('tMessage'));
-
-    playerRecorders['playerRecorderStudent'].addURIToNetStreams(elem.data('recURI'));
+    
+    playerRecorders['playerRecorderStudent'].addURIToNetStreams(elem.data('recURI'), false, videoMode);
     if (elem.data('mastertrack') != '')
     {
         playerRecorders['playerRecorderStudent'].addURIToNetStreams(elem.data('mastertrack'));
@@ -324,7 +326,7 @@ function loadTeacherRecord(elem)
     $("#titleFeedback").val(elem.data('title'));
     $("#descriptionFeedback").val(elem.data('tMessage'));
 
-    playerRecorders['playerRecorderTeacher'].addURIToNetStreams(elem.data('recURI'));
+    playerRecorders['playerRecorderTeacher'].addURIToNetStreams(elem.data('recURI'), false, videoMode);
 }
 //Load the grade of he student
 function loadGradeStudent(elem)
@@ -526,7 +528,7 @@ $(function(){
             $("#nameStudent").text(data.rslt.obj.data('author'));
 
             playerRecorders['playerRecorderStudent'].resetNetStreams();
-            playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('recURI'));
+            playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('recURI'), false, videoMode);
             if (data.rslt.obj.data('mastertrack') != '')
             {
                 playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('mastertrack'));

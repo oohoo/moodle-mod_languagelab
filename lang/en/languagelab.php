@@ -15,12 +15,20 @@
  * *************************************************************************
  * ************************************************************************ */
 $string['name'] = 'Name';
-$string['modulename'] = 'Language lab';
-$string['modulenameplural'] = 'Language labs';
-$string['languagelab'] = 'Language lab';
-$string['pluginadministration'] = 'Language lab';
-$string['pluginname'] = 'Language lab';
+$string['modulename'] = 'Language lab - OWLL';
+$string['modulenameplural'] = 'Language labs - OWLL';
+$string['modulename_help'] = 'OWLL (OOHOO Web-based Language Lab) is a Moodle plugin replicating all functions of a traditional language lab, with added features that stem from its being web-based. 
+It allows for synchronous as well as asynchronous use, in a face-to-face as well as in a distance learning setting.';
+$string['modulename_link'] = 'http://oohoo.biz/index.php/en/plug-ins/language-learning/owll-oohoo-web-based-language-lab/';
+$string['languagelab'] = 'Language lab - OWLL';
+$string['pluginadministration'] = 'Language lab - OWLL';
+$string['pluginname'] = 'Language lab - OWLL';
 $string['red5server'] = 'Path to your Red5 server';
+$string['red5server_help'] = 'Enter the IP address or the fully qualified name for your red5 server. Localhost will not work! You can specify the port if different from default at the end (ex: 123.456.789:12345)';
+$string['red5serverfolder'] = 'Path to your Red5 server folder (ex: oflaDemo)';
+$string['red5serverfolder_help'] = 'Your RTMP server first folder. This folder is the application that read and record files.';
+$string['red5serverprotocol'] = 'Your RTMP server protocol';
+$string['red5serverprotocol_help'] = 'The protocol of your RTMP server. Generally rtmp.';
 $string['red5config'] = 'Enter the IP address or the fully qualified name for your red5 server. Localhost will not work!';
 $string['name'] = 'Activity name';
 $string['description'] = 'Description';
@@ -59,6 +67,8 @@ $string['recording_saved'] = 'Your recording has been submitted';
 $string['recording_exists'] = 'Notice: you already have a recording. Please review the recording before pressing the record button.<br>Pressing the record button will erase the previous recording.';
 $string['red5_adapter_access'] = 'Secure access to Red5 Adapter Plugin?';
 $string['red5_adapter_access_help'] = 'Is the RAP server protected with a certificate? ie: https';
+$string['red5_adapter_server'] = 'Server address to access to the adapter.';
+$string['red5_adapter_server_help'] = 'Server address to access to the adapter. Generally the same as the Red5 server. You can add a port at the end of the server address if different from the classic http port. (ex: 123.456.789:8081)';
 $string['red5_adapter_file'] = 'File name for the Red5 Adapter Plugin';
 $string['red5_adapter_file_help'] = 'Enter the file name (with no extension) given to you by the Red5 administrator. The Red5 Adapter Plugin (RAP) is used to manipulate streams recorded on the Red5 Server. Example: When deleting a Language Lab activity, the RAP
                                     deletes the associated audio and video files, keeping the Red5 Server clean. In the next release, It will also be used to backup the audio and video files
@@ -157,7 +167,7 @@ $string['salt'] = 'Password salt value:';
 $string['salt_help'] = 'Enter the password salt value for your red5 instance as provided by your red5 administrator.';
 $string['stealthmode'] = 'Activate stealth mode?';
 $string['stealthmodehelp'] = 'When activated, students will not know that they are being monitored when the teacher uses the classroom monitor.';
-$string["use_video"] = 'Allow video.';
+$string["use_video"] = 'Allow video';
 $string["use_grade_book_help"] = 'By default, no grading will be given for language lab activities. That way you can create as many language activities
                                    for exercise purposes, without filling up your gradebook. If you do want to grade this particular activity, check this box.';
 $string["video"] = 'Allowing video.';
@@ -189,8 +199,8 @@ $string['defaultTitleNewRecording'] = 'New Recording';
 $string['deleteRecord'] = 'Delete';
 $string['deleteRecord_help'] = 'Select a record and click to delete it';
 $string['disconnectClient'] = 'Disconnecting...';
-$string['downloadRecord'] = 'Download MP3';
-$string['downloadRecord_help'] = 'Click to download Recording as MP3';
+$string['downloadRecord'] = 'Download';
+$string['downloadRecord_help'] = 'Click to download Recording';
 $string['error_activity_not_available'] = 'This activity is no longer available to create a new recording';
 $string['error_activity_not_available_delete'] = 'This activity is no longer available, deletion not possible';
 $string['error_cannot_connect_student'] = 'Cannot connect to the student';

@@ -14,10 +14,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
+$settings->add(new admin_setting_configtext('languagelab_red5serverprotocol', get_string('red5serverprotocol', 'languagelab'),
+                get_string('red5serverprotocol_help', 'languagelab'), 'rtmp', PARAM_RAW));
 $settings->add(new admin_setting_configtext('languagelab_red5server', get_string('red5server', 'languagelab'),
-                get_string('red5server', 'languagelab'), get_string('red5config', 'languagelab'), PARAM_RAW));
-$settings->add(new admin_setting_configtext('nonStreamingBasePath', get_string('nonStreamingBasePath', 'languagelab'),
-                get_string('nonStreamingBasePath_help', 'languagelab'), '', PARAM_TEXT));
+                get_string('red5server_help', 'languagelab'), '', PARAM_RAW));
+$settings->add(new admin_setting_configtext('languagelab_red5serverfolder', get_string('red5serverfolder', 'languagelab'),
+                get_string('red5serverfolder_help', 'languagelab'), 'oflaDemo', PARAM_RAW));
 $settings->add(new admin_setting_configtext('languagelab_folder', get_string('red5folder', 'languagelab'),
                 get_string('red5folder_help', 'languagelab'), 'moodle', PARAM_TEXT));
 $settings->add(new admin_setting_configtext('languagelab_prefix', get_string('prefix', 'languagelab'),
@@ -26,8 +28,10 @@ $settings->add(new admin_setting_configtext('languagelab_max_users', get_string(
                 get_string('maxusershelp', 'languagelab'), '25', PARAM_INT));
 $settings->add(new admin_setting_configcheckbox('languagelab_stealthMode', get_string('stealthmode', 'languagelab'),
                 get_string('stealthmodehelp', 'languagelab'), '0', 1, 0));
+$settings->add(new admin_setting_configtext('languagelab_adapter_server', get_string('red5_adapter_server', 'languagelab'),
+                get_string('red5_adapter_server_help', 'languagelab'), '', PARAM_TEXT));
 $settings->add(new admin_setting_configtext('languagelab_adapter_file', get_string('red5_adapter_file', 'languagelab'),
-                get_string('red5_adapter_file_help', 'languagelab'), '', PARAM_TEXT));
+                get_string('red5_adapter_file_help', 'languagelab'), 'adapter', PARAM_TEXT));
 $settings->add(new admin_setting_configcheckbox('languagelab_adapter_access', get_string('red5_adapter_access', 'languagelab'),
                 get_string('red5_adapter_access_help', 'languagelab'), '0', 1, 0));
 $settings->add(new admin_setting_configtext('languagelab_salt', get_string('salt', 'languagelab'),

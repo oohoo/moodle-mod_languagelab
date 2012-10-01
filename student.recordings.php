@@ -132,7 +132,7 @@ foreach ($recordings as $recording)
     $elem->metadata->recordingid = $recording->id;
     $elem->metadata->grade = $student_grade;
     $elem->metadata->studentid = $studentid;
-    $elem->metadata->downloadName = format_name_download_mp3($studentname . '_' . $elem->data->title . '_' . $recording->id);
+    $elem->metadata->downloadName = format_name_download($studentname . '_' . $elem->data->title . '_' . $recording->id);
 
     if ($selectedelem != 0 && $selectedelem == $recording->id)
     {

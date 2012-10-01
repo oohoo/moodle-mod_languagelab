@@ -353,6 +353,14 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012080400, 'languagelab');
     }
+    
+    if ($oldversion < 2012092701)
+    {
+
+        // Update the settings
+        // Add the video !!
+        upgrade_mod_savepoint(true, 2012092701, 'languagelab');
+    }
 
     return;
 }

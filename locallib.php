@@ -49,7 +49,7 @@ function delete_individual_recording($submission_id)
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -102,7 +102,7 @@ function delete_single_recording($submission_id)
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -153,15 +153,19 @@ function delete_single_recording($submission_id)
     //*************End RAP********************************************
 }
 
-//Return the URL for the mp3 download
-function get_download_mp3_url()
+/**
+ * Return the URL for the mp3 download
+ * @param boolean $videoMode If video Mode = true Download MP4
+ */
+
+function get_download_url($videoMode = false)
 {
     global $CFG, $DB;
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -177,8 +181,12 @@ function get_download_mp3_url()
 
         //Encrypt information
         $q = md5($Red5Server . $prefix . $salt);
-        //Action delete
+        //Action download
         $o = md5('download_mp3' . $salt);
+        if($videoMode)
+        {
+            $o = md5('download_mp4' . $salt);
+        }
 
         return $url . '?q=' . $q . '&o=' . $o;
     }
@@ -192,7 +200,7 @@ function get_download_zip_url()
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -216,19 +224,19 @@ function get_download_zip_url()
 }
 
 /**
- * Convert the file from FLV to MP3
+ * Convert the file from FLV to MP4
  * @global type $CFG
  * @global type $DB
  * @param type $filePath the file path on the server
  */
-function convert_mp3_recording($filePath)
+function convert_recording($filePath, $type = 'mp3')
 {
     global $CFG, $DB;
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -245,7 +253,7 @@ function convert_mp3_recording($filePath)
         //Encrypt information
         $q = md5($Red5Server . $prefix . $salt);
         //Action convert
-        $o = md5('convert_mp3_single' . $salt);
+        $o = md5('convert_'.$type.'_single' . $salt);
 
 
         $vars = "q=$q&o=$o&s=$filePath";
@@ -278,7 +286,7 @@ function move_mp3_recording($oldpath, $newpath)
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -341,7 +349,7 @@ function migrate_all_flv_to_mp3_recording($activityid)
         if (isset($CFG->languagelab_adapter_file))
         {
             //Let's delete all files on the Red5 Server
-            $Red5Server = $CFG->languagelab_red5server;
+            $Red5Server = $CFG->languagelab_adapter_server;
             $prefix = $CFG->languagelab_prefix;
             $salt = $CFG->languagelab_salt;
 
@@ -369,7 +377,7 @@ function migrate_all_flv_to_mp3_recording($activityid)
                         $bFileToConvert = true;
                         echo '- Mastertrack ' . $languagelab->master_track . ' need to be convert in mp3... ';
                         //Convert the file
-                        if (convert_mp3_recording($languagelab->master_track) == 1)
+                        if (convert_recording($languagelab->master_track, 'mp3') == 1)
                         {
                             $languagelab->master_track = 'mp3:' . $languagelab->master_track;
                             echo 'CONVERSION SUCCESSFUL<br />';
@@ -484,7 +492,7 @@ function migrate_all_flv_to_mp3_recording($activityid)
                     $bFileToConvert = true;
                     echo '- File ' . $submission->path . ' need to be convert in mp3... ';
                     //Convert the file
-                    if (convert_mp3_recording($submission->path) == 1)
+                    if (convert_recording($submission->path, 'mp3') == 1)
                     {
                         $submission->path = 'mp3:' . $submission->path;
                         echo 'CONVERSION SUCCESSFUL<br />';
@@ -598,7 +606,7 @@ function upload_mp3_file($filedata, $pathOnServer)
     if (isset($CFG->languagelab_adapter_file))
     {
         //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
+        $Red5Server = $CFG->languagelab_adapter_server;
         $prefix = $CFG->languagelab_prefix;
         $salt = $CFG->languagelab_salt;
         //RAP security
@@ -698,7 +706,7 @@ function formatTimeSince($time)
 }
 
 //Format file name with strip slashes, specials chars, etc.
-function format_name_download_mp3($filename)
+function format_name_download($filename)
 {
     $filename = str_replace(array(' ', '/', '\\', '?', '!', '@', '#', '$', '%', '&', '*', '\'', '"', '<', '>', ':', ';'), array('_', '.', '.', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'), $filename);
     return $filename;

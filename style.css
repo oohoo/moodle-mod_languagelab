@@ -325,6 +325,11 @@
     margin-top:5px;
 }
 
+.player.playerVideo
+{
+    background : transparent url('pix/video-ico.png') no-repeat 50% 50%;
+}
+
 .description
 {
 

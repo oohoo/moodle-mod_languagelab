@@ -15,12 +15,18 @@
  * *************************************************************************
  * ************************************************************************ */
 $string['name'] = 'Nom';
-$string['modulename'] = 'Lab de langue';
-$string['modulenameplural'] = 'Labs de langue';
-$string['languagelab'] = 'Lab de langue';
-$string['pluginadministration'] = 'Lab de langue';
-$string['pluginname'] = 'Lab de langue';
-$string['red5server'] = 'URL de votre serveur Red5';
+$string['modulename'] = 'Labo de langues - OWLL';
+$string['modulenameplural'] = 'Labos de langues - OWLL';
+$string['modulename_help'] = 'OWLL (OOHOO Web-based Language Lab) est un plugiciel Moodle qui reproduit toutes les fonctions d’un laboratoire de langue traditionnel et y inclut des ressources additionnelles rendues possible par le fait qu’il est basé sur le Web.
+Il permet un usage synchrone et asynchrone en contexte d’enseignement face à face ou à distance.';
+$string['modulename_link'] = 'http://oohoo.biz/index.php/fr/plugiciels/apprentissage-de-la-langue/owll-oohoo-labo-de-langues/';
+$string['languagelab'] = 'Labo de langues - OWLL';
+$string['pluginadministration'] = 'Labo de langues - OWLL';
+$string['pluginname'] = 'Labo de langues - OWLL';
+$string['red5server'] = 'URL de votre serveur RTMP';
+$string['red5server_help'] = 'Entrez l\'adresse IP ou le URL (FQDN) de votre serveur RTMP. Localhost ne fonctionnera pas! Vous pouvez spécifier à la fin le port si celui-ci est different du port par defaut de red5 (ex : 123.456.789:12345)';
+$string['red5serverfolder'] = 'Dossier de votre serveur Red5 (ex : oflaDemo)';
+$string['red5serverfolder_help'] = 'Votre premier dossier d\'acces à votre RTMP server. Ce dossier est l\'application qui lit et enregistre les fichiers.';
 $string['red5config'] = 'Entrez l\'adresse IP ou le URL (FQDN) de votre serveur Red5. Localhost ne fonctionnera pas!';
 $string['name'] = 'Nom de l\'activité';
 $string['description'] = 'Description';
@@ -54,8 +60,10 @@ $string['recording_exists'] = 'Note: vous avez déjà un enregistrement. Prière
 $string['words'] = 'Liste de mots à enregistrer pour les étudiants ';
 $string['red5_adapter_access'] = 'Accès sécuritaire au plugiciel Red5 Adapter?';
 $string['red5_adapter_access_help'] = 'Le serveur RAP (plugiciel Red5 Adapter) est-il protégé par un certificat? Ex: https';
+$string['red5_adapter_server'] = 'L\'adresse du serveur pour acceder au fichier adapter.';
+$string['red5_adapter_server_help'] = 'L\'adresse du serveur pour acceder au fichier adapter. En général, cette valeur est identique a celle du serveur red5. Vous pouvez ajouter a la fin de l\'adresse le port si celui ci est different du port HTTP traditionnel.(ex : 123.456.789:8081)';
 $string['red5_adapter_file'] = 'Nom de fichier pour le plugiciel Red5 Adapter';
-$string['red5_adapter_file_help'] = 'Entrer le nom du fichier (sans extension) qui vous a été fourni par l\'administrateur Red5. Le plugiciel Red5 Adapter (RAP) est utilisé pour traiter les flux enregistrés sur le serveur Red5. Exemple: Lorsque vous supprimez une activité de Lab de langue, le RAP
+$string['red5_adapter_file_help'] = 'Entrer le nom du fichier (sans extension) qui vous a été fourni par l\'administrateur Red5. Le plugiciel Red5 Adapter (RAP) est utilisé pour traiter les flux enregistrés sur le serveur Red5. Exemple: Lorsque vous supprimez une activité de Labo de langues OWLL, le RAP
                                     supprime les fichiers audio et vidéo qui y sont associés, permettant ainsi de garder le serveur Red5 libre de fichiers périmés. Dans des versions ultérieures, il sera aussi utilisé pour la sauvegarde de secours des fichiers audio et vidéos. Cette option n\'est pas encore disponible. Le nom de fichier est utilisé pour des raisons de sécurité. Si un intrus tente d\'accéder au serveur Red5, la page d\'accueil par défaut n\'apparaîtra pas.
                                     C\'est le seul fichier dans le répertoire, ce qui le rend plus difficile à deviner. Évidemment, la fonction permettant de parcourir le répertoire doit être désactivée.';
 $string['use_mp3'] = 'Utiliser le mp3 téléversé comme piste de contrôle';
@@ -201,7 +209,7 @@ $string['salt_help'] = 'Enter the password salt value for your red5 instance as 
 $string['stealthmode'] = 'Activer le mode furtif?';
 $string['stealthmodehelp'] = 'Lorsque ce mode est activé, les étudiants ne sont pas avertis que l\'instructeur écoute leur travail.';
 $string["use_video"] = 'Allow video.';
-$string["use_grade_book_help"] = 'Par défaut, les activités du Lab de langue ne sont pas notées. Ainsi, vous pouvez créer de nombreuses activités sans remplir le carnet de notes. Si vous voulez noter cette activité, cochez cette case.';
+$string["use_grade_book_help"] = 'Par défaut, les activités du Labo de langues OWLL ne sont pas notées. Ainsi, vous pouvez créer de nombreuses activités sans remplir le carnet de notes. Si vous voulez noter cette activité, cochez cette case.';
 $string["video"] = 'Allowing video.';
 $string["video_help"] = 'Check this box if you would like your students to use video and audio while recording. This can be helpful, for example, for sign language.';
 
@@ -230,7 +238,7 @@ $string['deleteRecord'] = 'Supprimer';
 $string['deleteRecord_help'] = 'Sélectionner un fichier et cliquer pour le supprimer ';
 $string['disconnectClient'] = 'En train de déconnecter...';
 $string['downloadRecord'] = 'Télécharger';
-$string['downloadRecord_help'] = 'Cliquer pour télécharger un enregistrement en format MP3';
+$string['downloadRecord_help'] = 'Cliquer pour télécharger un enregistrement';
 $string['error_activity_not_available'] = 'Cette activité n\'est plus disponible pour la création d\'un nouvel enregistrment';
 $string['error_activity_not_available_delete'] = 'Cette activité n\'est plus disponible et ne peut donc pas être supprimée';
 $string['error_cannot_connect_student'] = 'Incapable de se connecter avec l\'étudiant';
@@ -255,7 +263,7 @@ $string['micConfig'] = 'Configuration';
 $string['newRecording'] = 'Nouvel enregistrement';
 $string['newMastertrack'] = 'Nouvelle piste de contrôle';
 $string['playeroptionsBtnOk'] = 'OK';
-$string['playeroptionstxt1'] = 'Pour utiliser le lab de langue, vous devez permettre l\'accès à votre microphone. Pour ce faire:';
+$string['playeroptionstxt1'] = 'Pour utiliser le labo de langues OWLL, vous devez permettre l\'accès à votre microphone. Pour ce faire:';
 $string['playeroptionstxt2'] = 'Sur l\'onglet "{$a} Privacy"';
 $string['playeroptionstxt3'] = 'Sélectionner "{$a} Allow"';
 $string['playeroptionstxt4'] = 'Cocher la case {$a} à côté de Remember';
@@ -268,6 +276,8 @@ $string['recordingRequired'] = 'Vous devez vous enregistrer avant de soumettre';
 $string['recordingTitle'] = 'Titre';
 $string['red5folder'] = 'Le nom du répertoire sur le serveur Red5 où les fichiers sont enregistrés';
 $string['red5folder_help'] = 'Écrire le nom du fichier dans lequel sont sauvegardés les fichiers pour CETTE instance de Moodle.';
+$string['red5serverprotocol'] = 'Le protocol de votre serveur RTMP';
+$string['red5serverprotocol_help'] = 'Le protocol utilisé par votre serveur RTMP. En general rtmp.';
 $string['reFeedBack'] = 'Au sujet de: ';
 $string['refresh'] = 'Mettre à jour l\'historique';
 $string['search'] = 'Rechercher: ';
@@ -302,6 +312,6 @@ $string['thumbsup_student'] = 'Bien fait!';
 $string['thumbsUp_help'] = 'Cliquer ici pour signifier votre approbation à cet étudiant';
 $string['video_unavailable'] = 'Fonction vidéo en développement.';
 
-$string['languagelab:addinstance'] = 'Ajouter un nouveau Lab de langue';
-$string['languagelab:view'] = 'Afficher le Lab de langue';
+$string['languagelab:addinstance'] = 'Ajouter un nouveau Labo de langues OWLL';
+$string['languagelab:view'] = 'Afficher le labo de langues OWLL';
 ?>

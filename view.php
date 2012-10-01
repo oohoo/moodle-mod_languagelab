@@ -163,6 +163,14 @@ else
     $attempts = 1;
 }
 
+$playerHeight = 45;
+$classVideo = '';
+if($languagelab->video != 0)
+{
+    $playerHeight = 45+262;
+    $classVideo = 'playerVideo';
+}
+
 echo '<script type="text/javascript">';
 echo '  var available = ' . (($available) ? 'true' : 'false') . ';';
 echo '  var onlyOneRecording = ' . (($languagelab->attempts == 1) ? 'true' : 'false') . ';';
@@ -183,13 +191,14 @@ echo '  var reFeedBack = "' . get_string('reFeedBack', 'languagelab') . '";';
 echo '  var gradeStudentWithRecordings = "' . get_string('gradeStudentWithRecordings', 'languagelab') . '";';
 echo '  var defaultUserPicture = "' . $CFG->wwwroot . '/theme/image.php?image=u/f2";';
 //Set the player parameters
-echo '  var rtmpserver = "' . 'rtmp://' . $CFG->languagelab_red5server . '/oflaDemo' . '";';
+echo '  var rtmpserver = "' . '' . $CFG->languagelab_red5serverprotocol . '://' . $CFG->languagelab_red5server . '/' . $CFG->languagelab_red5serverfolder . '";';
 echo '  var files_prefix = "' . $CFG->languagelab_folder . '/' . $id . '/' . $CFG->languagelab_prefix . '";';
 echo '  var urlmasterTrack = "' . $mastertrack . '";';
 echo '  var playeroptionsBtnOk = "' . get_string('playeroptionsBtnOk', 'languagelab') . '";';
 echo '  var useGradebook = ' . (($languagelab->use_grade_book == 1) ? 'true' : 'false') . ';';
-echo '  var urlDownload = "' . get_download_mp3_url() . '";';
+echo '  var urlDownload = "' . get_download_url($languagelab->video != 0) . '";';
 echo '  var urlZipDownload = "' . get_download_zip_url() . '";';
+echo '  var videoMode = ' . (($languagelab->video==0)?'false':'true') . ';';
 echo '</script>';
 
 //Load the flash options menu
@@ -314,9 +323,9 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleRecording" id="titleRecording" class="ui-corner-all" autocomplete="off" readonly="readonly" /></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player">';
+    echo '      <div class="player '.$classVideo.'">';
     echo '
-        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="45" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
+        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="' . $playerHeight . '" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
             <param name="allowScriptAccess" value="always" />
             <param name="allowFullScreen" value="true" />
@@ -341,9 +350,9 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleFeedback" id="titleFeedback" class="ui-corner-all" autocomplete="off" readonly="readonly"/></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player">';
+    echo '      <div class="player '.$classVideo.'">';
     echo '
-        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayerFeedback . '" width="350" height="45" name="' . $idPlayerFeedback . '" id="' . $idPlayerFeedback . '" style="outline: none;" >
+        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayerFeedback . '" width="350" height="' . $playerHeight . '" name="' . $idPlayerFeedback . '" id="' . $idPlayerFeedback . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
             <param name="allowScriptAccess" value="always" />
             <param name="allowFullScreen" value="true" />
@@ -419,9 +428,9 @@ else
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleRecording" id="titleRecording" class="ui-corner-all" autocomplete="off" readonly="readonly" /></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player">';
+    echo '      <div class="player '.$classVideo.'">';
     echo '
-        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="45" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
+        <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="' . $playerHeight . '" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
             <param name="allowScriptAccess" value="always" />
             <param name="allowFullScreen" value="true" />

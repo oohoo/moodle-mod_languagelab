@@ -127,17 +127,48 @@ switch ($serverAction)
         break;
     case md5('convert_mp3_single' . $salt):
         //Convert File into MP3 if FFMPEG is installed
-        if (file_exists($CFG->ffmpeg . 'ffmpeg'))
+        if (file_exists($CFG->ffmpeg . 'avconv'))
         {
             if (file_exists($path . $submissions . '.flv'))
             {
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp3file = $submissions . '.mp3';
                 $outputfile = '"' . $path . $mp3file . '"';
-                $command = 'ffmpeg -i ';
+                $command = 'avconv -i ';
                 shell_exec($command . $sourcefile . ' -ar 44100 -ab 64k -ac 2 ' . $outputfile);
                 //Check if the mp3 file exists
                 if (file_exists($path . $submissions . '.mp3'))
+                {
+                    echo 1;
+                }
+                else
+                {
+                    echo 0;
+                }
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else
+        {
+            echo 0;
+        }
+        break;
+    case md5('convert_mp4_single' . $salt):
+        //Convert File into MP4 if FFMPEG is installed
+        if (file_exists($CFG->ffmpeg . 'ffmpeg'))
+        {
+            if (file_exists($path . $submissions . '.flv'))
+            {
+                $sourcefile = '"' . $path . $submissions . '.flv' . '"';
+                $mp4file = $submissions . '.mp4';
+                $outputfile = '"' . $path . $mp4file . '"';
+                $command = 'ffmpeg -i ';
+                shell_exec($command . $sourcefile . ' -sameq -acodec libfaac -ar 44100 ' . $outputfile);
+                //Check if the mp4 file exists
+                if (file_exists($path . $submissions . '.mp4'))
                 {
                     echo 1;
                 }
@@ -189,6 +220,38 @@ switch ($serverAction)
             echo 0;
         }
         break;
+    case md5('download_mp4' . $salt):
+        //return a file to download
+        $filepath = $_REQUEST['p'];
+        $newName = $_REQUEST['n'];
+        if (strpos($filepath, 'mp4:') === 0)
+        {
+            $filepath = substr($filepath, 4) . '.mp4';
+            $newName = $newName . '.mp4';
+        }
+        elseif (strpos($filepath, 'mp3:') === 0)
+        {
+            $filepath = substr($filepath, 4) . '.mp3';
+            $newName = $newName . '.mp3';
+        }
+        else
+        {
+            $filepath = $filepath . '.flv';
+            $newName = $newName . '.flv';
+        }
+        if (file_exists($path . $filepath))
+        {
+            header("Content-type: octet/stream");
+            header("Content-disposition: attachment; filename=" . $newName . ";");
+            header("Content-Length: " . filesize($path . $filepath));
+            readfile($path . $filepath);
+            exit;
+        }
+        else
+        {
+            echo 0;
+        }
+        break;
     case md5('download_zip' . $salt):
         //return a zip of group of files to download
         $filepaths = explode(';', $_REQUEST['p']);
@@ -213,6 +276,11 @@ switch ($serverAction)
                 {
                     $filepath = substr($filepath, 4) . '.mp3';
                     $newNames[$i] = $newNames[$i] . '.mp3';
+                }
+                elseif (strpos($filepath, 'mp4:') === 0)
+                {
+                    $filepath = substr($filepath, 4) . '.mp4';
+                    $newNames[$i] = $newNames[$i] . '.mp4';
                 }
                 else
                 {

@@ -158,7 +158,7 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '  var defaultUserPicture = "' . $CFG->wwwroot . '/theme/image.php?image=u/f1";';
     echo '  var urlMonitor = "' . $CFG->wwwroot . '/mod/languagelab/ajax.classmonitor.php";';
     //Set the player parameters
-    echo '  var rtmpserver = "' . 'rtmp://' . $CFG->languagelab_red5server . '/oflaDemo' . '";';
+    echo '  var rtmpserver = "' . '' . $CFG->languagelab_red5serverprotocol . '://' . $CFG->languagelab_red5server . '/' . $CFG->languagelab_red5serverfolder . '";';
     echo '  var files_prefix = "' . $CFG->languagelab_folder . '/' . $id . '/' . $CFG->languagelab_prefix . '";';
     echo '  var textLoadingConnectClient = \'<div style="width: 100%;text-align:center;"><img src="pix/ajax-loader2.gif" /><br/>' . get_string('connectClient', 'languagelab') . '</div>\';';
     echo '  var textLoadingDisconnectClient = \'<div style="width: 100%;text-align:center;"><img src="pix/ajax-loader2.gif" /><br/>' . get_string('disconnectClient', 'languagelab') . '</div>\';';
