@@ -127,14 +127,14 @@ switch ($serverAction)
         break;
     case md5('convert_mp3_single' . $salt):
         //Convert File into MP3 if FFMPEG is installed
-        if (file_exists($CFG->ffmpeg . 'avconv'))
+        if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
         {
             if (file_exists($path . $submissions . '.flv'))
             {
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp3file = $submissions . '.mp3';
                 $outputfile = '"' . $path . $mp3file . '"';
-                $command = 'avconv -i ';
+                $command = $CFG->conversion_tool_path . $CFG->conversion_tool.' -i ';
                 shell_exec($command . $sourcefile . ' -ar 44100 -ab 64k -ac 2 ' . $outputfile);
                 //Check if the mp3 file exists
                 if (file_exists($path . $submissions . '.mp3'))
@@ -158,14 +158,14 @@ switch ($serverAction)
         break;
     case md5('convert_mp4_single' . $salt):
         //Convert File into MP4 if FFMPEG is installed
-        if (file_exists($CFG->ffmpeg . 'ffmpeg'))
+        if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
         {
             if (file_exists($path . $submissions . '.flv'))
             {
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp4file = $submissions . '.mp4';
                 $outputfile = '"' . $path . $mp4file . '"';
-                $command = 'ffmpeg -i ';
+                $command = $CFG->conversion_tool_path . $CFG->conversion_tool.' -i ';
                 shell_exec($command . $sourcefile . ' -sameq -acodec libfaac -ar 44100 ' . $outputfile);
                 //Check if the mp4 file exists
                 if (file_exists($path . $submissions . '.mp4'))
@@ -380,12 +380,12 @@ switch ($serverAction)
                 $zip->addFile($path . $mastertrack . '.flv', 'Master Track/' . $mastertrack . '.flv');
                 $xml_mt = "<master_track location='Master Track' />\n";
                 //Convert File into MP3 if FFMPEG is installed
-                if (file_exists($CFG->ffmpeg . 'ffmpeg'))
+                if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
                 {
                     $sourcefile = '"' . $path . $mastertrack . '.flv' . '"';
                     $mp3file = $mastertrack . '.mp3';
                     $outputfile = '"' . $CFG->temp_folder . $mp3file . '"';
-                    $command = $CFG->ffmpeg . 'ffmpeg -i ';
+                    $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
                     shell_exec($command . $sourcefile . ' ' . $outputfile);
                     $zip->addFile($CFG->temp_folder . $mp3file, 'Master Track/' . $mp3file);
                 }
@@ -404,12 +404,12 @@ switch ($serverAction)
                     $zip->addFile($path . $submission->path . '.flv', $user . '/' . $submission->path . '.flv');
                     $xml_submission = $xml_submission . "<submission originalName='$submission->path.flv' location='$user'/>\n";
                     //Convert File into MP3 if FFMPEG is installed
-                    if (file_exists($CFG->ffmpeg . 'ffmpeg'))
+                    if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
                     {
                         $sourcefile = '"' . $path . $submission->path . '.flv' . '"';
                         $mp3file = $submission->path . '.mp3';
                         $outputfile = '"' . $CFG->temp_folder . $mp3file . '"';
-                        $command = $CFG->ffmpeg . 'ffmpeg -i ';
+                        $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
                         shell_exec($command . $sourcefile . ' ' . $outputfile);
                         //Add file to zip archive
                         $zip->addFile($CFG->temp_folder . $mp3file, $user . '/' . $mp3file);
