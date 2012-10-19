@@ -48,6 +48,8 @@ else
 
 // set count value for array
 $x = 0;
+$salt = '';
+$path = '';
 //Get XML information
 foreach ($xml->children() as $child)
 {

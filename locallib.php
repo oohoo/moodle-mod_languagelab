@@ -15,8 +15,16 @@
  * *************************************************************************
  * ************************************************************************ */
 require_once(dirname(__FILE__) . '/../../config.php');
+require_once("$CFG->libdir/filelib.php");
+require_once("$CFG->libdir/resourcelib.php");
+
 global $CFG;
 
+/**
+ * 
+ * @param type $domain
+ * @return boolean 
+ */
 function isDomainAvailible($domain)
 {
     //check, if a valid url is provided
@@ -157,7 +165,6 @@ function delete_single_recording($submission_id)
  * Return the URL for the mp3 download
  * @param boolean $videoMode If video Mode = true Download MP4
  */
-
 function get_download_url($videoMode = false)
 {
     global $CFG, $DB;
@@ -183,7 +190,7 @@ function get_download_url($videoMode = false)
         $q = md5($Red5Server . $prefix . $salt);
         //Action download
         $o = md5('download_mp3' . $salt);
-        if($videoMode)
+        if ($videoMode)
         {
             $o = md5('download_mp4' . $salt);
         }
@@ -253,7 +260,7 @@ function convert_recording($filePath, $type = 'mp3')
         //Encrypt information
         $q = md5($Red5Server . $prefix . $salt);
         //Action convert
-        $o = md5('convert_'.$type.'_single' . $salt);
+        $o = md5('convert_' . $type . '_single' . $salt);
 
 
         $vars = "q=$q&o=$o&s=$filePath";
@@ -705,11 +712,50 @@ function formatTimeSince($time)
     return $sTimeSince;
 }
 
-//Format file name with strip slashes, specials chars, etc.
+/**
+ * Format file name with strip slashes, specials chars, etc.
+ * @param string $filename The filename
+ * @return string The filename cleaned
+ */
 function format_name_download($filename)
 {
     $filename = str_replace(array(' ', '/', '\\', '?', '!', '@', '#', '$', '%', '&', '*', '\'', '"', '<', '>', ':', ';'), array('_', '.', '.', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'), $filename);
     return $filename;
 }
 
+/**
+ * Return the config options for the editor
+ * @global stdClass $CFG
+ * @param stdClass $context The context
+ * @return array The config options for the editor
+ */
+function languagelab_get_editor_options($context)
+{
+    global $CFG;
+    return array('subdirs' => 1, 'maxbytes' => $CFG->maxbytes, 'maxfiles' => -1, 'changeformat' => 1, 'context' => $context, 'noclean' => 1, 'trusttext' => 0);
+}
+
+/**
+ * File browsing support class
+ */
+class languagelab_content_file_info extends file_info_stored
+{
+    public function get_parent()
+    {
+        if ($this->lf->get_filepath() === '/' and $this->lf->get_filename() === '.')
+        {
+            return $this->browser->get_file_info($this->context);
+        }
+        return parent::get_parent();
+    }
+
+    public function get_visible_name()
+    {
+        if ($this->lf->get_filepath() === '/' and $this->lf->get_filename() === '.')
+        {
+            return $this->topvisiblename;
+        }
+        return parent::get_visible_name();
+    }
+}
 ?>

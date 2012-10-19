@@ -16,6 +16,7 @@
  * ************************************************************************ */
 defined('MOODLE_INTERNAL') || die;
 require_once ($CFG->dirroot . '/course/moodleform_mod.php');
+require_once($CFG->dirroot.'/mod/languagelab/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
 
 class mod_languagelab_mod_form extends moodleform_mod
@@ -166,10 +167,15 @@ HERE;
 
         $mform->addElement('editor', 'content', get_string('description', 'languagelab'), null, $editoroptions);
         $mform->addElement('static', 'txt', '', '<div id="descrLabLang"></div>');
+        
         $mform->addElement('static', 'master_track_recorder', get_string('master_track_recorder', 'languagelab'), $recorder);
         $mform->addHelpButton('master_track_recorder', 'master_track_recorder', 'languagelab');
         //This actual file name
         $mform->addElement('hidden', 'master_track_recording', $recordingname);
+        if ($newRecording == 'true')
+        {
+            $mform->addElement('static', 'notemastertrack', '', get_string('note_play_mastertrack','languagelab'));
+        }
         if ($submitted_recordings == 0)
         {
             $mform->addElement('filepicker', 'master_track', get_string('master_track', 'languagelab'), null, array('subdirs' => 0, 'maxfiles' => 1, 'accepted_types' => array('.mp3')));
@@ -183,18 +189,20 @@ HERE;
         $mform->addElement('static', 'master_track_file', get_string('master_track_file', 'languagelab'), '');
         $mform->addElement('advcheckbox', 'attempts', get_string('attempts', 'languagelab'), null);
         $mform->addHelpButton('attempts', 'attempts', 'languagelab');
+        $mform->addElement('advcheckbox', 'student_delete_recordings', get_string('student_delete_recordings', 'languagelab'), null);
+        $mform->addHelpButton('student_delete_recordings', 'student_delete_recordings', 'languagelab');
         //$mform->addElement('text','recording_timelimit',get_string('recording_timelimit','languagelab'));
         //$mform->setDefault('recording_timelimit', 0);
 
 
-        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'languagelab'), array('optional' => true, 'value' => 0));
-        $mform->setDefault('timeavailable', time());
-        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'languagelab'), array('optional' => true, 'value' => 0));
-        $mform->setDefault('timedue', time() + 7 * 24 * 3600);
+        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'languagelab'), array('optional' => true));
+        $mform->setDefault('timeavailable', 0);
+        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'languagelab'), array('optional' => true));
+        $mform->setDefault('timedue', 0);
         $ynoptions = array(0 => get_string('no'), 1 => get_string('yes'));
 
         $mform->addElement('header', 'general', get_string('advanced', 'languagelab'));
-        $mform->addElement('checkbox','video',get_string('use_video','languagelab'));
+        $mform->addElement('checkbox', 'video', get_string('use_video', 'languagelab'));
         $mform->addHelpButton('video', 'video', 'languagelab');
         $mform->setDefault('video', false);
 
@@ -222,10 +230,10 @@ HERE;
 
     function data_preprocessing(&$default_values)
     {
-
+        
         global $CFG, $DB;
 
-        $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $this->context);
+        $editoroptions = languagelab_get_editor_options($this->context);
 
         if ($this->current->instance)
         {

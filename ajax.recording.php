@@ -301,6 +301,12 @@ else if ($grade)
                 $result->success = false;
                 $result->message = get_string('error_grade_notsaved', 'languagelab');
             }
+            else
+            {
+                $grade->rawgrade = $grade->grade;
+                //Update the gradebook;
+                languagelab_grade_item_update($languagelab, $grade);
+            }
         }
         else
         {

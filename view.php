@@ -14,7 +14,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-/// (Replace languagelab with the name of your module)
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once("$CFG->dirroot/lib/resourcelib.php");
@@ -171,7 +171,14 @@ if($languagelab->video != 0)
     $classVideo = 'playerVideo';
 }
 
+//Info for the availability
+if(!$available)
+{
+    echo $OUTPUT->box('<h3>'.get_string('error_activity_not_available', 'mod_languagelab').'</h3>', 'generalbox center clearfix');
+}
+
 echo '<script type="text/javascript">';
+echo '  var allowDelete = ' . ($languagelab->student_delete_recordings && $available ? 'true' : 'false') . ';';
 echo '  var available = ' . (($available) ? 'true' : 'false') . ';';
 echo '  var onlyOneRecording = ' . (($languagelab->attempts == 1) ? 'true' : 'false') . ';';
 echo '  var checksum = "";';

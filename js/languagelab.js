@@ -102,24 +102,50 @@ function playeroptions_ready()
 
 function playeroptions_open()
 {
-    $("#divPlayerOptions").dialog(
+    //This is a pathtru for IE, because sometime the flash don't want to shows up in the pop up so create an Iframe with the flash.
+    if (navigator.appName.indexOf("Microsoft Internet")==0)
     {
-        closeOnEscape: false,
-        modal: true,
-        width: 450,
-        zIndex: 4000,
-        buttons: [ {
-            text:playeroptionsBtnOk, 
-            click: function() {
-                window.location.reload();
+        var title = $("#divPlayerOptions").attr("title");
+        $('<iframe src="playeroptions.php" title="'+title+'" style="width:430px !important;min-width:430px !important; padding:10px 0 0 0;"/>').dialog({
+            autoOpen: true,
+            closeOnEscape: false,
+            modal: true,
+            width: 450,
+            minWidth: 450,
+            height: 500,
+            zIndex: 4000,
+            buttons: [ {
+                text:playeroptionsBtnOk, 
+                click: function() {
+                    window.location.reload();
+                }
+            }],
+            open: function(event, ui){
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
             }
-        }],
-        open: function(event, ui){
-            $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-            $("#divPlayerOptions").css('position', 'relative');
-            $("#divPlayerOptions").css('top',0);
-        }
-    });
+        });
+    }
+    else
+    {
+        $("#divPlayerOptions").dialog(
+        {
+            closeOnEscape: false,
+            modal: true,
+            width: 450,
+            zIndex: 4000,
+            buttons: [ {
+                text:playeroptionsBtnOk, 
+                click: function() {
+                    window.location.reload();
+                }
+            }],
+            open: function(event, ui){
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+                $("#divPlayerOptions").css('position', 'relative');
+                $("#divPlayerOptions").css('top',0);
+            }
+        });
+    }
 }
                 
 //Run this function when player is ready
@@ -167,7 +193,7 @@ function RTMPServerReady(idPlayer)
     
     if(typeof(teacherMode) != 'undefined')
     {
-        //TEACHER MODE
+    //TEACHER MODE
     }
     else
     {
@@ -395,7 +421,9 @@ $(function(){
         
         var elemType = $(".jstree-clicked","#recordings").parent().data('type');
         
-        if(elemType == 'record' || (tMode && elemType == 'feedback'))
+        var chidren = $("li", $(".jstree-clicked","#recordings").parent());
+        
+        if(allowDelete && !tMode && elemType == 'record' && chidren.length == 0 || (tMode && (elemType == 'record' || elemType == 'feedback')))
         {
             $("#deleteRecordings").removeAttr('disabled');
             $("#deleteRecordings").removeClass('btnDisabled');
@@ -894,11 +922,11 @@ $(function(){
     
     $("#raiseHand").click(function(){
        
-       $(this).show('highlight');
-       $.getJSON(
+        $(this).show('highlight');
+        $.getJSON(
             urlLive+"?id="+activityid
-                +"&event=raise_hand"
-                +"&rand="+Math.random(),
+            +"&event=raise_hand"
+            +"&rand="+Math.random(),
             function(data)
             {
 

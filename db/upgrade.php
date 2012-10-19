@@ -353,7 +353,7 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012080400, 'languagelab');
     }
-    
+
     if ($oldversion < 2012092701)
     {
 
@@ -361,6 +361,27 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // Add the video !!
         upgrade_mod_savepoint(true, 2012092701, 'languagelab');
     }
+
+    if ($oldversion < 2012101700)
+    {
+        //+Add student delete recordings rights
+        //+Gradebook corrections
+        //+IE flash Player options patch
+        
+        // Define field student_delete_recordings to be added to languagelab
+        $table = new xmldb_table('languagelab');
+        $field = new xmldb_field('student_delete_recordings', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'use_mp3');
+
+        // Conditionally launch add field student_delete_recordings
+        if (!$dbman->field_exists($table, $field))
+        {
+            $dbman->add_field($table, $field);
+        }
+
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2012101700, 'languagelab');
+    }
+
 
     return;
 }
