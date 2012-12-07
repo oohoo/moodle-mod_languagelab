@@ -84,6 +84,38 @@ function languagelab_add_instance($languagelab, $mform = null)
     {
         $languagelab->use_mp3 = 0;
     }
+    if (isset($languagelab->attempts))
+    {
+        $languagelab->attempts = 1;
+    }
+    else
+    {
+        $languagelab->attempts = 0;
+    }
+    if (isset($languagelab->student_delete_recordings))
+    {
+        $languagelab->student_delete_recordings = 1;
+    }
+    else
+    {
+        $languagelab->student_delete_recordings = 0;
+    }
+    if (isset($languagelab->video))
+    {
+        $languagelab->video = 1;
+    }
+    else
+    {
+        $languagelab->video = 0;
+    }
+    if (isset($languagelab->use_grade_book))
+    {
+        $languagelab->use_grade_book = 1;
+    }
+    else
+    {
+        $languagelab->use_grade_book = 0;
+    }
     //Uploaded file
     if ($mform)
     {
@@ -150,7 +182,7 @@ function languagelab_update_instance($languagelab, $mform = null)
     $languagelab->description = $languagelab->content['text'];
     $languagelab->timemodified = time();
     $languagelab->id = $languagelab->instance;
-    //Check to see that a valu is set for use_mp3
+    //Check to see that a value is set for use_mp3
     if (isset($languagelab->use_mp3))
     {
         $languagelab->use_mp3 = 1;
@@ -158,6 +190,38 @@ function languagelab_update_instance($languagelab, $mform = null)
     else
     {
         $languagelab->use_mp3 = 0;
+    }
+    if (isset($languagelab->attempts))
+    {
+        $languagelab->attempts = 1;
+    }
+    else
+    {
+        $languagelab->attempts = 0;
+    }
+    if (isset($languagelab->student_delete_recordings))
+    {
+        $languagelab->student_delete_recordings = 1;
+    }
+    else
+    {
+        $languagelab->student_delete_recordings = 0;
+    }
+    if (isset($languagelab->video))
+    {
+        $languagelab->video = 1;
+    }
+    else
+    {
+        $languagelab->video = 0;
+    }
+    if (isset($languagelab->use_grade_book))
+    {
+        $languagelab->use_grade_book = 1;
+    }
+    else
+    {
+        $languagelab->use_grade_book = 0;
     }
     //Uploaded file
     if ($languagelab->submitted_recordings == 0)
@@ -742,5 +806,3 @@ function languagelab_upload_mp3_file($filedata, $pathOnServer)
     require_once('locallib.php');
     return upload_mp3_file($filedata, $pathOnServer);
 }
-
-?>

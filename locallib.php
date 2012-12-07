@@ -758,4 +758,3 @@ class languagelab_content_file_info extends file_info_stored
         return parent::get_visible_name();
     }
 }
-?>

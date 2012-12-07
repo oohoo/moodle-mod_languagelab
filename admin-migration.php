@@ -59,7 +59,6 @@ $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
 // Output starts here
 echo $OUTPUT->header();
 
-
 /// Print the main part of the page
 echo $OUTPUT->box_start();
 
@@ -75,8 +74,5 @@ else
 
 echo $OUTPUT->box_end();
 
-
-
 // Finish the page
 echo $OUTPUT->footer();
-?>

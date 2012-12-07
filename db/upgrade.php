@@ -381,8 +381,16 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012101700, 'languagelab');
     }
+    
+    if ($oldversion < 2012120700)
+    {
+        //+Corrections
+        //+Remove PHP end tag in files
+
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2012120700, 'languagelab');
+    }
 
 
     return;
 }
-?>

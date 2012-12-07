@@ -57,7 +57,7 @@ $string['emailbodydelete'] = 'I would like you to restart your recording. Please
 $string['emailthankyou'] = 'Thank you';
 $string['words'] = 'List of words for the students to record';
 $string['prefix'] = 'Enter a prefix for recorded streams.';
-$string['prefixhelp'] = 'The prefix here is usefull if the red5 server is used to stream other material. You will be able to easliy identify recorded streams';
+$string['prefixhelp'] = 'The prefix here is usefull if the red5 server is used to stream other material. You will be able to easily identify recorded streams';
 
 
 
@@ -210,7 +210,7 @@ $string['error_delete_permission'] = 'You don\'t have the permission to delete t
 $string['error_grade_notsaved'] = 'An error has occured during the saving of the grade. Grade not saved.';
 $string['error_grade_permission'] = 'You don\'t have the permission to grade a student';
 $string['error_grade_user_notexists'] = 'This user not exists for this activity. Grade not saved';
-$string['error_insert_feedback_parent_notexists'] = 'The student recording don\'t exists, the feedback canno\'t be inserted';
+$string['error_insert_feedback_parent_notexists'] = 'The student recording does not exist, the feedback can not be inserted';
 $string['error_insert_feedback_permission'] = 'You don\'t have the permission to create a feedback';
 $string['error_record_save'] = 'An error has occured, recording not saved';
 $string['error_user_max_attempts'] = 'You can\'t create anymore recordings. You have to delete one recording in order to create a new one';
@@ -218,7 +218,7 @@ $string['errorTitle'] = 'Error';
 $string['filterStudents'] = 'Students filter: ';
 $string['filterStudents_help'] = 'Type student\'s name to display only this student';
 $string['gradeStudentWithRecordings'] = 'Only students with at least one recording can be graded';
-$string['listened'] = 'Your teacher listen you right now';
+$string['listened'] = 'Your teacher is listening you right now';
 $string['listRecordings'] = 'Recordings';
 $string['listRecordings_help'] = 'Click here to open the recordings in a pop-up';
 $string['load_prev_master'] = 'Revert to previous mastertrack';
@@ -277,4 +277,3 @@ $string['video_unavailable'] = 'Video option under development.';
 
 $string['languagelab:addinstance'] = 'Add a new Language lab';
 $string['languagelab:view'] = 'View Language lab';
-?>

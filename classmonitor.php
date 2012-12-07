@@ -244,8 +244,5 @@ else
 }
 echo $OUTPUT->box_end();
 
-
-
 // Finish the page
 echo $OUTPUT->footer();
-?>

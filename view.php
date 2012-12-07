@@ -24,9 +24,7 @@ require_once("locallib.php");
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or
 $l = optional_param('l', 0, PARAM_INT);  // languagelab ID
 
-
 global $CFG, $DB, $PAGE;
-
 
 if ($id)
 {
@@ -44,7 +42,6 @@ else
 {
     error('You must specify a course_module ID or an instance ID');
 }
-
 
 require_login($course, true, $cm);
 
@@ -517,8 +514,5 @@ else
 echo '</div>';
 echo $OUTPUT->box_end();
 
-
-
 // Finish the page
 echo $OUTPUT->footer();
-?>

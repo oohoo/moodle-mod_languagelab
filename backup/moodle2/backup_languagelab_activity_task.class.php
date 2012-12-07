@@ -52,5 +52,3 @@ class backup_languagelab_activity_task extends backup_activity_task
     }
 
 }
-
-?>

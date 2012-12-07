@@ -42,7 +42,3 @@ $settings->add(new admin_setting_configtext('languagelab_secondsRefreshClassmoni
                 get_string('secondsRefreshClassmonitorhelp', 'languagelab'), '5000', PARAM_INT));
 $settings->add(new admin_setting_configtext('languagelab_secondsRefreshStudentView', get_string('secondsRefreshStudentView', 'languagelab'),
                 get_string('secondsRefreshStudentViewhelp', 'languagelab'), '5000', PARAM_INT));
-//ffmpeg for file conversion
-//$settings->add(new admin_setting_configexecutable('ffmpeg', get_string('ffmpeg', 'languagelab'),
-//                  get_string('ffmpeghelp','languagelab'), ''));
-?>

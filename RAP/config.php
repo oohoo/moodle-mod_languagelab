@@ -31,4 +31,3 @@ $CFG->conversion_tool = 'ffmpeg';
 //Deprecated. Keeping this config value for backwards compatibility. Path to ffmpeg for mp3 conversion. If empty, you will not be able to convert flv to mp3
 //Usually found in /usr/bin/
 $CFG->ffmpeg = "/usr/bin/";
-?>

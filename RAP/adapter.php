@@ -439,4 +439,3 @@ switch ($serverAction)
 
         break;
 }
-?>

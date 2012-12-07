@@ -194,4 +194,3 @@ $obj = new stdClass();
 $obj->checksum = md5(json_encode($checksumData));
 $obj->json = $json;
 echo json_encode($obj);
-?>

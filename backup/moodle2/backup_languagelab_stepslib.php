@@ -72,5 +72,3 @@ class backup_languagelab_activity_structure_step extends backup_activity_structu
     }
 
 }
-
-?>

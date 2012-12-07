@@ -30,4 +30,3 @@ foreach (glob($CFG->rootdir . '*.zip') as $file)
         echo 'No files to delete';
     }
 }
-?>

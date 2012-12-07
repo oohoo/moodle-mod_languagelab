@@ -80,4 +80,3 @@ else
 
     redirect($CFG->wwwroot, get_string('norappermission', 'mod_languagelab'), 5);
 }
-?>

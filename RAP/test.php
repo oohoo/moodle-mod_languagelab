@@ -47,4 +47,3 @@ else
 {
     print "<br>Sorry, there is a problem with your configuration.";
 }
-?>

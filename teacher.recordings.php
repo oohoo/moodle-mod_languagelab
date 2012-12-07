@@ -272,4 +272,3 @@ else
     $obj->json = $json;
     echo json_encode($obj);
 }
-?>

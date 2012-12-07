@@ -94,11 +94,7 @@ echo '
 
 echo '</div>';
 
-
-
-
 // Finish the page
 echo '
     </body>
 </html>';
-?>

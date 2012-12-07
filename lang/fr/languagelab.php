@@ -318,4 +318,3 @@ $string['video_unavailable'] = 'Fonction vidéo en développement.';
 
 $string['languagelab:addinstance'] = 'Ajouter un nouveau Labo de langues OWLL';
 $string['languagelab:view'] = 'Afficher le labo de langues OWLL';
-?>

@@ -116,10 +116,11 @@ if ($add)
                 else
                 {
                     //If conversion successful change the path, else, keep the flv file
-                    if (convert_recording($path, 'mp4') == 1)
+                    //MP4 is not compatible with RED5 0.8 for now (and other version)
+                    /*if (convert_recording($path, 'mp4') == 1)
                     {
                         $save_recording->path = 'mp4:' . $save_recording->path;
-                    }
+                    }*/
                 }
 
                 $result->success = $DB->insert_record('languagelab_submissions', $save_recording);
@@ -163,10 +164,12 @@ if ($add)
         else
         {
             //If conversion successful change the path, else, keep the flv file
+            //MP4 is not compatible with RED5 0.8 for now (and other version)
+            /*
             if (convert_recording($path, 'mp4') == 1)
             {
                 $save_recording->path = 'mp4:' . $save_recording->path;
-            }
+            }*/
         }
 
         //If the activity is available
@@ -323,4 +326,3 @@ else if ($grade)
     }
 }
 echo json_encode($result);
-?>

@@ -283,4 +283,3 @@ else
 
     echo json_encode($obj);
 }
-?>
