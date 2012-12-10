@@ -17,14 +17,12 @@ defined('MOODLE_INTERNAL') || die;
 
 function xmldb_languagelab_upgrade($oldversion = 0)
 {
-
     global $CFG, $THEME, $DB;
 
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2011021200)
     {
-
         // Define field contentformat to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('contentformat', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'description');
@@ -41,7 +39,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2011031800)
     {
-
         // Define field contentformat to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('contentformat', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'description');
@@ -58,7 +55,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2011041901)
     {
-
         // Define field id to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('use_grade_book', XMLDB_TYPE_INTEGER, '1', null, null, null, null, null);
@@ -74,23 +70,18 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011050900)
     {
-
-
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2011050900, 'languagelab');
     }
 
     if ($oldversion < 2011051100)
     {
-
-
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2011051100, 'languagelab');
     }
 
     if ($oldversion < 2011052600)
     {
-
         // Define field video to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('video', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'attempts');
@@ -107,7 +98,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2011052601)
     {
-
         // Define field group_type to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('group_type', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'use_grade_book');
@@ -124,7 +114,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2011080800)
     {
-
         //Fixed undefined variables
         //Fixed $available in view.php
         // languagelab savepoint reached
@@ -132,7 +121,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011082600)
     {
-
         // Define field master_track to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('master_track', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'group_type');
@@ -148,14 +136,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011082700)
     {
-
         //Activated Master track feature
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2011082700, 'languagelab');
     }
     if ($oldversion < 2011082900)
     {
-
         //Fixed backup_steps (missing fields)
         //Updated LanguageLabCT.swf
         // languagelab savepoint reached
@@ -163,7 +149,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011113000)
     {
-
         //Rebuilt both SWF. No longer need XMLSocket server
         //Updated LanguageLabCT.swf
         // languagelab savepoint reached
@@ -171,7 +156,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011120500)
     {
-
         //Removed XML Socket settings
         //Updated LanguageLabCT.swf
         // languagelab savepoint reached
@@ -179,7 +163,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011121200)
     {
-
         // Define field master_track_recording to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('master_track_recording', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'master_track');
@@ -195,7 +178,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011121500)
     {
-
         // Define field use_mp3 to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('use_mp3', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'master_track_recording');
@@ -211,7 +193,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2011121701)
     {
-
         //Added Red5 Adapter Plugin File name admin setting
         //Added Security level for the RAP Server 
         // languagelab savepoint reached
@@ -219,7 +200,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2012030800)
     {
-
         //Added scrubbing feature
         //New nonStreamingBasePath Config
         // languagelab savepoint reached
@@ -227,7 +207,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
     }
     if ($oldversion < 2012031200)
     {
-
         //Added RAP security for testing. Must also create manage capability 
 
         $capabilities = array(
@@ -249,7 +228,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2012031201)
     {
-
         // Changing the default of field grade on table languagelab_student_eval to drop it
         $table = new xmldb_table('languagelab_student_eval');
         $field = new xmldb_field('grade', XMLDB_TYPE_INTEGER, '11', null, null, null, null, 'correctionnotes');
@@ -263,7 +241,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2012051800)
     {
-
         // Define table languagelab_user_live to be created
         $table = new xmldb_table('languagelab_user_live');
 
@@ -288,7 +265,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2012051801)
     {
-
         // Define field timemodified to be added to languagelab_user_live
         $table = new xmldb_table('languagelab_user_live');
         $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'live');
@@ -298,14 +274,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         {
             $dbman->add_field($table, $field);
         }
-
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012051801, 'languagelab');
     }
 
     if ($oldversion < 2012051802)
     {
-
         // Define table languagelab_user_event to be created
         $table = new xmldb_table('languagelab_user_event');
 
@@ -333,7 +307,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2012052200)
     {
-
         // Changing type of field type on table languagelab_user_event to char
         $table = new xmldb_table('languagelab_user_event');
         $field = new xmldb_field('type', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null, 'userid');
@@ -345,10 +318,8 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2012052200, 'languagelab');
     }
 
-
     if ($oldversion < 2012080400)
     {
-
         //Add addinstance capability
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012080400, 'languagelab');
@@ -356,7 +327,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
 
     if ($oldversion < 2012092701)
     {
-
         // Update the settings
         // Add the video !!
         upgrade_mod_savepoint(true, 2012092701, 'languagelab');
@@ -367,7 +337,6 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         //+Add student delete recordings rights
         //+Gradebook corrections
         //+IE flash Player options patch
-        
         // Define field student_delete_recordings to be added to languagelab
         $table = new xmldb_table('languagelab');
         $field = new xmldb_field('student_delete_recordings', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'use_mp3');
@@ -381,16 +350,22 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012101700, 'languagelab');
     }
-    
+
     if ($oldversion < 2012120700)
     {
         //+Corrections
         //+Remove PHP end tag in files
-
+        
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012120700, 'languagelab');
     }
 
-
+    if ($oldversion < 2012121000)
+    {
+        //+Corrections
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2012121000, 'languagelab');
+    }
     return;
 }

@@ -84,22 +84,6 @@ function languagelab_add_instance($languagelab, $mform = null)
     {
         $languagelab->use_mp3 = 0;
     }
-    if (isset($languagelab->attempts))
-    {
-        $languagelab->attempts = 1;
-    }
-    else
-    {
-        $languagelab->attempts = 0;
-    }
-    if (isset($languagelab->student_delete_recordings))
-    {
-        $languagelab->student_delete_recordings = 1;
-    }
-    else
-    {
-        $languagelab->student_delete_recordings = 0;
-    }
     if (isset($languagelab->video))
     {
         $languagelab->video = 1;
@@ -190,22 +174,6 @@ function languagelab_update_instance($languagelab, $mform = null)
     else
     {
         $languagelab->use_mp3 = 0;
-    }
-    if (isset($languagelab->attempts))
-    {
-        $languagelab->attempts = 1;
-    }
-    else
-    {
-        $languagelab->attempts = 0;
-    }
-    if (isset($languagelab->student_delete_recordings))
-    {
-        $languagelab->student_delete_recordings = 1;
-    }
-    else
-    {
-        $languagelab->student_delete_recordings = 0;
     }
     if (isset($languagelab->video))
     {

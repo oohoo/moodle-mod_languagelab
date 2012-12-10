@@ -401,6 +401,11 @@
     font-weight: normal;
 }
 
+#recordings.videoMode
+{
+    height: 470px;
+}
+
 #recordings ul
 {
 

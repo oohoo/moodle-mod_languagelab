@@ -460,7 +460,14 @@ else
     echo '      <div class="search">';
     echo '          ' . get_string('search', 'languagelab') . '<input type="text" name="searchRecordings" id="searchRecordings" class="ui-corner-all" size="15" />';
     echo '      </div>';
-    echo '      <div id="recordings" class="ui-corner-all">';
+    if($languagelab->video != 0)
+    {
+        echo '      <div id="recordings" class="ui-corner-all videoMode">';
+    }
+    else
+    {
+        echo '      <div id="recordings" class="ui-corner-all">';
+    }
     echo '      </div>';
     if ($available)
     {
