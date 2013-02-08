@@ -69,7 +69,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
             }
             else
             {
-                echo 'Site is unavailable, there is probably a problem with your Apache/PHP server hosting the RAP or is this server have a default gateway well configured?';
+                echo 'Site is unavailable, there is probably a problem with the path to the RAP adapter (languagelab_adapter_file), or with your Apache/PHP server hosting the RAP or is this server have a default gateway well configured?';
             }
 
             //Encrypt information
