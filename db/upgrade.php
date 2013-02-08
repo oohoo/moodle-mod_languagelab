@@ -385,12 +385,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013010700, 'languagelab');
     }
     
-    if ($oldversion < 2013020801)
+    if ($oldversion < 2013020802)
     {
         //+ Add some tests to the RAP in order to help users to configure
         
         // languagelab savepoint reached
-        upgrade_mod_savepoint(true, 2013020801, 'languagelab');
+        upgrade_mod_savepoint(true, 2013020802, 'languagelab');
     }
     return;
 }

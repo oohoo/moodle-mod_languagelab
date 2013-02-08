@@ -44,7 +44,13 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
         {
             $Red5Server = $CFG->languagelab_red5server;
             $RapServer = $CFG->languagelab_adapter_server;
-            $RapFile = $CFG->languagelab_adapter_file;
+            $RapFile = $CFG->languagelab_adapter_file.'.php';
+            $RapPath = dirname($RapFile);
+            if($RapPath == '.' || $RapPath == '')
+            {
+                $RapPath = '';
+            }
+            $RapPath .= '/';
             $prefix = $CFG->languagelab_prefix;
             $salt = $CFG->languagelab_salt;
             //RAP security
@@ -56,7 +62,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
             {
                 $security = 'http://';
             }
-            $url = "$security$RapServer/test.php";
+            $url = "$security$RapServer{$RapPath}test.php";
             if (isDomainAvailible($url))
             {
                 echo 'Site is available';
