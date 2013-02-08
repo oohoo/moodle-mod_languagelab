@@ -22,6 +22,29 @@ $serverInfo = $_REQUEST['q'];
 $serverAction = $_REQUEST['o'];
 $submissions = $_REQUEST['s'];
 $mastertrack = $_REQUEST['m'];
+//given filename
+if (isset($_REQUEST['f']))
+{
+    $filename = $_REQUEST['f'];
+}
+else
+{
+    $filename = '';
+}
+//security
+if (isset($_REQUEST['r']))
+{
+    $security = $_REQUEST['r'];
+}
+
+if ($security == true)
+{
+    $url_type = 'https://';
+}
+else
+{
+    $url_type = 'http://';
+}
 
 
 // set count value for array
@@ -39,11 +62,12 @@ foreach ($xml->children() as $child)
     $x++;
 }
 
+print "<br>Your Apache/PHP server is working, now checking RAP configuration...";
 if (count($works) > 0)
 {
-    print "<br>Congradulations, your configuration is working!";
+    print "<br>Congratulations, your RAP configuration is working!";
 }
 else
 {
-    print "<br>Sorry, there is a problem with your configuration.";
+    print "<br>Sorry, there is a problem with your configuration. Check your XML file: The serverAddress, languagelabPrefix and salt must be identical from the moodle settings languagelab_red5server, languagelab_prefix and languagelab_salt.";
 }

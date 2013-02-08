@@ -367,5 +367,30 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2012121000, 'languagelab');
     }
+    
+    if ($oldversion < 2012121900)
+    {
+        //+ Add functions for the RESET mode
+        //+ Correct problems with the flash options and Firefox 17
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2012121900, 'languagelab');
+    }
+    
+    if ($oldversion < 2013010700)
+    {
+        //+ Add a correction to the Edit form
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013010700, 'languagelab');
+    }
+    
+    if ($oldversion < 2013020801)
+    {
+        //+ Add some tests to the RAP in order to help users to configure
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013020801, 'languagelab');
+    }
     return;
 }

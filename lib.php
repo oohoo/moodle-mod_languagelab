@@ -485,7 +485,7 @@ function languagelab_update_grades($languagelab = null, $userid = 0, $nullifnone
 }
 
 /**
- * Create grade item for given lesson
+ * Create grade item for given languagelab
  *
  * @param stdClass $languagelab object with extra cmidnumber
  * @param mixed $grades optional array/object of grade(s); 'reset' means reset grades in gradebook
@@ -550,10 +550,10 @@ function languagelab_grade_item_update($languagelab, $grades = NULL)
 }
 
 /**
- * Delete grade item for given lesson
+ * Delete grade item for given languagelab
  *
- * @param object $lesson object
- * @return object lesson
+ * @param object $languagelab object
+ * @return object languagelab
  */
 function languagelab_grade_item_delete($languagelab)
 {
@@ -641,7 +641,8 @@ function get_languagelab_id($languagelab)
  * @param stdClass $context context object
  * @return array
  */
-function languagelab_get_file_areas($course, $cm, $context) {
+function languagelab_get_file_areas($course, $cm, $context)
+{
     $areas = array();
     $areas['content'] = get_string('content', 'languagelab');
     return $areas;
@@ -663,25 +664,32 @@ function languagelab_get_file_areas($course, $cm, $context) {
  * @param string $filename file name
  * @return file_info instance or null if not found
  */
-function languagelab_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
+function languagelab_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename)
+{
     global $CFG;
 
-    if (!has_capability('moodle/course:managefiles', $context)) {
+    if (!has_capability('moodle/course:managefiles', $context))
+    {
         // students can not peak here!
         return null;
     }
 
     $fs = get_file_storage();
 
-    if ($filearea === 'content') {
+    if ($filearea === 'content')
+    {
         $filepath = is_null($filepath) ? '/' : $filepath;
         $filename = is_null($filename) ? '.' : $filename;
 
-        $urlbase = $CFG->wwwroot.'/pluginfile.php';
-        if (!$storedfile = $fs->get_file($context->id, 'mod_languagelab', 'content', $itemid, $filepath, $filename)) {
-            if ($filepath === '/' and $filename === '.') {
+        $urlbase = $CFG->wwwroot . '/pluginfile.php';
+        if (!$storedfile = $fs->get_file($context->id, 'mod_languagelab', 'content', $itemid, $filepath, $filename))
+        {
+            if ($filepath === '/' and $filename === '.')
+            {
                 $storedfile = new virtual_root_file($context->id, 'mod_languagelab', 'content', $itemid);
-            } else {
+            }
+            else
+            {
                 // not found
                 return null;
             }
@@ -773,4 +781,96 @@ function languagelab_upload_mp3_file($filedata, $pathOnServer)
 
     require_once('locallib.php');
     return upload_mp3_file($filedata, $pathOnServer);
+}
+
+/**
+ * Implementation of the function for printing the form elements that control
+ * whether the course reset functionality affects the languagelab
+ *
+ * @param $mform form passed by reference
+ */
+function languagelab_reset_course_form_definition(&$mform)
+{
+    $mform->addElement('header', 'languagelabheader', get_string('modulenameplural', 'languagelab'));
+    $mform->addElement('advcheckbox', 'reset_languagelab', get_string('deletealldata', 'languagelab'));
+}
+
+/**
+ * Course reset form defaults.
+ * @param object $course
+ * @return array
+ */
+function languagelab_reset_course_form_defaults($course)
+{
+    return array('reset_languagelab' => 1);
+}
+
+/**
+ * Removes all grades from gradebook
+ *
+ * @global stdClass
+ * @global object
+ * @param int $courseid
+ * @param string optional type
+ */
+function languagelab_reset_gradebook($courseid, $type = '')
+{
+    global $CFG, $DB;
+
+    $sql = "SELECT ll.*, cm.idnumber as cmidnumber, ll.course as courseid
+              FROM {languagelab} ll, {course_modules} cm, {modules} m
+             WHERE m.name='languagelab' AND m.id=cm.module AND cm.instance=ll.id AND ll.course=:course";
+    $params = array("course" => $courseid);
+    if ($languagelabs = $DB->get_records_sql($sql, $params))
+    {
+        foreach ($languagelabs as $languagelab)
+        {
+            languagelab_grade_item_update($languagelab, 'reset');
+        }
+    }
+}
+
+/**
+ * Actual implementation of the reset course functionality, delete all the
+ * languagelab attempts for course $data->courseid.
+ *
+ * @global stdClass
+ * @global object
+ * @param object $data the data submitted from the reset course.
+ * @return array status array
+ */
+function languagelab_reset_userdata($data)
+{
+    global $CFG, $DB;
+
+    $componentstr = get_string('modulenameplural', 'languagelab');
+    $status = array();
+
+    if (!empty($data->reset_languagelab))
+    {
+        $languagelabssql = "SELECT ll.id
+                         FROM {languagelab} ll
+                        WHERE ll.course=:course";
+
+        $params = array("course" => $data->courseid);
+        $DB->delete_records_select('languagelab_submissions', "languagelab IN ($languagelabssql)", $params);
+        $DB->delete_records_select('languagelab_student_eval', "languagelab IN ($languagelabssql)", $params);
+
+        // remove all grades from gradebook
+        if (empty($data->reset_gradebook_grades))
+        {
+            languagelab_reset_gradebook($data->courseid);
+        }
+
+        $status[] = array('component' => $componentstr, 'item' => get_string('deletealldata', 'languagelab'), 'error' => false);
+    }
+
+    /// updating dates - shift may be negative too
+    if ($data->timeshift)
+    {
+        shift_course_mod_dates('languagelab', array('available', 'deadline'), $data->timeshift, $data->courseid);
+        $status[] = array('component' => $componentstr, 'item' => get_string('datechanged'), 'error' => false);
+    }
+
+    return $status;
 }

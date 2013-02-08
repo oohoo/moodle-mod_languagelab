@@ -34,44 +34,53 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
     echo $OUTPUT->header();
 
 //Is the Red5 Adapter Plugin set
-    if (isset($CFG->languagelab_adapter_file))
+    if (isset($CFG->languagelab_adapter_file) && isset($CFG->languagelab_adapter_server))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_red5server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
+        if ($CFG->languagelab_adapter_file == '' || $CFG->languagelab_adapter_server == '')
         {
-            $security = 'https://';
+            echo 'Some configuration is missing. Have you completed the fields languagelab_adapter_server and languagelab_adapter_file in the Language Lab settings ?';
         }
         else
         {
-            $security = 'http://';
+            $Red5Server = $CFG->languagelab_red5server;
+            $RapServer = $CFG->languagelab_adapter_server;
+            $RapFile = $CFG->languagelab_adapter_file;
+            $prefix = $CFG->languagelab_prefix;
+            $salt = $CFG->languagelab_salt;
+            //RAP security
+            if ($CFG->languagelab_adapter_access == true)
+            {
+                $security = 'https://';
+            }
+            else
+            {
+                $security = 'http://';
+            }
+            $url = "$security$RapServer/test.php";
+            if (isDomainAvailible($url))
+            {
+                echo 'Site is available';
+            }
+            else
+            {
+                echo 'Site is unavailable, there is probably a problem with your Apache/PHP server hosting the RAP or is this server have a default gateway well configured?';
+            }
+
+            //Encrypt information
+            $q = md5($Red5Server . $prefix . $salt);
+            $o = md5('raptest' . $salt);
+
+            $vars = "q=$q&o=$o";
+
+            //Send request to red5 server using curl
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
+
+            $result = curl_exec($ch);
         }
-        $url = "$security$Red5Server/test.php";
-        if (isDomainAvailible($url))
-        {
-            echo 'Site is available';
-        }
-        else
-        {
-            echo 'There is an error in your configuration';
-        }
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-
-        $vars = "q=$q";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-
-        $result = curl_exec($ch);
     }
     echo $OUTPUT->footer();
 }

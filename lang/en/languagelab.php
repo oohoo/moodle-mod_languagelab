@@ -277,3 +277,6 @@ $string['video_unavailable'] = 'Video option under development.';
 
 $string['languagelab:addinstance'] = 'Add a new Language lab';
 $string['languagelab:view'] = 'View Language lab';
+
+$string['deletealldata'] = 'Delete all students recordings';
+$string['deletealldata_notice'] = '<b>Warning</b>: Deleting all students data is irreversible.';

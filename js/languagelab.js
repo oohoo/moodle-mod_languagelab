@@ -103,49 +103,26 @@ function playeroptions_ready()
 function playeroptions_open()
 {
     //This is a pathtru for IE, because sometime the flash don't want to shows up in the pop up so create an Iframe with the flash.
-    if (navigator.appName.indexOf("Microsoft Internet")==0)
-    {
-        var title = $("#divPlayerOptions").attr("title");
-        $('<iframe src="playeroptions.php" title="'+title+'" style="width:430px !important;min-width:430px !important; padding:10px 0 0 0;"/>').dialog({
-            autoOpen: true,
-            closeOnEscape: false,
-            modal: true,
-            width: 450,
-            minWidth: 450,
-            height: 500,
-            zIndex: 4000,
-            buttons: [ {
-                text:playeroptionsBtnOk, 
-                click: function() {
-                    window.location.reload();
-                }
-            }],
-            open: function(event, ui){
-                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+    //Well actually an other problem occurs with Firefox so now it is for ALL BROWSERS
+    var title = $("#divPlayerOptions").attr("title");
+    $('<iframe src="'+M.cfg.wwwroot+'/mod/languagelab/playeroptions.php" title="'+title+'" style="width:430px !important;min-width:430px !important; padding:10px 0 0 0;"/>').dialog({
+        autoOpen: true,
+        closeOnEscape: false,
+        modal: true,
+        width: 450,
+        minWidth: 450,
+        height: 500,
+        zIndex: 4000,
+        buttons: [ {
+            text:playeroptionsBtnOk, 
+            click: function() {
+                window.location.reload();
             }
-        });
-    }
-    else
-    {
-        $("#divPlayerOptions").dialog(
-        {
-            closeOnEscape: false,
-            modal: true,
-            width: 450,
-            zIndex: 4000,
-            buttons: [ {
-                text:playeroptionsBtnOk, 
-                click: function() {
-                    window.location.reload();
-                }
-            }],
-            open: function(event, ui){
-                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-                $("#divPlayerOptions").css('position', 'relative');
-                $("#divPlayerOptions").css('top',0);
-            }
-        });
-    }
+        }],
+        open: function(event, ui){
+            $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+        }
+    });
 }
                 
 //Run this function when player is ready
