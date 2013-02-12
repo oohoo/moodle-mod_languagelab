@@ -392,5 +392,13 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2013020802, 'languagelab');
     }
+    
+    if ($oldversion < 2013021200)
+    {
+        //+ Suppression of a string in the language files
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013021200, 'languagelab');
+    }
     return;
 }
