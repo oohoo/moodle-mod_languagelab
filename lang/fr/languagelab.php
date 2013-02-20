@@ -220,7 +220,7 @@ $string["norappermission"] = "You do not have the required permissions to view t
 
 
 $string['cancel'] = 'Annuler';
-$string['classMonitor_help'] = 'Cliquez ici pour accéder au moniteur de classe';
+$string['classmonitor_help'] = 'Cliquez ici pour accéder au moniteur de classe';
 $string['confirmDeleteHistory'] = 'Êtes-vous sûr de vouloir supprimer l\'enregistrement?';
 $string['connectClient'] = 'En train de se connecter...';
 $string['connected_student'] = 'Vous êtes maintenant connecté avec l\'étudiant. Cliquez sur le bouton "Terminer" pour terminer la discussion';

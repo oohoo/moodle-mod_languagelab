@@ -255,8 +255,8 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '<div id="languageLabTeacher">';
     echo '  <div class="blockNewRecording">';
     echo '      <button id="micConfig" class="ui-corner-all">' . get_string('micConfig', 'languagelab') . '</button>';
-    echo '      <button id="classMonitor" class="ui-corner-all" title="' . get_string('classMonitor_help', 'languagelab') . '" onclick="window.location=\'' . $CFG->wwwroot . '/mod/languagelab/classmonitor.php?id=' . $id . '\'">';
-    echo '      ' . get_string('classMonitor', 'languagelab');
+    echo '      <button id="classMonitor" class="ui-corner-all" title="' . get_string('classmonitor_help', 'languagelab') . '" onclick="window.location=\'' . $CFG->wwwroot . '/mod/languagelab/classmonitor.php?id=' . $id . '\'">';
+    echo '      ' . get_string('classmonitor', 'languagelab');
     echo '      </button>';
     echo '  </div>';
     echo '  <div id="connectionScreen" class="ui-widget-overlay"><img src="pix/ajax-loader.gif" />&nbsp;Connecting to server ...</div>';
