@@ -400,5 +400,14 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2013021200, 'languagelab');
     }
+    
+    if ($oldversion < 2013022000)
+    {
+        //+ One more correction on the language files!
+        //+ Add a debug to display if jQuery or a linked lib is not available
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013022000, 'languagelab');
+    }
     return;
 }
