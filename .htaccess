@@ -1,12 +1,27 @@
+#* *************************************************************************
+#* *             OWLL LANGUAGE LAB Version 3 for Moodle 2                 **
+#* *************************************************************************
+#* @package     mod                                                       **
+#* @subpackage  languagelab                                               **
+#* @name        languagelab                                               **
+#* @copyright   oohoo.biz                                                 **
+#* @link        http://oohoo.biz                                          **
+#* @author      Nicolas Bretin                                            **
+#* @author      Patrick Thibaudeau                                        **
+#* @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
+#* *************************************************************************
+#* *************************************************************************
 
-
-AddType video/x-flv .flv
-AddType application/x-shockwave-flash .swf
- 
-<filesMatch "\.(flv|mp3)$">
-Header unset Pragma
-FileETag None
-Header unset ETag
-Header unset P3P
-Header set Cache-Control "public"
-</filesMatch>
+<IfModule mime_module>
+    AddType video/x-flv .flv
+    AddType application/x-shockwave-flash .swf
+</IfModule>
+<IfModule headers_module>
+    <filesMatch "\.(flv|mp3)$">
+        Header unset Pragma
+        FileETag None
+        Header unset ETag
+        Header unset P3P
+        Header set Cache-Control "public"
+    </filesMatch>
+</IfModule>
