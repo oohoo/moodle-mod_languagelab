@@ -69,6 +69,7 @@ else if ($eventType != '')
     $result = new stdClass();
     $result->success = true;
     $result->message = '';
+    $result->data = new stdClass();
     $insertEvent = true;
     $obj = new stdClass();
     $obj->languagelab = $languagelab->id;

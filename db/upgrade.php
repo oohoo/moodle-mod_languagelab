@@ -409,5 +409,37 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2013022000, 'languagelab');
     }
+    
+    if ($oldversion < 2013071000)
+    {
+        //+Add prev next button
+        //+Add fullscreen option student
+        // Define field student_delete_recordings to be added to languagelab
+        $table = new xmldb_table('languagelab');
+        $field = new xmldb_field('prev_next_lab', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'student_delete_recordings');
+        // Conditionally launch add field student_delete_recordings
+        if (!$dbman->field_exists($table, $field))
+        {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('fullscreen_student', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'prev_next_lab');
+        // Conditionally launch add field student_delete_recordings
+        if (!$dbman->field_exists($table, $field))
+        {
+            $dbman->add_field($table, $field);
+        }
+
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013071000, 'languagelab');
+    }
+    
+    if ($oldversion < 2013071800)
+    {
+        //+ Add RAP test control
+        //+ Add RAP version
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013071800, 'languagelab');
+    }
     return;
 }

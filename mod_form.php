@@ -16,7 +16,7 @@
  * ************************************************************************ */
 defined('MOODLE_INTERNAL') || die;
 require_once ($CFG->dirroot . '/course/moodleform_mod.php');
-require_once($CFG->dirroot.'/mod/languagelab/locallib.php');
+require_once($CFG->dirroot . '/mod/languagelab/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
 
 class mod_languagelab_mod_form extends moodleform_mod
@@ -32,13 +32,24 @@ class mod_languagelab_mod_form extends moodleform_mod
         global $CFG, $USER, $DB, $PAGE;
 
 
-        $PAGE->requires->js('/mod/languagelab/js/jquery-1.7.2.min.js', true);
-        $PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.8.20.custom.min.js', true);
+        //Moodle 2.5 JQUERY condition
+        if (!method_exists(get_class($PAGE->requires), 'jquery'))
+        {
+            $PAGE->requires->js('/mod/languagelab/js/jquery-1.10.2.min.js', true);
+            $PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.10.3.custom.min.js', true);
+            $PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.10.3.custom.min.css');
+        }
+        else
+        {
+            $PAGE->requires->jquery();
+            $PAGE->requires->jquery_plugin('ui');
+            $PAGE->requires->jquery_plugin('ui-css');
+        }
         $PAGE->requires->js('/mod/languagelab/js/jquery.jstree/jquery.jstree.js', true);
         $PAGE->requires->js('/mod/languagelab/js/flash_detect_min.js', true);
         $PAGE->requires->js('/mod/languagelab/js/languagelab.js', true);
 
-        $PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.8.20.custom.css');
+
         $PAGE->requires->css('/mod/languagelab/style.css');
 
         $newRecording = 'true';
@@ -167,14 +178,15 @@ HERE;
 
         $mform->addElement('editor', 'content', get_string('description', 'languagelab'), null, $editoroptions);
         $mform->addElement('static', 'txt', '', '<div id="descrLabLang"></div>');
-        
+
         $mform->addElement('static', 'master_track_recorder', get_string('master_track_recorder', 'languagelab'), $recorder);
         $mform->addHelpButton('master_track_recorder', 'master_track_recorder', 'languagelab');
         //This actual file name
         $mform->addElement('hidden', 'master_track_recording', $recordingname);
+        $mform->setType('master_track_recording', PARAM_RAW);
         if ($newRecording == 'true')
         {
-            $mform->addElement('static', 'notemastertrack', '', get_string('note_play_mastertrack','languagelab'));
+            $mform->addElement('static', 'notemastertrack', '', get_string('note_play_mastertrack', 'languagelab'));
         }
         if ($submitted_recordings == 0)
         {
@@ -185,29 +197,37 @@ HERE;
             //$mform->setDefault('use_mp3', true);
         }
         $mform->addElement('hidden', 'submitted_recordings', $submitted_recordings);
+        $mform->setType('submitted_recordings', PARAM_RAW);
         $mform->addElement('hidden', 'master_track_used');
+        $mform->setType('master_track_used', PARAM_RAW);
         $mform->addElement('static', 'master_track_file', get_string('master_track_file', 'languagelab'), '');
-        $mform->addElement('advcheckbox', 'attempts', get_string('attempts', 'languagelab'), null);
-        $mform->addHelpButton('attempts', 'attempts', 'languagelab');
-        $mform->addElement('advcheckbox', 'student_delete_recordings', get_string('student_delete_recordings', 'languagelab'), null);
-        $mform->addHelpButton('student_delete_recordings', 'student_delete_recordings', 'languagelab');
+
         //$mform->addElement('text','recording_timelimit',get_string('recording_timelimit','languagelab'));
         //$mform->setDefault('recording_timelimit', 0);
 
-
-        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'languagelab'), array('optional' => true));
-        $mform->setDefault('timeavailable', 0);
-        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'languagelab'), array('optional' => true));
-        $mform->setDefault('timedue', 0);
-        $ynoptions = array(0 => get_string('no'), 1 => get_string('yes'));
 
         $mform->addElement('header', 'general', get_string('advanced', 'languagelab'));
         $mform->addElement('checkbox', 'video', get_string('use_video', 'languagelab'));
         $mform->addHelpButton('video', 'video', 'languagelab');
         $mform->setDefault('video', false);
-
+        $mform->addElement('advcheckbox', 'attempts', get_string('attempts', 'languagelab'), null);
+        $mform->addHelpButton('attempts', 'attempts', 'languagelab');
+        $mform->addElement('advcheckbox', 'student_delete_recordings', get_string('student_delete_recordings', 'languagelab'), null);
+        $mform->addHelpButton('student_delete_recordings', 'student_delete_recordings', 'languagelab');
+        $mform->addElement('advcheckbox', 'prev_next_lab', get_string('prev_next_lab', 'languagelab'), null);
+        $mform->addHelpButton('prev_next_lab', 'prev_next_lab', 'languagelab');
+        $mform->addElement('advcheckbox', 'fullscreen_student', get_string('fullscreen_student', 'languagelab'), null);
+        $mform->addHelpButton('fullscreen_student', 'fullscreen_student', 'languagelab');
+        
+        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'languagelab'), array('optional' => true));
+        $mform->setDefault('timeavailable', 0);
+        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'languagelab'), array('optional' => true));
+        $mform->setDefault('timedue', 0);
+        
+        //$ynoptions = array(0 => get_string('no'), 1 => get_string('yes'));
         //$mform->addElement('select', 'group_type', get_string('group_type','languagelab'), array(0 => get_string('select_group_type','languagelab') , 1 => get_string('async','languagelab') , 2 => get_string('dialogue','languagelab')));
         //$mform->addHelpButton('group_type', 'group_type', 'languagelab');
+        
         $mform->addElement('checkbox', 'use_grade_book', get_string('use_grade_book', 'languagelab'));
         $mform->setDefault('use_grade_book', false);
         $mform->addHelpButton('use_grade_book', 'use_grade_book', 'languagelab');
@@ -230,7 +250,7 @@ HERE;
 
     function data_preprocessing(&$default_values)
     {
-        
+
         global $CFG, $DB;
 
         $editoroptions = languagelab_get_editor_options($this->context);

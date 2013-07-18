@@ -25,7 +25,7 @@ global $CFG;
  * @param type $domain
  * @return boolean 
  */
-function isDomainAvailible($domain)
+function isDomainAvailable($domain)
 {
     //check, if a valid url is provided
     if (!filter_var($domain, FILTER_VALIDATE_URL))
@@ -51,84 +51,19 @@ function isDomainAvailible($domain)
     return false;
 }
 
-function delete_individual_recording($submission_id)
-{
-    //Is the Red5 Adapter Plugin set
-    if (isset($CFG->languagelab_adapter_file))
-    {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action delete
-        $o = md5('delete' . $salt);
-
-        //Get all language lab recordings
-        $master_track = $DB->get_record('languagelab', array('id' => $id));
-        $master_track_recording = $master_track->master_track_recording;
-        //Get student submissions
-        if ($submissions = $DB->get_records('languagelab_submissions', array('languagelab' => $id)))
-        {
-            $submissions = json_encode($submissions);
-        }
-        else
-        {
-            $submissions = '';
-        }
-
-
-        $vars = "q=$q&o=$o&s=$submissions&m=$master_track_recording";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-
-        $result = curl_exec($ch);
-    }
-}
-
+/**
+ * Delete a single record
+ * @global stdClass $CFG
+ * @global moodle_database $DB
+ * @param int $submission_id The ID of the submission
+ * @return string the result
+ */
 function delete_single_recording($submission_id)
 {
     global $CFG, $DB;
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action delete
-        $o = md5('delete_single' . $salt);
-
         //Get student submissions
         if ($submission = $DB->get_record('languagelab_submissions', array('id' => $submission_id)))
         {
@@ -143,19 +78,7 @@ function delete_single_recording($submission_id)
             $submission = '';
         }
 
-
-        $vars = "q=$q&o=$o&s=$submission";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $result = languagelab_adapter_call('delete_single', "s=$submission");
         return $result;
     }
     //*************End RAP********************************************
@@ -163,7 +86,10 @@ function delete_single_recording($submission_id)
 
 /**
  * Return the URL for the mp3 download
+ * @global type $CFG
+ * @global moodle_database $DB
  * @param boolean $videoMode If video Mode = true Download MP4
+ * @return string The url to get the media
  */
 function get_download_url($videoMode = false)
 {
@@ -199,7 +125,12 @@ function get_download_url($videoMode = false)
     }
 }
 
-//Return the URL for the zip download
+/**
+ * Return the URL for the zip download
+ * @global type $CFG
+ * @global moodle_database $DB
+ * @return string The url to get the zip
+ */
 function get_download_zip_url()
 {
     global $CFG, $DB;
@@ -231,7 +162,7 @@ function get_download_zip_url()
 }
 
 /**
- * Convert the file from FLV to MP4
+ * Convert the file from FLV to MP4 or MP3
  * @global type $CFG
  * @global type $DB
  * @param type $filePath the file path on the server
@@ -242,39 +173,7 @@ function convert_recording($filePath, $type = 'mp3')
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action convert
-        $o = md5('convert_' . $type . '_single' . $salt);
-
-
-        $vars = "q=$q&o=$o&s=$filePath";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $result = languagelab_adapter_call('convert_' . $type . '_single', "s=$filePath");
         return $result;
     }
     //*************End RAP********************************************
@@ -292,39 +191,7 @@ function move_mp3_recording($oldpath, $newpath)
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action move
-        $o = md5('move_mp3_single' . $salt);
-
-
-        $vars = "q=$q&o=$o&s=$oldpath&n=$newpath";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $result = languagelab_adapter_call('move_mp3_single', "s=$oldpath&n=$newpath");
         return $result;
     }
     //*************End RAP********************************************
@@ -355,10 +222,7 @@ function migrate_all_flv_to_mp3_recording($activityid)
         //Is the Red5 Adapter Plugin set
         if (isset($CFG->languagelab_adapter_file))
         {
-            //Let's delete all files on the Red5 Server
-            $Red5Server = $CFG->languagelab_adapter_server;
             $prefix = $CFG->languagelab_prefix;
-            $salt = $CFG->languagelab_salt;
 
             $llabFolder = $CFG->languagelab_folder;
 
@@ -457,7 +321,6 @@ function migrate_all_flv_to_mp3_recording($activityid)
                             $languagelab->master_track = $ext . $newpath;
                             $languagelab->master_track_recording = $languagelab->master_track;
 
-
                             $DB->update_record('languagelab', $languagelab);
                             echo '- Languagelab ' . $activityid . ' updated!<br />';
                         }
@@ -475,7 +338,6 @@ function migrate_all_flv_to_mp3_recording($activityid)
                     //Save the languagelab
                 }
             }
-
 
             //Get all submissions
             $submissions = $DB->get_records('languagelab_submissions', array('languagelab' => $languagelab->id));
@@ -612,42 +474,7 @@ function upload_mp3_file($filedata, $pathOnServer)
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action delete
-        $o = md5('upload_mp3' . $salt);
-
-
-        $vars = array("q" => $q,
-            "o" => $o,
-            "p" => $pathOnServer,
-            "d" => $filedata);
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $result = languagelab_adapter_call('upload_mp3', "p=$pathOnServer&d=$filedata");
         return $result;
     }
     //*************End RAP********************************************
@@ -740,6 +567,7 @@ function languagelab_get_editor_options($context)
  */
 class languagelab_content_file_info extends file_info_stored
 {
+
     public function get_parent()
     {
         if ($this->lf->get_filepath() === '/' and $this->lf->get_filename() === '.')
@@ -757,4 +585,5 @@ class languagelab_content_file_info extends file_info_stored
         }
         return parent::get_visible_name();
     }
+
 }

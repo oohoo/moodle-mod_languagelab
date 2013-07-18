@@ -15,6 +15,7 @@
  * *************************************************************************
  * ************************************************************************ */
 include('config.php');
+include('version.php');
 //DO NOT MODIFY THIS FILE
 //Load file that contains the server information for Moodle
 $xml = simplexml_load_file($CFG->xml_path);
@@ -74,6 +75,9 @@ foreach ($xml->children() as $child)
  */
 switch ($serverAction)
 {
+     case md5('get_version' . $salt):
+        echo $CFG->languagelab_rap_version;
+        break;
     case md5('delete' . $salt):
         $submissions = json_decode($submissions);
 
@@ -136,7 +140,7 @@ switch ($serverAction)
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp3file = $submissions . '.mp3';
                 $outputfile = '"' . $path . $mp3file . '"';
-                $command = $CFG->conversion_tool_path . $CFG->conversion_tool.' -i ';
+                $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
                 shell_exec($command . $sourcefile . ' -ar 44100 -ab 64k -ac 2 ' . $outputfile);
                 //Check if the mp3 file exists
                 if (file_exists($path . $submissions . '.mp3'))
@@ -167,7 +171,7 @@ switch ($serverAction)
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp4file = $submissions . '.mp4';
                 $outputfile = '"' . $path . $mp4file . '"';
-                $command = $CFG->conversion_tool_path . $CFG->conversion_tool.' -i ';
+                $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
                 shell_exec($command . $sourcefile . ' -sameq -acodec libfaac -ar 44100 ' . $outputfile);
                 //Check if the mp4 file exists
                 if (file_exists($path . $submissions . '.mp4'))
@@ -436,6 +440,23 @@ switch ($serverAction)
 
             echo "<br><a href=\"$url_type$serverAddress/$filename.zip\"><h1>download archive</h1></a>";
         }
-
+        break;
+    case md5('create_folder' . $salt):
+        //Create folder if not exists
+        if (!file_exists($path . $submissions) || !is_dir($path . $submissions))
+        {
+            if (mkdir($path . $submissions, 0777, true))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else
+        {
+            echo 1;
+        }
         break;
 }

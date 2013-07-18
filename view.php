@@ -14,7 +14,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once("$CFG->dirroot/lib/resourcelib.php");
@@ -45,13 +44,23 @@ else
 
 require_login($course, true, $cm);
 
-$PAGE->requires->js('/mod/languagelab/js/jquery-1.7.2.min.js', true);
-$PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.8.20.custom.min.js', true);
+//Moodle 2.5 JQUERY condition
+if (!method_exists(get_class($PAGE->requires), 'jquery'))
+{
+    $PAGE->requires->js('/mod/languagelab/js/jquery-1.10.2.min.js', true);
+    $PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.10.3.custom.min.js', true);
+    $PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.10.3.custom.min.css');
+}
+else
+{
+    $PAGE->requires->jquery();
+    $PAGE->requires->jquery_plugin('ui');
+    $PAGE->requires->jquery_plugin('ui-css');
+}
 $PAGE->requires->js('/mod/languagelab/js/jquery.jstree/jquery.jstree.js', true);
 $PAGE->requires->js('/mod/languagelab/js/flash_detect_min.js', true);
 $PAGE->requires->js('/mod/languagelab/js/languagelab.js', true);
 
-$PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.8.20.custom.css');
 $PAGE->requires->css('/mod/languagelab/style.css');
 
 $embed = optional_param('embed', false, PARAM_BOOL);
@@ -71,6 +80,12 @@ $PAGE->set_button(update_module_button($cm->id, $course->id, get_string('languag
 
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+
+//Get the fullscreen mode param
+if ($languagelab->fullscreen_student && !has_capability('mod/languagelab:teacherview', $context, null, true))
+{
+    $PAGE->set_pagelayout('embedded');
+}
 
 if (groupmode($course, $cm) == SEPARATEGROUPS)
 {
@@ -162,16 +177,16 @@ else
 
 $playerHeight = 45;
 $classVideo = '';
-if($languagelab->video != 0)
+if ($languagelab->video != 0)
 {
-    $playerHeight = 45+262;
+    $playerHeight = 45 + 262;
     $classVideo = 'playerVideo';
 }
 
 //Info for the availability
-if(!$available)
+if (!$available)
 {
-    echo $OUTPUT->box('<h3>'.get_string('error_activity_not_available', 'mod_languagelab').'</h3>', 'generalbox center clearfix');
+    echo $OUTPUT->box('<h3>' . get_string('error_activity_not_available', 'mod_languagelab') . '</h3>', 'generalbox center clearfix');
 }
 
 echo '<script type="text/javascript">';
@@ -202,7 +217,7 @@ echo '  var playeroptionsBtnOk = "' . get_string('playeroptionsBtnOk', 'language
 echo '  var useGradebook = ' . (($languagelab->use_grade_book == 1) ? 'true' : 'false') . ';';
 echo '  var urlDownload = "' . get_download_url($languagelab->video != 0) . '";';
 echo '  var urlZipDownload = "' . get_download_zip_url() . '";';
-echo '  var videoMode = ' . (($languagelab->video==0)?'false':'true') . ';';
+echo '  var videoMode = ' . (($languagelab->video == 0) ? 'false' : 'true') . ';';
 echo '</script>';
 
 //Load the flash options menu
@@ -327,7 +342,7 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleRecording" id="titleRecording" class="ui-corner-all" autocomplete="off" readonly="readonly" /></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player '.$classVideo.'">';
+    echo '      <div class="player ' . $classVideo . '">';
     echo '
         <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="' . $playerHeight . '" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
@@ -354,7 +369,7 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleFeedback" id="titleFeedback" class="ui-corner-all" autocomplete="off" readonly="readonly"/></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player '.$classVideo.'">';
+    echo '      <div class="player ' . $classVideo . '">';
     echo '
         <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayerFeedback . '" width="350" height="' . $playerHeight . '" name="' . $idPlayerFeedback . '" id="' . $idPlayerFeedback . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
@@ -378,6 +393,24 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
 
 
     echo '  <div class="clearfix"></div>';
+    //Add buttons to go the previous or next language lab
+    if ($languagelab->prev_next_lab)
+    {
+        $prevurl = languagelab_get_previous_next_lab_url($id, true);
+        $nexturl = languagelab_get_previous_next_lab_url($id, false);
+        if ($prevurl != '')
+        {
+            echo '      <button id="LLprevious" class="ui-corner-all" title="' . get_string('LLprevious_help', 'languagelab') . '" onclick="window.location.href=\'' . $prevurl . '\'">';
+            echo '      ' . get_string('LLprevious', 'languagelab');
+            echo '       </button>';
+        }
+        if ($nexturl != '')
+        {
+            echo '      <button id="LLnext" class="ui-corner-all" title="' . get_string('LLnext_help', 'languagelab') . '" onclick="window.location.href=\'' . $nexturl . '\'">';
+            echo '      ' . get_string('LLnext', 'languagelab');
+            echo '       </button>';
+        }
+    }
     echo '</div>'; //END languageLabTeacher
 }
 else
@@ -432,7 +465,7 @@ else
     echo '      <span class="lblTitleRecording">' . get_string('recordingTitle', 'languagelab') . '</span>';
     echo '      <span class="inputRecording"><input type="text" name="titleRecording" id="titleRecording" class="ui-corner-all" autocomplete="off" readonly="readonly" /></span>';
     echo '      <div class="clearfix"></div>';
-    echo '      <div class="player '.$classVideo.'">';
+    echo '      <div class="player ' . $classVideo . '">';
     echo '
         <object type="application/x-shockwave-flash" data="flash/PlayerRecorder.swf?idHTML=' . $idPlayer . '" width="350" height="' . $playerHeight . '" name="' . $idPlayer . '" id="' . $idPlayer . '" style="outline: none;" >
             <param name="movie" value="flash/PlayerRecorder.swf" />
@@ -460,7 +493,7 @@ else
     echo '      <div class="search">';
     echo '          ' . get_string('search', 'languagelab') . '<input type="text" name="searchRecordings" id="searchRecordings" class="ui-corner-all" size="15" />';
     echo '      </div>';
-    if($languagelab->video != 0)
+    if ($languagelab->video != 0)
     {
         echo '      <div id="recordings" class="ui-corner-all videoMode">';
     }
@@ -487,6 +520,38 @@ else
 
     echo '  <div class="clearfix">';
     echo '  </div>';
+    
+    //Add buttons to go the previous or next language lab
+    if ($languagelab->prev_next_lab)
+    {
+        $prevurl = languagelab_get_previous_next_lab_url($id, true);
+        $nexturl = languagelab_get_previous_next_lab_url($id, false);
+        if ($prevurl != '')
+        {
+            echo '      <button id="LLprevious" class="ui-corner-all" title="' . get_string('LLprevious_help', 'languagelab') . '" onclick="window.location.href=\'' . $prevurl . '\'">';
+            echo '      ' . get_string('LLprevious', 'languagelab');
+            echo '       </button>';
+        }
+    }
+    //Add a button to go back to the course.
+    if ($languagelab->fullscreen_student)
+    {
+        $onclickgoback = 'window.location.href=\'' . course_get_url($course->id) . '\'';
+        echo '      <button id="goBackCourse" class="btnGoBack ui-corner-all" title="' . get_string('goBackCourse_help', 'languagelab') . '" onclick="' . $onclickgoback . '">';
+        echo '      ' . get_string('goBackCourse', 'languagelab');
+        echo '       </button>';
+    }
+    //Add buttons to go the previous or next language lab
+    if ($languagelab->prev_next_lab)
+    {
+        if ($nexturl != '')
+        {
+            echo '      <button id="LLnext" class="ui-corner-all" title="' . get_string('LLnext_help', 'languagelab') . '" onclick="window.location.href=\'' . $nexturl . '\'">';
+            echo '      ' . get_string('LLnext', 'languagelab');
+            echo '       </button>';
+        }
+    }
+    
     echo '</div>'; // END languageLabStudent
     //We need to determine if activity is available for the times chosen by teacher
     $now = time();

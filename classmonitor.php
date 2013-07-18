@@ -14,7 +14,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once("$CFG->dirroot/lib/resourcelib.php");
@@ -48,12 +47,22 @@ else
 
 require_login($course, true, $cm);
 
-$PAGE->requires->js('/mod/languagelab/js/jquery-1.7.2.min.js', true);
-$PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.8.20.custom.min.js', true);
+//Moodle 2.5 JQUERY condition
+if (!method_exists(get_class($PAGE->requires), 'jquery'))
+{
+    $PAGE->requires->js('/mod/languagelab/js/jquery-1.10.2.min.js', true);
+    $PAGE->requires->js('/mod/languagelab/js/jquery.ui/jquery-ui-1.10.3.custom.min.js', true);
+    $PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.10.3.custom.min.css');
+}
+else
+{
+    $PAGE->requires->jquery();
+    $PAGE->requires->jquery_plugin('ui');
+    $PAGE->requires->jquery_plugin('ui-css');
+}
 $PAGE->requires->js('/mod/languagelab/js/flash_detect_min.js', true);
 $PAGE->requires->js('/mod/languagelab/js/languagelab-classmonitor.js', true);
 
-$PAGE->requires->css('/mod/languagelab/js/jquery.ui/custom-theme/jquery-ui-1.8.20.custom.css');
 $PAGE->requires->css('/mod/languagelab/style-classmonitor.css');
 
 add_to_log($course->id, 'languagelab', 'view', "classmonitor.php?id=$cm->id", $languagelab->name, $cm->id);
@@ -191,7 +200,7 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '          <input type="text" id="searchStudents" name="searchStudents" class="ui-corner-all" autocomplete="off"/>';
     echo '</span>';
     echo '  <button id="micConfig" class="ui-corner-all">' . get_string('micConfig', 'languagelab') . '</button>';
-    echo '  <button id="stealth" class="ui-corner-all" title="' . get_string('stealthmodehelp', 'languagelab') . '">' . get_string('stealth', 'languagelab') . ' "<span class="status">' . get_string('stealthInactive', 'languagelab') . '</span>"</button>';
+    echo '  <button id="stealth" class="ui-corner-all" title="' . get_string('stealthMode_help', 'languagelab') . '">' . get_string('stealth', 'languagelab') . ' "<span class="status">' . get_string('stealthInactive', 'languagelab') . '</span>"</button>';
     echo '  <button id="speakToClass" class="ui-corner-all" title="' . get_string('speakToClasshelp', 'languagelab') . '">' . get_string('speakToClass', 'languagelab') . '</button>';
     echo '  <button id="listRecordings" class="ui-corner-all" title="' . get_string('listRecordings_help', 'languagelab') . '" onclick="window.open(\'' . $CFG->wwwroot . '/mod/languagelab/view.php?id=' . $id . '&embed=true\',\'listRecordings\',\'status=0,width=800,resizable=1,scrollbars=1\');return false;">' . get_string('listRecordings', 'languagelab') . '</button>';
     echo '  </div>';

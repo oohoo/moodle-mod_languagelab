@@ -144,6 +144,9 @@ function languagelab_add_instance($languagelab, $mform = null)
         $DB->update_record('languagelab', $languagelab);
     }
 
+    //Create the folder on the RTMP server
+    languagelab_adapter_call('create_folder', 's=' . $CFG->languagelab_folder . '/' . $cmid);
+
     return $languagelab->id;
 }
 
@@ -158,7 +161,7 @@ function languagelab_add_instance($languagelab, $mform = null)
 function languagelab_update_instance($languagelab, $mform = null)
 {
     global $CFG, $DB;
-
+    
     $cmid = $languagelab->coursemodule;
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
     $draftitemid = $languagelab->content['itemid'];
@@ -251,6 +254,9 @@ function languagelab_update_instance($languagelab, $mform = null)
         $DB->update_record('languagelab', $languagelab);
     }
 
+    //Create the folder on the RTMP server
+    languagelab_adapter_call('create_folder', 's=' . $CFG->languagelab_folder . '/' . $cmid);
+
     return true;
 }
 
@@ -269,26 +275,6 @@ function languagelab_delete_instance($id)
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        //Let's delete all files on the Red5 Server
-        $Red5Server = $CFG->languagelab_adapter_server;
-        $prefix = $CFG->languagelab_prefix;
-        $salt = $CFG->languagelab_salt;
-        //RAP security
-        if ($CFG->languagelab_adapter_access == true)
-        {
-            $security = 'https://';
-        }
-        else
-        {
-            $security = 'http://';
-        }
-        $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
-
-        //Encrypt information
-        $q = md5($Red5Server . $prefix . $salt);
-        //Action delete
-        $o = md5('delete' . $salt);
-
         //Get all language lab recordings
         $master_track = $DB->get_record('languagelab', array('id' => $id));
         $master_track_recording = $master_track->master_track_recording;
@@ -302,17 +288,7 @@ function languagelab_delete_instance($id)
             $submissions = '';
         }
 
-
-        $vars = "q=$q&o=$o&s=$submissions&m=$master_track_recording";
-
-        //Send request to red5 server using curl
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
-
-        $result = curl_exec($ch);
+        $result = languagelab_adapter_call('delete', "s=$submissions&m=$master_track_recording");
     }
     //*************End RAP********************************************
     if (!$languagelab = $DB->get_record("languagelab", array("id" => $id)))
@@ -347,9 +323,6 @@ function languagelab_delete_instance($id)
  * */
 function languagelab_user_outline($course, $user, $mod, $languagelab)
 {
-
-
-
     $return = new stdClass;
     $return->time = 0;
     $return->info = '';
@@ -778,7 +751,6 @@ function languagelab_convert_recording($filePath, $type)
  */
 function languagelab_upload_mp3_file($filedata, $pathOnServer)
 {
-
     require_once('locallib.php');
     return upload_mp3_file($filedata, $pathOnServer);
 }
@@ -873,4 +845,93 @@ function languagelab_reset_userdata($data)
     }
 
     return $status;
+}
+
+/**
+ * Execute a CURL Action on the adapter
+ * @global stdClass $CFG
+ * @param string $action The name of the action to perform
+ * @param string $params The string of params to send to the adapter, like q=myfile.mp3&s=myfile2.mp3
+ * @return string return the result of the call
+ */
+function languagelab_adapter_call($action, $params)
+{
+    global $CFG;
+
+    //Let's delete all files on the Red5 Server
+    $Red5Server = $CFG->languagelab_adapter_server;
+    $prefix = $CFG->languagelab_prefix;
+    $salt = $CFG->languagelab_salt;
+    //RAP security
+    if ($CFG->languagelab_adapter_access == true)
+    {
+        $security = 'https://';
+    }
+    else
+    {
+        $security = 'http://';
+    }
+    $url = "$security$Red5Server/$CFG->languagelab_adapter_file.php";
+
+    //Encrypt information
+    $q = md5($Red5Server . $prefix . $salt);
+    //Action convert
+    $o = md5($action . $salt);
+
+    $vars = "q=$q&o=$o&$params";
+
+    //Send request to red5 server using curl
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
+/**
+ * 
+ * @global moodle_database $DB
+ * @param type $ll_id
+ * @param type $getprevious
+ */
+function languagelab_get_previous_next_lab_url($ll_id, $getprevious = true)
+{
+    global $DB, $COURSE;
+
+    $url = '';
+    $prev = null;
+    $next = null;
+    $founded = false;
+    $course_info = get_fast_modinfo($COURSE->id);
+    $languagelabs = $course_info->instances['languagelab'];
+
+    foreach ($languagelabs as $languagelab)
+    {
+        if ($languagelab->id == $ll_id)
+        {
+            $founded = true;
+            continue;
+        }
+        if ($founded)
+        {
+            $next = $languagelab;
+            break;
+        }
+        $prev = $languagelab;
+    }
+
+    if ($founded && $getprevious && $prev != null)
+    {
+        $url = $prev->get_url();
+    }
+    else if ($founded && !$getprevious && $next != null)
+    {
+        $url = $next->get_url();
+    }
+    return $url;
 }

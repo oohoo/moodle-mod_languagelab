@@ -143,6 +143,7 @@
     color:#EEE;
     font-weight: bold;
     font-size: 25px;
+    position: absolute;
 }
 
 .titleGrade
@@ -469,6 +470,43 @@
     width:123px;
     height:109px;
     left: 370px;
+}
+
+#goBackCourse
+{
+    text-align:center;
+    background-image : url('pix/return-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:32px;
+    margin:7px 0 2px 30%;
+    font-weight: bold;
+    float: left;
+}
+#LLprevious
+{
+    text-align:center;
+    background-image : url('pix/previous-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:32px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+    float: left;
+}
+#LLnext
+{
+    text-align:center;
+    background-image : url('pix/next-ico.png');
+    background-position: 5px;
+    background-repeat: no-repeat;
+    padding:10px 7px;
+    padding-left:32px;
+    margin:7px 2px 2px 2px;
+    font-weight: bold;
+    float: right;
 }
 
 /*###########################*/

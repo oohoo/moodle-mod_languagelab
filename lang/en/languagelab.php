@@ -57,7 +57,7 @@ $string['emailbodydelete'] = 'I would like you to restart your recording. Please
 $string['emailthankyou'] = 'Thank you';
 $string['words'] = 'List of words for the students to record';
 $string['prefix'] = 'Enter a prefix for recorded streams.';
-$string['prefixhelp'] = 'The prefix here is usefull if the red5 server is used to stream other material. You will be able to easily identify recorded streams';
+$string['prefix_help'] = 'The prefix here is usefull if the red5 server is used to stream other material. You will be able to easily identify recorded streams';
 
 
 
@@ -65,12 +65,12 @@ $string['submit_recording'] = 'Submit your recording';
 $string['recording_failed_save'] = 'Failed to save your recording to the database';
 $string['recording_saved'] = 'Your recording has been submitted';
 $string['recording_exists'] = 'Notice: you already have a recording. Please review the recording before pressing the record button.<br>Pressing the record button will erase the previous recording.';
-$string['red5_adapter_access'] = 'Secure access to Red5 Adapter Plugin?';
-$string['red5_adapter_access_help'] = 'Is the RAP server protected with a certificate? ie: https';
-$string['red5_adapter_server'] = 'Server address to access to the adapter.';
-$string['red5_adapter_server_help'] = 'Server address to access to the adapter. Generally the same as the Red5 server. You can add a port at the end of the server address if different from the classic http port. (ex: 123.456.789:8081)';
-$string['red5_adapter_file'] = 'File name for the Red5 Adapter Plugin';
-$string['red5_adapter_file_help'] = 'Enter the file name (with no extension) given to you by the Red5 administrator. The Red5 Adapter Plugin (RAP) is used to manipulate streams recorded on the Red5 Server. Example: When deleting a Language Lab activity, the RAP
+$string['adapter_access'] = 'Secure access to Red5 Adapter Plugin?';
+$string['adapter_access_help'] = 'Is the RAP server protected with a certificate? ie: https';
+$string['adapter_server'] = 'Server address to access to the adapter.';
+$string['adapter_server_help'] = 'Server address to access to the adapter. Generally the same as the Red5 server. You can add a port at the end of the server address if different from the classic http port. (ex: 123.456.789:8081)';
+$string['adapter_file'] = 'File name for the Red5 Adapter Plugin';
+$string['adapter_file_help'] = 'Enter the file name (with no extension) given to you by the Red5 administrator. The Red5 Adapter Plugin (RAP) is used to manipulate streams recorded on the Red5 Server. Example: When deleting a Language Lab activity, the RAP
                                     deletes the associated audio and video files, keeping the Red5 Server clean. In the next release, It will also be used to backup the audio and video files
                                     when doing a Moodle backup. This feature is not yet available. The file name is used for security reasons. This way if someone accesses the Red5 server, no default home page will show up. 
                                     This is the only file in the folder, making it harder to figure out. Of course, directory browsing must be disabled.';
@@ -153,8 +153,8 @@ $string["group_type"] = 'Group type';
 $string["group_type_help"] = '<b>Note: Only use this setting if you are using seperate groups or visible groups</b><br>
                                <ul><li><i>Discussion:</i> Use this type if you would like your students to record asynchronously. A forum like thread will display the conversation</li>
                                <li><i>Dialogue:</i> Use this type if you want your group of students to have a recorded conversation.</li></ul>';
-$string['maxusers'] = 'Maximum number of users.';
-$string['maxusershelp'] = 'Maximum number of users that can use the language lab simultaniously.';
+$string['max_users'] = 'Maximum number of users.';
+$string['max_users_help'] = 'Maximum number of users that can use the language lab simultaniously.';
 
 $string['languagelab:studentview'] = 'Language lab: Student view.';
 $string['languagelab:teacherview'] = 'Language lab: Teacher view.';
@@ -165,8 +165,8 @@ $string['select_group_type'] = 'Select group type';
 $string['classmonitor'] = 'Monitor your class';
 $string['salt'] = 'Password salt value:';
 $string['salt_help'] = 'Enter the password salt value for your red5 instance as provided by your red5 administrator.';
-$string['stealthmode'] = 'Activate stealth mode?';
-$string['stealthmodehelp'] = 'When activated, students will not know that they are being monitored when the teacher uses the classroom monitor.';
+$string['stealthMode'] = 'Activate stealth mode?';
+$string['stealthMode_help'] = 'When activated, students will not know that they are being monitored when the teacher uses the classroom monitor.';
 $string["use_video"] = 'Allow video';
 $string["use_grade_book_help"] = 'By default, no grading will be given for language lab activities. That way you can create as many language activities
                                    for exercise purposes, without filling up your gradebook. If you do want to grade this particular activity, check this box.';
@@ -216,10 +216,18 @@ $string['error_user_max_attempts'] = 'You can\'t create anymore recordings. You 
 $string['errorTitle'] = 'Error';
 $string['filterStudents'] = 'Students filter: ';
 $string['filterStudents_help'] = 'Type student\'s name to display only this student';
+$string['fullscreen_student'] = 'Student interface in fullscreen';
+$string['fullscreen_student_help'] = 'If this option is checked, student will have the language lab in fullscreen mode without a header/footer or blocs. (depends on the theme)';
+$string['goBackCourse'] = 'Go back to course';
+$string['goBackCourse_help'] = 'Go back to course';
 $string['gradeStudentWithRecordings'] = 'Only students with at least one recording can be graded';
 $string['listened'] = 'Your teacher is listening you right now';
 $string['listRecordings'] = 'Recordings';
 $string['listRecordings_help'] = 'Click here to open the recordings in a pop-up';
+$string['LLnext'] = 'Next';
+$string['LLnext_help'] = 'Go to next language lab';
+$string['LLprevious'] = 'Previous';
+$string['LLprevious_help'] = 'Go to previous language lab';
 $string['load_prev_master'] = 'Revert to previous mastertrack';
 $string['micConfig'] = 'Configuration';
 $string['newRecording'] = 'New Recording';
@@ -232,22 +240,24 @@ $string['playeroptionstxt3'] = 'Select "{$a} Allow"';
 $string['playeroptionstxt4'] = 'Check the {$a} box next to Remember';
 $string['playeroptionstxt5'] = 'Click on Close';
 $string['playeroptionstxt6'] = 'Click on OK at the bottom of the window to save your changes.';
+$string['prev_next_lab'] = 'Add Prev/Next buttons';
+$string['prev_next_lab_help'] = 'Add two buttons Previous and Next at the bottom of the activity in order to go to the previous or next language lab of the course.';
 $string['raiseHand'] = 'Raise hand';
 $string['raiseHand_help'] = 'Click here to raise your hand to your teacher';
 $string['recordingsHistory'] = 'Recordings';
 $string['recordingRequired'] = 'You have to record before submit';
 $string['recordingTitle'] = 'Title';
-$string['red5folder'] = 'The name of the folder on the Red5 Server where files are saved';
-$string['red5folder_help'] = 'Type the name of the folder where are saved files for THIS moodle.';
+$string['folder'] = 'The name of the folder on the Red5 Server where files are saved';
+$string['folder_help'] = 'Type the name of the folder where are saved files for THIS moodle.';
 $string['reFeedBack'] = 'Re: ';
 $string['refresh'] = 'Refresh History';
 $string['search'] = 'Search: ';
 $string['secondsRefreshClassmonitor'] = 'Nb of microseconds before the next auto class monitor refresh';
-$string['secondsRefreshClassmonitorhelp'] = 'Type the number of microseconds to auto refresh the students list in the class monitor.';
+$string['secondsRefreshClassmonitor_help'] = 'Type the number of microseconds to auto refresh the students list in the class monitor.';
 $string['secondsRefreshHistory'] = 'Nb of microseconds before the next auto history refresh';
-$string['secondsRefreshHistoryhelp'] = 'Type the number of microseconds to auto refresh the recordings.';
+$string['secondsRefreshHistory_help'] = 'Type the number of microseconds to auto refresh the recordings.';
 $string['secondsRefreshStudentView'] = 'Nb of microseconds before the next auto refresh for students';
-$string['secondsRefreshStudentViewhelp'] = 'Type the number of microseconds to auto refresh the student view. Used for the live';
+$string['secondsRefreshStudentView_help'] = 'Type the number of microseconds to auto refresh the student view. Used for the live';
 $string['speakToClass'] = 'Speak to class';
 $string['speakToClasshelp'] = 'Allow you to speak in live to all online students';
 $string['stealth'] = 'Stealth';
@@ -279,3 +289,5 @@ $string['languagelab:view'] = 'View Language lab';
 
 $string['deletealldata'] = 'Delete all students recordings';
 $string['deletealldata_notice'] = '<b>Warning</b>: Deleting all students data is irreversible.';
+
+$string['adminconfig_header'] = 'After complete, you can click <a href="{$a}">here</a> to test the RAP configuration.';

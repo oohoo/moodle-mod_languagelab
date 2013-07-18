@@ -22,8 +22,10 @@
         <FIELD NAME="master_track" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="group_type" NEXT="master_track_recording"/>
         <FIELD NAME="master_track_recording" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="master_track" NEXT="use_mp3"/>
         <FIELD NAME="use_mp3" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" PREVIOUS="master_track_recording" NEXT="student_delete_recordings"/>
-        <FIELD NAME="student_delete_recordings" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Allow students to delete his recordings" PREVIOUS="use_mp3" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="student_delete_recordings"/>
+        <FIELD NAME="student_delete_recordings" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Allow students to delete his recordings" PREVIOUS="use_mp3" NEXT="prev_next_lab"/>
+        <FIELD NAME="prev_next_lab" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Display previous and next language lab" PREVIOUS="student_delete_recordings" NEXT="fullscreen_student"/>
+        <FIELD NAME="fullscreen_student" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Display previous and next language lab" PREVIOUS="prev_next_lab" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fullscreen_student"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

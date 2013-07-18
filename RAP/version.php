@@ -14,9 +14,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-$module->version = 2013071800;  // The current module version (Date: YYYYMMDDXX)
-$module->requires = 2010112400;
-$module->maturity = MATURITY_STABLE;
-$module->release = '3.0.7 (Build: 2013071800)';
-$module->cron = 0;           // Period for cron to check this module (secs)
-$module->component = 'mod_languagelab';
+//DO NOT MODIFY THIS FILE
+
+//We create a version number to check that the adapter is always updated with the language lab
+$CFG->languagelab_rap_version = 2013071800;
