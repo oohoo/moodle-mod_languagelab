@@ -327,3 +327,6 @@ $string['video_unavailable'] = 'Fonction vidéo en développement.';
 
 $string['languagelab:addinstance'] = 'Ajouter un nouveau Labo de langues OWLL';
 $string['languagelab:view'] = 'Afficher le labo de langues OWLL';
+
+$string['simplified_interface_student'] = 'Interface simplifiée pour étudiant';
+$string['simplified_interface_student_help'] = 'Si vous souhaitez une interface simplifiée pour les étudiants avec seulement l\'enregistreur et le bouton de validation. Seulement disponible lorsque "Un seul enregistrement par étudiant" est coché.';

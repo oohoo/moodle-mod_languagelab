@@ -56,7 +56,7 @@ require_login($course, true, $cm); //Needed to gather proper course language use
 $student = $DB->get_record("user", array("id" => $USER->id));
 $studentid = $USER->id;
 $studentname = fullname($student);
-$userpictureurl = $OUTPUT->user_picture($student, array('courseid' => $course->id, 'link' => false)); //$CFG->wwwroot."/user/pix.php/".$teacher->id."/f2.jpg";
+$userpictureurl = $OUTPUT->user_picture($student, array('courseid' => $course->id, 'link' => false)); 
 //create an array from the image tag
 $newuserpictureurl = explode(' ', $userpictureurl);
 //Get the link info from array row 1 and remove src="
@@ -134,7 +134,8 @@ foreach ($recordings as $recording)
     $elem->metadata->studentid = $studentid;
     $elem->metadata->downloadName = format_name_download($studentname . '_' . $elem->data->title . '_' . $recording->id);
 
-    if ($selectedelem != 0 && $selectedelem == $recording->id)
+    //If selected or if only one record per student select this one by default
+    if ($selectedelem != 0 && $selectedelem == $recording->id || $languagelab->attempts == 1 && $selectedelem == 0)
     {
         $elem->metadata->selected = true;
     }

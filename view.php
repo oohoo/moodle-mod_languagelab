@@ -122,14 +122,21 @@ $formatoptions = array('noclean' => true, 'overflowdiv' => true);
 $content = format_text($content, $languagelab->contentformat, $formatoptions, $course->id);
 
 $descrClassStudent = '';
+$classSimplifiedInterface = '';
 if (!has_capability('mod/languagelab:teacherview', $context, null, true))
 {
     $descrClassStudent = 'descrLabLangStudent';
+    if ($languagelab->simplified_interface_student == 1)
+    {
+        $classSimplifiedInterface = 'simplified_interface';
+    }
 }
+
+
 
 echo $OUTPUT->box($content, 'generalbox center clearfix ' . $descrClassStudent, 'descrLabLang');
 
-echo '<div align=\'center\'>';
+echo '<div align=\'center\' class="' . $classSimplifiedInterface . '">';
 
 //************************Get teacher information*****************************************
 $user = $DB->get_record("user", array("id" => $USER->id));
@@ -520,7 +527,7 @@ else
 
     echo '  <div class="clearfix">';
     echo '  </div>';
-    
+
     //Add buttons to go the previous or next language lab
     if ($languagelab->prev_next_lab)
     {
@@ -551,7 +558,7 @@ else
             echo '       </button>';
         }
     }
-    
+
     echo '</div>'; // END languageLabStudent
     //We need to determine if activity is available for the times chosen by teacher
     $now = time();

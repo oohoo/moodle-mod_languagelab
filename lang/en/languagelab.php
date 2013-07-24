@@ -291,3 +291,6 @@ $string['deletealldata'] = 'Delete all students recordings';
 $string['deletealldata_notice'] = '<b>Warning</b>: Deleting all students data is irreversible.';
 
 $string['adminconfig_header'] = 'After complete, you can click <a href="{$a}">here</a> to test the RAP configuration.';
+
+$string['simplified_interface_student'] = 'Simplified interface for students';
+$string['simplified_interface_student_help'] = 'If you want a simplified interface for the student with just the recorder and the submit button. Only available if "one recording per student" is activated.';

@@ -21,12 +21,12 @@ YUI().use('node', function(Y)
     {
         var block = null;
         var msg = '';
-        if(typeof(teacherMode) != 'undefined')
-        {  
-            block= Y.one("#languageLabTeacher");
+        if (typeof(teacherMode) != 'undefined')
+        {
+            block = Y.one("#languageLabTeacher");
         }
         else
-        {     
+        {
             block = Y.one("#languageLabStudent");
         }
         //Check if jquery is here
@@ -55,7 +55,7 @@ YUI().use('node', function(Y)
                 }
             }
         }
-        if(msg != '')
+        if (msg != '')
         {
             block.setContent('<b>' + msg + '</b>');
         }
@@ -68,12 +68,12 @@ var flashMinor = 2;
 var flashRevisionMin = 0;
 var flashRevisionMax = 999;
 
-$(function(){
+$(function() {
     var elem = $('#descrLabLang');
-    
-    if(FlashDetect.major == flashMajor && FlashDetect.minor == flashMinor && (FlashDetect.revision >= flashRevisionMin && FlashDetect.revision <= flashRevisionMax))
+
+    if (FlashDetect.major == flashMajor && FlashDetect.minor == flashMinor && (FlashDetect.revision >= flashRevisionMin && FlashDetect.revision <= flashRevisionMax))
     {
-        var text = elem.html() +'<b style="color:red;">Your Flash version is not entirely functional with the Language Lab. You will not be able to listen your recording while you have not submit it. Please download an other version of flash.<br /><br />';
+        var text = elem.html() + '<b style="color:red;">Your Flash version is not entirely functional with the Language Lab. You will not be able to listen your recording while you have not submit it. Please download an other version of flash.<br /><br />';
         text = text + 'Click <a href="flash/fp_11.1.102.62_archive.zip">here</a> to download a compatible version of flash</b></br></br>';
         $(elem).html(text);
     }
@@ -81,17 +81,38 @@ $(function(){
 //------------------END FLASH CHECK VERSION-------------------------------------
 
 
+$(function()
+{
+    //Add a control if some fields have not being saved
+    window.onbeforeunload = function warnUsers()
+    {
+        var confirm = false;
+        //If student
+        if (typeof(teacherMode) === 'undefined' || teacherMode === false)
+        {
+            if (typeof(userRecordURI) !== 'undefined' && userRecordURI !== '')
+            {
+                confirm = '';
+            }
+        }
+        if (confirm !== false)
+        {
+            return confirm;
+        }
+    }
+});
+
 //Used to get the flash component
 function getFlashMovieObject(movieName)
 {
-    if (window.document[movieName]) 
+    if (window.document[movieName])
     {
         return window.document[movieName];
     }
-    if (navigator.appName.indexOf("Microsoft Internet")==-1)
+    if (navigator.appName.indexOf("Microsoft Internet") == -1)
     {
         if (document.embeds && document.embeds[movieName])
-            return document.embeds[movieName]; 
+            return document.embeds[movieName];
         else
             return null;
     }
@@ -106,7 +127,7 @@ function toggleDisplayOptions()
 {
     if (document.getElementById('divPlayerOptions').style.position == 'relative')
     {
-        
+
     }
     else
     {
@@ -125,7 +146,7 @@ function getUserLiveURI(liveURI)
 function getUserRecordURI(recordURI)
 {
     //If mode Masterstrack
-    if(playerRecorders['playerRecorderMastertrack'] != undefined)
+    if (playerRecorders['playerRecorderMastertrack'] != undefined)
     {
         $('input[name="master_track_recording"]').val(recordURI);
     }
@@ -138,9 +159,9 @@ function playeroptions_ready()
     if (playerOptions == undefined)
     {
         playerOptions = getFlashMovieObject('playerOptions');
-        if(playerOptions.microphoneEnabled())
+        if (playerOptions.microphoneEnabled())
         {
-        //If microphone enabled, do nothing
+            //If microphone enabled, do nothing
         }
         else
         {
@@ -154,7 +175,7 @@ function playeroptions_open()
     //This is a pathtru for IE, because sometime the flash don't want to shows up in the pop up so create an Iframe with the flash.
     //Well actually an other problem occurs with Firefox so now it is for ALL BROWSERS
     var title = $("#divPlayerOptions").attr("title");
-    $('<iframe src="'+M.cfg.wwwroot+'/mod/languagelab/playeroptions.php" title="'+title+'" style="width:430px !important;min-width:430px !important; padding:10px 0 0 0;"/>').dialog({
+    $('<iframe src="' + M.cfg.wwwroot + '/mod/languagelab/playeroptions.php" title="' + title + '" style="width:430px !important;min-width:430px !important; padding:10px 0 0 0;"/>').dialog({
         autoOpen: true,
         closeOnEscape: false,
         modal: true,
@@ -162,18 +183,18 @@ function playeroptions_open()
         minWidth: 450,
         height: 500,
         zIndex: 4000,
-        buttons: [ {
-            text:playeroptionsBtnOk, 
-            click: function() {
-                window.location.reload();
-            }
-        }],
-        open: function(event, ui){
+        buttons: [{
+                text: playeroptionsBtnOk,
+                click: function() {
+                    window.location.reload();
+                }
+            }],
+        open: function(event, ui) {
             $(".ui-dialog-titlebar-close", $(this).parent()).hide();
         }
     });
 }
-                
+
 //Run this function when player is ready
 function playerrecorder_ready(idPlayer)
 {
@@ -181,9 +202,9 @@ function playerrecorder_ready(idPlayer)
     {
         playerRecorders[idPlayer] = getFlashMovieObject(idPlayer);
     }
-    if(this['playerrecorder_ready_'+idPlayer] != undefined)
+    if (this['playerrecorder_ready_' + idPlayer] != undefined)
     {
-        this['playerrecorder_ready_'+idPlayer].apply(this,[]);
+        this['playerrecorder_ready_' + idPlayer].apply(this, []);
     }
 }
 
@@ -216,16 +237,16 @@ function playerrecorder_ready_playerRecorderMastertrack()
 function RTMPServerReady(idPlayer)
 {
     $("#connectionScreen").fadeOut();
-    
-    if(typeof(teacherMode) != 'undefined')
+
+    if (typeof(teacherMode) != 'undefined')
     {
-    //TEACHER MODE
+        //TEACHER MODE
     }
     else
     {
-        if(idPlayer == 'playerRecorderMastertrack') //ACTIVITY EDIT MODE
+        if (idPlayer == 'playerRecorderMastertrack') //ACTIVITY EDIT MODE
         {
-            if(newRecording)
+            if (newRecording)
             {
                 playerRecorders['playerRecorderMastertrack'].setPlayerMode(2);
             }
@@ -245,7 +266,7 @@ function RTMPServerReady(idPlayer)
 //Set the player for a new feedback
 function newFeedback()
 {
-    $("#titleFeedback").val(reFeedBack+$("#titleRecording").val());
+    $("#titleFeedback").val(reFeedBack + $("#titleRecording").val());
     playerRecorders['playerRecorderTeacher'].setPlayerMode(2);
     $("#descriptionFeedback").val('');
     $("#submitFeedback").removeAttr('disabled');
@@ -256,86 +277,86 @@ function newFeedback()
 function autoRefreshHistory()
 {
     $.getJSON(
-        urlHistory+"?activity_id="+activityid+'&selectedelem='+selectedElem+'&selecteduser='+selectedUser+"&rand="+Math.random(),
-        function(data)
-        {
-            if(checksum == '' || checksum != data.checksum)
+            urlHistory + "?activity_id=" + activityid + '&selectedelem=' + selectedElem + '&selecteduser=' + selectedUser + "&rand=" + Math.random(),
+            function(data)
             {
-                $("#recordings").jstree("refresh");
+                if (checksum == '' || checksum != data.checksum)
+                {
+                    $("#recordings").jstree("refresh");
+                }
+                //add the call to the autorefresh
+                setTimeout('autoRefreshHistory()', secondsRefreshHistory);
             }
-            //add the call to the autorefresh
-            setTimeout('autoRefreshHistory()', secondsRefreshHistory);
-        }
-        );
+    );
 }
 
 //This function refresh the student live
 function autoRefreshStudentLive()
 {
     $.getJSON(
-        urlLive+"?id="+activityid+"&uri="+userLiveURI+"&rand="+Math.random(),
-        function(data)
-        {
-            
-            //Get data back from the refresh
-            var events = data.data;
-            
-            //Execute the actions asked.
-            for (i in events)
+            urlLive + "?id=" + activityid + "&uri=" + userLiveURI + "&rand=" + Math.random(),
+            function(data)
             {
-                //Add a live to the player ( The Teacher live feed listen by the students)
-                if(events[i].type == 'live_add' || events[i].type == 'liveclass_add')
+
+                //Get data back from the refresh
+                var events = data.data;
+
+                //Execute the actions asked.
+                for (i in events)
                 {
-                    try{
-                        playerRecorders['playerRecorderStudent'].addURIToNetStreamsLive(events[i].data.uri);
-                        
-                        $("#dialogInfo").html(events[i].data.message);
-                        $("#dialogInfo").dialog({
-                            title: events[i].data.title,
-                            resizable: false,
-                            closeOnEscape: false,
-                            modal: false,
-                            buttons: [],
-                            open: function(event, ui){
-                                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-                            }
-                        });
-                    }
-                    catch(e)
+                    //Add a live to the player ( The Teacher live feed listen by the students)
+                    if (events[i].type == 'live_add' || events[i].type == 'liveclass_add')
                     {
-                        
-                    }
-                }//Remove live feed
-                else if(events[i].type == 'live_remove' || events[i].type == 'liveclass_remove')
-                {
-                    try{
-                        playerRecorders['playerRecorderStudent'].dropURIToNetStreamsLive(events[i].data.uri);
-                        $("#dialogInfo").dialog( "close");
-                    }
-                    catch(e)
+                        try {
+                            playerRecorders['playerRecorderStudent'].addURIToNetStreamsLive(events[i].data.uri);
+
+                            $("#dialogInfo").html(events[i].data.message);
+                            $("#dialogInfo").dialog({
+                                title: events[i].data.title,
+                                resizable: false,
+                                closeOnEscape: false,
+                                modal: false,
+                                buttons: [],
+                                open: function(event, ui) {
+                                    $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+                                }
+                            });
+                        }
+                        catch (e)
+                        {
+
+                        }
+                    }//Remove live feed
+                    else if (events[i].type == 'live_remove' || events[i].type == 'liveclass_remove')
                     {
-                        
+                        try {
+                            playerRecorders['playerRecorderStudent'].dropURIToNetStreamsLive(events[i].data.uri);
+                            $("#dialogInfo").dialog("close");
+                        }
+                        catch (e)
+                        {
+
+                        }
+                    }
+                    else if (events[i].type == 'listened_add')
+                    {
+                        $("#listened").fadeIn();
+                    }
+                    else if (events[i].type == 'listened_remove')
+                    {
+                        $("#listened").fadeOut();
+                    }
+                    else if (events[i].type == 'thumbs_up')
+                    {
+                        $("#thumbsup").fadeIn();
+                        setTimeout('hide_thumbsup()', 30000);
                     }
                 }
-                else if(events[i].type == 'listened_add')
-                {
-                    $("#listened").fadeIn();
-                }
-                else if(events[i].type == 'listened_remove')
-                {
-                    $("#listened").fadeOut();
-                }
-                else if(events[i].type == 'thumbs_up')
-                {
-                    $("#thumbsup").fadeIn();
-                    setTimeout('hide_thumbsup()', 30000);
-                }
+
+                //add the call to the autorefresh
+                setTimeout('autoRefreshStudentLive()', secondsRefreshStudentView);
             }
-            
-            //add the call to the autorefresh
-            setTimeout('autoRefreshStudentLive()', secondsRefreshStudentView);
-        }
-        );
+    );
 }
 
 function hide_thumbsup()
@@ -346,7 +367,7 @@ function hide_thumbsup()
 //Load student record in the player
 function loadStudentRecord(elem)
 {
-    $("#imgStudent").attr('src',elem.data('portrait'));
+    $("#imgStudent").attr('src', elem.data('portrait'));
     $("#recordAgoStudent").text(elem.data('lastUpdate'));
     $("#nameStudent").text(elem.data('author'));
 
@@ -354,7 +375,7 @@ function loadStudentRecord(elem)
     playerRecorders['playerRecorderStudent'].setPlayerMode(1);
     $("#titleRecording").val(elem.data('title'));
     $("#descriptionRecording").val(elem.data('tMessage'));
-    
+
     playerRecorders['playerRecorderStudent'].addURIToNetStreams(elem.data('recURI'), false, videoMode);
     if (elem.data('mastertrack') != '')
     {
@@ -364,7 +385,7 @@ function loadStudentRecord(elem)
 //Load the teacher record in the player
 function loadTeacherRecord(elem)
 {
-    $("#imgTeacher").attr('src',elem.data('portrait'));
+    $("#imgTeacher").attr('src', elem.data('portrait'));
     $("#recordAgoTeacher").text(elem.data('lastUpdate'));
     $("#nameTeacher").text(elem.data('author'));
 
@@ -396,74 +417,73 @@ function selectPreviousNode()
 {
     $("#recordings li").each(function()
     {
-        if($(this).data('selected') == true)
+        if ($(this).data('selected') == true)
         {
-            $("#recordings").jstree("select_node",$(this));
+            $("#recordings").jstree("select_node", $(this));
         }
     });
 }
 
-$(function(){
+$(function() {
     $.jstree._themes = './js/jquery.jstree/themes/';
-    
+
     $("#recordings").jstree(
-    {
-        "plugins" : ["themes", "json_data","ui", "search"],
-        "themes" : {
-            "theme" : "default",
-            "dots" : false,
-            "icons" : true
-        },
-        "json_data" : { 
-            "ajax" :{
-                "url" : function(){
-                    return urlHistory+"?activity_id="+activityid+'&selectedelem='+selectedElem+'&selecteduser='+selectedUser+"&rand="+Math.random();
+            {
+                "plugins": ["themes", "json_data", "ui", "search"],
+                "themes": {
+                    "theme": "default",
+                    "dots": false,
+                    "icons": true
                 },
-                "data" : function (n) {
-                    return ;
+                "json_data": {
+                    "ajax": {
+                        "url": function() {
+                            return urlHistory + "?activity_id=" + activityid + '&selectedelem=' + selectedElem + '&selecteduser=' + selectedUser + "&rand=" + Math.random();
+                        },
+                        "data": function(n) {
+                            return;
+                        },
+                        "success": function(data) {
+                            checksum = data.checksum;
+                            return data.json;
+                        }
+                    }
                 },
-                "success": function (data){
-                    checksum = data.checksum;
-                    return data.json;
+                "search": {
+                    "case_insensitive": true,
+                    //"search_method" :  "jstree_title_contains",
+                    "ajax": false
+                },
+                "ui": {
+                    "select_multiple_modifier": false
                 }
             }
-        },
-        "search" : {
-            "case_insensitive" : true,
-            //"search_method" :  "jstree_title_contains",
-            "ajax" : false
-        },
-        "ui" : {
-            "select_multiple_modifier" : false
-        }
-    }
-    )
-    .bind("select_node.jstree", function (event, data) {
-    
+    ).bind("select_node.jstree", function(event, data) {
+
         selectedElem = data.rslt.obj.data('recordingid');
         selectedUser = data.rslt.obj.data('studentid');
         //TeacherMode
         var tMode = (typeof(teacherMode) != 'undefined' && teacherMode == true);
-        
-        var elemType = $(".jstree-clicked","#recordings").parent().data('type');
-        
-        var chidren = $("li", $(".jstree-clicked","#recordings").parent());
-        
-        if(allowDelete && !tMode && elemType == 'record' && chidren.length == 0 || (tMode && (elemType == 'record' || elemType == 'feedback')))
+
+        var elemType = $(".jstree-clicked", "#recordings").parent().data('type');
+
+        var chidren = $("li", $(".jstree-clicked", "#recordings").parent());
+
+        if (allowDelete && !tMode && elemType == 'record' && chidren.length == 0 || (tMode && (elemType == 'record' || elemType == 'feedback')))
         {
             $("#deleteRecordings").removeAttr('disabled');
             $("#deleteRecordings").removeClass('btnDisabled');
         }
         else
         {
-            $("#deleteRecordings").attr('disabled','disabled');
+            $("#deleteRecordings").attr('disabled', 'disabled');
             $("#deleteRecordings").addClass('btnDisabled');
-            
+
         }
-        
-        if(elemType == 'user' && $('li', $(".jstree-clicked","#recordings").parent()).length == 0)
+
+        if (elemType == 'user' && $('li', $(".jstree-clicked", "#recordings").parent()).length == 0)
         {
-            $("#downloadRecording").attr('disabled','disabled');
+            $("#downloadRecording").attr('disabled', 'disabled');
             $("#downloadRecording").addClass('btnDisabled');
         }
         else
@@ -471,77 +491,77 @@ $(function(){
             $("#downloadRecording").removeAttr('disabled');
             $("#downloadRecording").removeClass('btnDisabled');
         }
-            
+
         //Set the buttons status
-        $("#titleRecording").attr('readonly','readonly');
-        $("#descriptionRecording").attr('readonly','readonly');
-        $("#submitRecording").attr('disabled','disabled');
+        $("#titleRecording").attr('readonly', 'readonly');
+        $("#descriptionRecording").attr('readonly', 'readonly');
+        $("#submitRecording").attr('disabled', 'disabled');
         $("#submitRecording").addClass('btnDisabled');
-        
-        
-        if(tMode)
+
+
+        if (tMode)
         {
             playerRecorders['playerRecorderStudent'].resetNetStreams();
             playerRecorders['playerRecorderTeacher'].resetNetStreams();
-            
-            if(elemType == 'record')
+
+            if (elemType == 'record')
             {
                 loadStudentRecord(data.rslt.obj);
                 //Check if a feedback exists and load it if, else load the player for a record
                 var feedback = $('li:first', data.rslt.obj);
-                
-                if(feedback.length > 0)
+
+                if (feedback.length > 0)
                 {
                     loadTeacherRecord(feedback);
                 }
                 else
                 {
                     //If no feedback, set the fields for
-                    $("#imgTeacher").attr('src',defaultUserPicture);
+                    $("#imgTeacher").attr('src', defaultUserPicture);
                     $("#recordAgoTeacher").text('');
                     $("#nameTeacher").text('');
-                    
+
                     playerRecorders['playerRecorderTeacher'].setPlayerMode(2);
-                    $("#titleFeedback").val(reFeedBack+data.rslt.obj.data('title'));
+                    $("#titleFeedback").val(reFeedBack + data.rslt.obj.data('title'));
                     $("#descriptionFeedback").val('');
                     $("#titleFeedback").removeAttr('readonly');
                     $("#descriptionFeedback").removeAttr('readonly');
                     $("#submitFeedback").removeAttr('disabled');
                     $("#submitFeedback").removeClass('btnDisabled');
                 }
-                
-                if(useGradebook)
+
+                if (useGradebook)
                 {
                     loadGradeStudent(data.rslt.obj);
                 }
             }
-            else if(elemType == 'feedback')
+            else if (elemType == 'feedback')
             {
                 loadTeacherRecord(data.rslt.obj);
                 //Get the student record for this feedback
                 var record = $(data.rslt.obj).parent().parent();
                 loadStudentRecord(record);
-                
-                if(useGradebook)
+
+                if (useGradebook)
                 {
                     loadGradeStudent(data.rslt.obj);
                 }
             }
             else // if(elemType == 'user')
             {
-                $("#imgStudent").attr('src',data.rslt.obj.data('portrait'));
+                $("#imgStudent").attr('src', data.rslt.obj.data('portrait'));
                 $("#recordAgoStudent").text('');
                 $("#nameStudent").text(data.rslt.obj.data('author'));
-                
-                $("#imgTeacher").attr('src',defaultUserPicture);
+
+                $("#imgTeacher").attr('src', defaultUserPicture);
                 $("#recordAgoTeacher").text('');
                 $("#nameTeacher").text('');
-            
+
                 playerRecorders['playerRecorderStudent'].setPlayerMode(0);
                 $("#titleRecording").val('');
                 $("#descriptionRecording").val('');
-                
-                
+
+
                 playerRecorders['playerRecorderTeacher'].setPlayerMode(0);
                 $("#titleFeedback").val('');
                 $("#descriptionFeedback").val('');
@@ -549,18 +569,18 @@ $(function(){
                 $("#descriptionFeedback").attr('readonly', 'readonly');
                 $("#submitFeedback").attr('disabled', 'disabled');
                 $("#submitFeedback").addClass('btnDisabled', 'btnDisabled');
-                
+
                 //LOAD Grade
-                if(useGradebook)
+                if (useGradebook)
                 {
-                    if($('li',data.rslt.obj).length > 0)
+                    if ($('li', data.rslt.obj).length > 0)
                     {
                         loadGradeStudent(data.rslt.obj);
                     }
                     else
                     {
                         $("#gradeInactif").show();
-                        $("#gradeInactif").html('<br/><br/><br/>'+gradeStudentWithRecordings);
+                        $("#gradeInactif").html('<br/><br/><br/>' + gradeStudentWithRecordings);
                         $("#submitGrade").attr('disabled', 'disabled');
                         $("#submitGrade").addClass('btnDisabled');
                         $("#privateNote").val('');
@@ -577,7 +597,7 @@ $(function(){
             $("#titleRecording").val(data.rslt.obj.data('title'));
             $("#descriptionRecording").val(data.rslt.obj.data('tMessage'));
 
-            $("#imgStudent").attr('src',data.rslt.obj.data('portrait'));
+            $("#imgStudent").attr('src', data.rslt.obj.data('portrait'));
             $("#recordAgoStudent").text(data.rslt.obj.data('lastUpdate'));
             $("#nameStudent").text(data.rslt.obj.data('author'));
 
@@ -588,100 +608,99 @@ $(function(){
                 playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('mastertrack'));
             }
         }
-    })
-    .bind("deselect_all.jstree", function (event, data) {
+    }).bind("deselect_all.jstree", function(event, data) {
         //DESELECT ALL NODES EVENT
-        $("#deleteRecordings").attr("disabled","disabled");
+        $("#deleteRecordings").attr("disabled", "disabled");
         $("#deleteRecordings").addClass("btnDisabled");
-        $("#downloadRecording").attr("disabled","disabled");
+        $("#downloadRecording").attr("disabled", "disabled");
         $("#downloadRecording").addClass("btnDisabled");
-    }).
-    bind("refresh.jstree", function (event, data) {
+    }).bind("refresh.jstree", function(event, data) {
         //After refresh select the previous elem
         setTimeout('selectPreviousNode()', 100);
-        
+    }).bind("loaded.jstree", function(event, data) {
+        setTimeout('selectPreviousNode()', 1000);
     });
-    
+
     //SEARCH functionnality
-    $("#searchRecordings").keyup(function(){
-        $("#recordings").jstree("search",$(this).val());
+    $("#searchRecordings").keyup(function() {
+        $("#recordings").jstree("search", $(this).val());
     });
-    $("#searchRecordings").change(function(){
-        $("#recordings").jstree("search",$(this).val());
+    $("#searchRecordings").change(function() {
+        $("#recordings").jstree("search", $(this).val());
     });
     //Refresh
-    $("#refreshHistory").click(function(){
-        
+    $("#refreshHistory").click(function() {
+
         $("#recordings").jstree("refresh");
-        
+
     });
-    
+
     //DELETE a Recording
-    $("#deleteRecordings").click(function(){
-        
+    $("#deleteRecordings").click(function() {
+
         var canBeDeleted = false;
-        var elemType = $(".jstree-clicked","#recordings").parent().data('type');
-        
-        if(elemType == 'record' || (typeof(teacherMode) != undefined && teacherMode == true && elemType == 'feedback'))
+        var elemType = $(".jstree-clicked", "#recordings").parent().data('type');
+
+        if (elemType == 'record' || (typeof(teacherMode) != undefined && teacherMode == true && elemType == 'feedback'))
         {
             canBeDeleted = true;
         }
-        
-        if(canBeDeleted && $(".jstree-clicked","#recordings").length > 0 )
+
+        if (canBeDeleted && $(".jstree-clicked", "#recordings").length > 0)
         {
-            
-            $("#dialogInfo").text(lblConfirmDelete+'"'+$(".jstree-clicked","#recordings").parent().data('title')+'"?');
+
+            $("#dialogInfo").text(lblConfirmDelete + '"' + $(".jstree-clicked", "#recordings").parent().data('title') + '"?');
             $("#dialogInfo").dialog({
                 title: titleConfirm,
                 resizable: false,
-                height:180,
+                height: 180,
                 modal: true,
                 buttons: [
-                {
-                    text: deleteRecord,
-                    click: function() {
-                        
-                        $.post(
-                            "ajax.recording.php?id="+activityid+"&del=true",
-                            {
-                                recordingid: $(".jstree-clicked","#recordings").parent().data('recordingid')
-                            },
+                    {
+                        text: deleteRecord,
+                        click: function() {
+
+                            $.post(
+                                    "ajax.recording.php?id=" + activityid + "&del=true",
+                                    {
+                                        recordingid: $(".jstree-clicked", "#recordings").parent().data('recordingid')
+                                    },
                             function(data)
                             {
                                 res = jQuery.parseJSON(data);
-                                if(res.success)
+                                if (res.success)
                                 {
                                     $("#newRecording").removeAttr('disabled');
                                     $("#newRecording").removeClass('btnDisabled');
                                     $("#refreshHistory").click();
                                     $("#newRecording").click();
-                                    if(typeof(teacherMode) != 'undefined' && teacherMode == true)
+                                    if (typeof(teacherMode) != 'undefined' && teacherMode == true)
                                     {
                                         $("#gradeInactif").show();
-                                        
+
                                         playerRecorders['playerRecorderStudent'].resetNetStreams();
                                         playerRecorders['playerRecorderTeacher'].resetNetStreams();
                                         playerRecorders['playerRecorderStudent'].setPlayerMode(0);
                                         playerRecorders['playerRecorderTeacher'].setPlayerMode(0);
-                                        
+
                                         $("#privateNote").val('');
                                         $("#gradeInput").val(0);
                                         $("#gradeSlider").slider('value', 0);
-    
-                                        $("#imgStudent").attr('src',defaultUserPicture);
+
+                                        $("#imgStudent").attr('src', defaultUserPicture);
                                         $("#recordAgoStudent").text('');
                                         $("#nameStudent").text('');
-                                        $("#imgTeacher").attr('src',defaultUserPicture);
+                                        $("#imgTeacher").attr('src', defaultUserPicture);
                                         $("#recordAgoTeacher").text('');
                                         $("#nameTeacher").text('');
-                                        
-                                        $("#titleRecording").attr("readonly","readonly");
-                                        $("#descriptionRecording").attr("readonly","readonly");
+
+                                        $("#titleRecording").attr("readonly", "readonly");
+                                        $("#descriptionRecording").attr("readonly", "readonly");
                                         $("#titleRecording").val('');
                                         $("#descriptionRecording").val('');
-                                        
-                                        $("#titleFeedback").attr("readonly","readonly");
-                                        $("#descriptionFeedback").attr("readonly","readonly");
+
+                                        $("#titleFeedback").attr("readonly", "readonly");
+                                        $("#descriptionFeedback").attr("readonly", "readonly");
                                         $("#submitFeedback").attr("disabled");
                                         $("#submitFeedback").addClass("btnDisabled");
                                         $("#titleFeedback").val('');
@@ -695,89 +714,90 @@ $(function(){
                                         height: 140,
                                         modal: true,
                                         title: errorTitle,
-                                        buttons:[]
+                                        buttons: []
                                     });
                                 }
                             }
                             );
-                        $( this ).dialog( "close" );
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: cancel,
+                        click: function() {
+                            $(this).dialog("close");
+                        }
                     }
-                },
-                {
-                    text: cancel,
-                    click: function() {
-                        $( this ).dialog( "close" );
-                    }
-                }
                 ]
             });
         }
     });
-    
+
     //DOWNLOAD a Recording
-    $("#downloadRecording").click(function(){
-        var eData = $(".jstree-clicked","#recordings").parent();
-        if(eData.data('type') == 'user')
+    $("#downloadRecording").click(function() {
+        var eData = $(".jstree-clicked", "#recordings").parent();
+        if (eData.data('type') == 'user')
         {
             var p = '';
             var n = '';
-            $('li', $(".jstree-clicked","#recordings").parent()).each(function(){
-                p = p+';'+$(this).data('recURI');
-                n = n+';'+$(this).data('downloadName');
+            $('li', $(".jstree-clicked", "#recordings").parent()).each(function() {
+                p = p + ';' + $(this).data('recURI');
+                n = n + ';' + $(this).data('downloadName');
             });
-            
+
             p = p.substr(1);
             n = n.substr(1);
-            
-            window.location.href = urlZipDownload+'&p='+p+'&n='+n+'&z='+eData.data('downloadName');
+
+            window.location.href = urlZipDownload + '&p=' + p + '&n=' + n + '&z=' + eData.data('downloadName');
         }
         else
         {
-            window.location.href = urlDownload+'&p='+eData.data('recURI')+'&n='+eData.data('downloadName');
+            window.location.href = urlDownload + '&p=' + eData.data('recURI') + '&n=' + eData.data('downloadName');
         }
     });
-    
-    
+
+
     //Save the current recording - STUDENT
-    $("#submitRecording").click(function(){
-        
+    $("#submitRecording").click(function() {
+
         //Submit only if the recording exists
         if (userRecordURI != '')
         {
             $("#ajaxSubmitRecording").show();
             $.post(
-                "ajax.recording.php?id="+activityid+"&add=true",
-                {
-                    title: $("#titleRecording").val(),
-                    message: $("#descriptionRecording").val(),
-                    path: userRecordURI
-                },
-                function(data)
-                {
-                    res = jQuery.parseJSON(data);
-                    if(res.success != false)
+                    "ajax.recording.php?id=" + activityid + "&add=true",
                     {
-                        if(onlyOneRecording)
-                        {
-                            $("#newRecording").attr('disabled', 'disabled');
-                            $("#newRecording").addClass('btnDisabled');
-                        }
-                        selectedElem = res.success;
-                        $("#refreshHistory").click();
-                    }
-                    else
+                        title: $("#titleRecording").val(),
+                        message: $("#descriptionRecording").val(),
+                        path: userRecordURI
+                    },
+            function(data)
+            {
+                res = jQuery.parseJSON(data);
+                if (res.success != false)
+                {
+                    if (onlyOneRecording)
                     {
-                        $("#dialogInfo").text(res.message);
-                        $("#dialogInfo").dialog({
-                            height: 140,
-                            modal: true,
-                            title: errorTitle,
-                            buttons:[]
-                        });
+                        $("#newRecording").attr('disabled', 'disabled');
+                        $("#newRecording").addClass('btnDisabled');
                     }
-                    $("#ajaxSubmitRecording").hide();
+                    selectedElem = res.success;
+                    $("#refreshHistory").click();
+                    userRecordURI = '';
                 }
-                );
+                else
+                {
+                    $("#dialogInfo").text(res.message);
+                    $("#dialogInfo").dialog({
+                        height: 140,
+                        modal: true,
+                        title: errorTitle,
+                        buttons: []
+                    });
+                }
+                $("#ajaxSubmitRecording").hide();
+            }
+            );
         }
         else
         {
@@ -786,75 +806,31 @@ $(function(){
                 height: 140,
                 modal: true,
                 title: errorTitle,
-                buttons:[]
+                buttons: []
             });
         }
     });
-    
+
     //Save the current recording - TEACHER FEEDBACK
-    $("#submitFeedback").click(function(){
-        
+    $("#submitFeedback").click(function() {
+
         //Submit only if the recording exists
         if (userRecordURI != '')
         {
             $("#ajaxSubmitFeedback").show();
             $.post(
-                "ajax.recording.php?id="+activityid+"&add=true&submission="+$(".jstree-clicked","#recordings").parent().data('recordingid'),
-                {
-                    title: $("#titleFeedback").val(),
-                    message: $("#descriptionFeedback").val(),
-                    path: userRecordURI
-                },
-                function(data)
-                {
-                    res = jQuery.parseJSON(data);
-                    if(res.success)
+                    "ajax.recording.php?id=" + activityid + "&add=true&submission=" + $(".jstree-clicked", "#recordings").parent().data('recordingid'),
                     {
-                        selectedElem = res.success;
-                        $("#refreshHistory").click();
-                    }
-                    else
-                    {
-                        $("#dialogInfo").text(res.message);
-                        $("#dialogInfo").dialog({
-                            height: 140,
-                            modal: true,
-                            title: errorTitle,
-                            buttons:[]
-                        });
-                    }
-                    $("#ajaxSubmitFeedback").hide();
-                }
-                );
-        }
-        else
-        {
-            $("#dialogInfo").text(recordingRequired);
-            $("#dialogInfo").dialog({
-                height: 140,
-                modal: true,
-                title: errorTitle,
-                buttons:[]
-            });
-        }
-    });
-    
-    //Save the current grade - TEACHER 
-    $("#submitGrade").click(function(){
-        
-        $("#ajaxSubmitGrade").show();
-        $.post(
-            "ajax.recording.php?id="+activityid+"&grade=true",
-            {
-                grade: $("#gradeInput").val(),
-                privateNotes: $("#privateNote").val(),
-                studentid: $(".jstree-clicked","#recordings").parent().data('studentid')
-            },
+                        title: $("#titleFeedback").val(),
+                        message: $("#descriptionFeedback").val(),
+                        path: userRecordURI
+                    },
             function(data)
             {
                 res = jQuery.parseJSON(data);
-                if(res.success)
+                if (res.success)
                 {
+                    selectedElem = res.success;
                     $("#refreshHistory").click();
                 }
                 else
@@ -864,28 +840,72 @@ $(function(){
                         height: 140,
                         modal: true,
                         title: errorTitle,
-                        buttons:[]
+                        buttons: []
                     });
                 }
-                $("#ajaxSubmitGrade").hide();
+                $("#ajaxSubmitFeedback").hide();
             }
             );
-        
+        }
+        else
+        {
+            $("#dialogInfo").text(recordingRequired);
+            $("#dialogInfo").dialog({
+                height: 140,
+                modal: true,
+                title: errorTitle,
+                buttons: []
+            });
+        }
     });
-    
+
+    //Save the current grade - TEACHER 
+    $("#submitGrade").click(function() {
+
+        $("#ajaxSubmitGrade").show();
+        $.post(
+                "ajax.recording.php?id=" + activityid + "&grade=true",
+                {
+                    grade: $("#gradeInput").val(),
+                    privateNotes: $("#privateNote").val(),
+                    studentid: $(".jstree-clicked", "#recordings").parent().data('studentid')
+                },
+        function(data)
+        {
+            res = jQuery.parseJSON(data);
+            if (res.success)
+            {
+                $("#refreshHistory").click();
+            }
+            else
+            {
+                $("#dialogInfo").text(res.message);
+                $("#dialogInfo").dialog({
+                    height: 140,
+                    modal: true,
+                    title: errorTitle,
+                    buttons: []
+                });
+            }
+            $("#ajaxSubmitGrade").hide();
+        }
+        );
+
+    });
+
     /**
      * Actions for the actions buttons on the top of the page
      */
-    
+
     //Create a new recording
-    $("#newRecording").click(function(){
-        if($("#newRecording").attr('disabled') != 'disabled')
+    $("#newRecording").click(function() {
+        if ($("#newRecording").attr('disabled') != 'disabled')
         {
             selectedElem = null;
             selectedUser = null;
 
-            $("#titleRecording").attr("readonly",false);
-            $("#descriptionRecording").attr("readonly",false);
+            $("#titleRecording").attr("readonly", false);
+            $("#descriptionRecording").attr("readonly", false);
             $("#submitRecording").removeAttr("disabled");
             $("#submitRecording").removeClass("btnDisabled");
             $("#recordings").jstree('deselect_all');
@@ -897,37 +917,37 @@ $(function(){
             userRecordURI = '';
             playerRecorders['playerRecorderStudent'].refreshRecordFileName();
             playerRecorders['playerRecorderStudent'].resetNetStreams();
-            if(urlmasterTrack != '')
+            if (urlmasterTrack != '')
             {
                 playerRecorders['playerRecorderStudent'].addURIToNetStreams(urlmasterTrack, true);
             }
         }
     });
-    
-    $('#micConfig').click(function(){
+
+    $('#micConfig').click(function() {
         toggleDisplayOptions();
     });
-    
-    
+
+
     //TEACHER FUNCTIONALITIES
     $('#gradeSlider').slider({
         range: "min",
         value: 0,
         min: 0,
         max: 100,
-        slide: function( event, ui ) {
-            $( "#gradeInput" ).val(ui.value );
+        slide: function(event, ui) {
+            $("#gradeInput").val(ui.value);
         }
     });
-    
+
     //If the gradebook is used, delete the message
-    if(typeof(useGradebook) != 'undefined' && useGradebook)
+    if (typeof(useGradebook) != 'undefined' && useGradebook)
     {
         $("#gradeInactif").text('');
     }
-    
+
     //ACTIVITY EDIT MODE
-    
+
     $("#loadPreviousMastertrack").click(function()
     {
         playerRecorders['playerRecorderMastertrack'].setPlayerMode(1);
@@ -936,7 +956,7 @@ $(function(){
         playerRecorders['playerRecorderMastertrack'].addURIToNetStreams(userRecordURI);
         return false;
     });
-    
+
     $("#newMastertrack").click(function()
     {
         playerRecorders['playerRecorderMastertrack'].setPlayerMode(2);
@@ -945,27 +965,27 @@ $(function(){
         playerRecorders['playerRecorderMastertrack'].resetNetStreams();
         return false;
     });
-    
-    $("#raiseHand").click(function(){
-       
+
+    $("#raiseHand").click(function() {
+
         $(this).show('highlight');
         $.getJSON(
-            urlLive+"?id="+activityid
-            +"&event=raise_hand"
-            +"&rand="+Math.random(),
-            function(data)
-            {
+                urlLive + "?id=" + activityid
+                + "&event=raise_hand"
+                + "&rand=" + Math.random(),
+                function(data)
+                {
 
-            });
+                });
     });
-    
-    if(typeof(secondsRefreshHistory) != 'undefined')
+
+    if (typeof(secondsRefreshHistory) != 'undefined')
     {
         //SET TIMERS FOR UPDATE CONTENT OF THE HISTORY
         setTimeout('autoRefreshHistory()', secondsRefreshHistory);
     }
-    
-    if(typeof(teacherMode) == 'undefined' && typeof(secondsRefreshStudentView) != 'undefined')
+
+    if (typeof(teacherMode) == 'undefined' && typeof(secondsRefreshStudentView) != 'undefined')
     {
         setTimeout('autoRefreshStudentLive()', secondsRefreshStudentView);
     }

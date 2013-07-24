@@ -441,5 +441,30 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2013071800, 'languagelab');
     }
+    
+    if ($oldversion < 2013072200)
+    {
+        //+Add control when student record without saving
+        //+Add Simplified interface for student
+        // Define field student_delete_recordings to be added to languagelab
+        $table = new xmldb_table('languagelab');
+        $field = new xmldb_field('simplified_interface_student', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'fullscreen_student');
+        // Conditionally launch add field student_delete_recordings
+        if (!$dbman->field_exists($table, $field))
+        {
+            $dbman->add_field($table, $field);
+        }
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013072200, 'languagelab');
+    }
+    
+    if ($oldversion < 2013072400)
+    {
+        
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013072400, 'languagelab');
+    }
+    
     return;
 }

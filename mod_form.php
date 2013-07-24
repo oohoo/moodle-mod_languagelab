@@ -212,6 +212,10 @@ HERE;
         $mform->setDefault('video', false);
         $mform->addElement('advcheckbox', 'attempts', get_string('attempts', 'languagelab'), null);
         $mform->addHelpButton('attempts', 'attempts', 'languagelab');
+        $mform->addElement('advcheckbox', 'simplified_interface_student', get_string('simplified_interface_student', 'languagelab'), null);
+        $mform->addHelpButton('simplified_interface_student', 'simplified_interface_student', 'languagelab');
+        $mform->disabledIf('simplified_interface_student', 'attempts');
+        
         $mform->addElement('advcheckbox', 'student_delete_recordings', get_string('student_delete_recordings', 'languagelab'), null);
         $mform->addHelpButton('student_delete_recordings', 'student_delete_recordings', 'languagelab');
         $mform->addElement('advcheckbox', 'prev_next_lab', get_string('prev_next_lab', 'languagelab'), null);

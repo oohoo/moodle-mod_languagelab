@@ -28,13 +28,16 @@ class backup_languagelab_activity_structure_step extends backup_activity_structu
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated
-        $languagelab = new backup_nested_element('languagelab', array('id'), array('name', 'course', 'description', 'contentformat', 'timedue', 'timeavailable', 'grade', 'recording_timelimit', 'attempts', 'video', 'use_grade_book', 'group_type', 'master_track', 'master_track_recording', 'timemodified'));
+        $languagelab = new backup_nested_element('languagelab', array('id'), array('name', 'course', 'description', 'contentformat', 
+            'timedue', 'timeavailable', 'grade', 'recording_timelimit', 'attempts', 'video', 'use_grade_book', 'group_type', 
+            'master_track', 'master_track_recording', 'us_mp3', 'student_delete_recordings', 'prev_next_lab', 'fullscreen_student', 'simplified_interface_student',
+            'timemodified'));
 
         //languaglab submissions table
         $languagelab_submissions = new backup_nested_element('languagelab_submissions');
 
         $languagelab_submission = new backup_nested_element('languagelab_submission', array('id'), array('userid',
-                    'groupid', 'path', 'label', 'parentnode', 'timecreated', 'timemodified'));
+                    'groupid', 'path', 'label', 'message','parentnode', 'timecreated', 'timemodified'));
 
         //languagelab student eval table
         $languagelab_student_evals = new backup_nested_element('languagelab_student_evals');
@@ -64,6 +67,7 @@ class backup_languagelab_activity_structure_step extends backup_activity_structu
 
 
         // Define file annotations
+        $languagelab->annotate_files('mod_languagelab', 'description', null);
         $languagelab->annotate_files('mod_languagelab', 'content', 'id');
         $languagelab->annotate_files('mod_languagelab', 'mastertrack', 'id');
 

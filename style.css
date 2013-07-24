@@ -525,3 +525,44 @@
     padding-right: 10px;
     padding-left: 10px;
 }
+
+/*###########################*/
+/*CSS FOR SIMPLIFIED MODE    */
+/*###########################*/
+
+.simplified_interface #languageLabStudent
+{
+    width: 370px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.simplified_interface .blockHistory
+{
+    display:none;
+}
+
+.simplified_interface #micConfig
+{
+    
+}
+
+.simplified_interface #newRecording,
+.simplified_interface #raiseHand,
+.simplified_interface #micConfig
+{
+    display: none;
+}
+.simplified_interface .lblTitleRecording,
+.simplified_interface .inputRecording,
+.simplified_interface .lblDescriptionRecording,
+.simplified_interface #descriptionRecording,
+.simplified_interface .description br
+{
+    display: none;
+}
+
+.simplified_interface #goBackCourse
+{
+    margin-left: 5%;
+}
