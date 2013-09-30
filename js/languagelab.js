@@ -63,15 +63,19 @@ YUI().use('node', function(Y)
 });
 
 //----------------------FLASH CHECK VERSION-------------------------------------
+// Windows & Mac OS X: 11.8.800.94
+// Linux: 11.2.202.297
+// source: http://helpx.adobe.com/flash-player/kb/find-version-flash-player.html#main_Check_if_you_have_the_latest_version_of_Flash_Player
 var flashMajor = 11;
 var flashMinor = 2;
 var flashRevisionMin = 0;
 var flashRevisionMax = 999;
+var os_linux = (navigator.platform.indexOf("Linux") != -1);
 
 $(function() {
     var elem = $('#descrLabLang');
 
-    if (FlashDetect.major == flashMajor && FlashDetect.minor == flashMinor && (FlashDetect.revision >= flashRevisionMin && FlashDetect.revision <= flashRevisionMax))
+    if (FlashDetect.major == flashMajor && FlashDetect.minor == flashMinor && (FlashDetect.revision >= flashRevisionMin && FlashDetect.revision <= flashRevisionMax) && os_linux == false)
     {
         var text = elem.html() + '<b style="color:red;">Your Flash version is not entirely functional with the Language Lab. You will not be able to listen your recording while you have not submit it. Please download an other version of flash.<br /><br />';
         text = text + 'Click <a href="flash/fp_11.1.102.62_archive.zip">here</a> to download a compatible version of flash</b></br></br>';
