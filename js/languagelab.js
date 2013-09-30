@@ -186,7 +186,6 @@ function playeroptions_open()
         width: 450,
         minWidth: 450,
         height: 500,
-        zIndex: 4000,
         buttons: [{
                 text: playeroptionsBtnOk,
                 click: function() {
@@ -195,8 +194,14 @@ function playeroptions_open()
             }],
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            var rc = $('.region-content');
+            $(this).dialog('widget').prev().css('position', 'absolute');
+            $(this).dialog('widget').prev().outerWidth(rc.outerWidth());
+            $(this).dialog('widget').prev().outerHeight(rc.outerHeight());
+            $(this).dialog('widget').prev().css('top',rc.offset().top);
+            $(this).dialog('widget').prev().css('left',rc.offset().left);
         }
-    });
+    }).dialog('widget').css('z-index', 3001);
 }
 
 //Run this function when player is ready

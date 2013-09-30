@@ -466,5 +466,15 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013072400, 'languagelab');
     }
     
+    if ($oldversion < 2013093000)
+    {
+        //+patch install.xml
+        //+patch filepicker over dialog
+        //+patch linux flash detection
+        //+patch dialog overlay limit
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013093000, 'languagelab');
+    }
+    
     return;
 }
