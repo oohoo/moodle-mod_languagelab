@@ -26,7 +26,7 @@
         <FIELD NAME="prev_next_lab" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Display previous and next language lab" PREVIOUS="student_delete_recordings" NEXT="fullscreen_student"/>
         <FIELD NAME="fullscreen_student" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Student in fullscreen" PREVIOUS="prev_next_lab" NEXT="simplified_interface_student"/>
         <FIELD NAME="simplified_interface_student" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Display the student interface in simplified mode" PREVIOUS="fullscreen_student" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fullscreen_student"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="simplified_interface_student"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
