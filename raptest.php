@@ -100,7 +100,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
                 echo '<br/>--------------------------------------------------------------<br/>';
                 //Check the version of the adapter now
                 //Create the folder on the RTMP server
-                $adapter_version = languagelab_adapter_call('check_version', '');
+                $adapter_version = languagelab_adapter_call('get_version', '');
                 echo 'Checking the version of the RAP files...<br/>';
                 if ($adapter_version != $CFG->languagelab_rap_version)
                 {

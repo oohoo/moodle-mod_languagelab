@@ -476,5 +476,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013093000, 'languagelab');
     }
     
+    if ($oldversion < 2013110400)
+    {
+        //patch raptest.php
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013110400, 'languagelab');
+    }
+    
     return;
 }
