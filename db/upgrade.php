@@ -483,5 +483,15 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013110400, 'languagelab');
     }
     
+    if ($oldversion < 2013112500)
+    {
+        //Patch in the flash for the HTTPS
+        //Patch RAP for the mastertrack upload
+        //Add ffmpeg test to the RAP test
+        //remove settings NB max connections
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013112500, 'languagelab');
+    }
+    
     return;
 }
