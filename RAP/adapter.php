@@ -133,14 +133,14 @@ switch ($serverAction)
         break;
     case md5('convert_mp3_single' . $salt):
         //Convert File into MP3 if FFMPEG is installed
-        if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
+        if (shell_exec("which $CFG->conversion_tool") != '')
         {
             if (file_exists($path . $submissions . '.flv'))
             {
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp3file = $submissions . '.mp3';
                 $outputfile = '"' . $path . $mp3file . '"';
-                $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
+                $command = $CFG->conversion_tool . ' -i ';
                 shell_exec($command . $sourcefile . ' -ar 44100 -ab 64k -ac 2 ' . $outputfile);
                 //Check if the mp3 file exists
                 if (file_exists($path . $submissions . '.mp3'))
@@ -164,15 +164,15 @@ switch ($serverAction)
         break;
     case md5('convert_mp4_single' . $salt):
         //Convert File into MP4 if FFMPEG is installed
-        if (file_exists($CFG->conversion_tool_path . $CFG->conversion_tool))
+        if (shell_exec("which $CFG->conversion_tool") != '')
         {
             if (file_exists($path . $submissions . '.flv'))
             {
                 $sourcefile = '"' . $path . $submissions . '.flv' . '"';
                 $mp4file = $submissions . '.mp4';
                 $outputfile = '"' . $path . $mp4file . '"';
-                $command = $CFG->conversion_tool_path . $CFG->conversion_tool . ' -i ';
-                shell_exec($command . $sourcefile . ' -sameq -acodec libfaac -ar 44100 ' . $outputfile);
+                $command = $CFG->conversion_tool . ' -i ';
+                shell_exec($command . $sourcefile . '  -acodec aac -b:a 128k -vcodec libx264 -profile:v baseline -strict experimental ' . $outputfile);
                 //Check if the mp4 file exists
                 if (file_exists($path . $submissions . '.mp4'))
                 {
@@ -195,7 +195,7 @@ switch ($serverAction)
         break;
     case md5('upload_mp3' . $salt):
         //Save a file ont the red5 folder
-        $datafile = $_REQUEST['d'];
+        $datafile = base64_decode($_REQUEST['d']);
         $filepath = $_REQUEST['p'];
         file_put_contents($path . $filepath, $datafile);
         break;
