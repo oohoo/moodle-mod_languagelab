@@ -17,4 +17,4 @@
 //DO NOT MODIFY THIS FILE
 
 //We create a version number to check that the adapter is always updated with the language lab
-$CFG->languagelab_rap_version = 2013071800;
+$CFG->languagelab_rap_version = 2013112500;
