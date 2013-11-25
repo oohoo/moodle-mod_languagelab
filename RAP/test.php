@@ -71,3 +71,14 @@ else
 {
     print "<br>Sorry, there is a problem with your configuration. Check your XML file: The serverAddress, languagelabPrefix and salt must be identical from the moodle settings languagelab_red5server, languagelab_prefix and languagelab_salt.";
 }
+
+print "<br>Checking the ffmpeg availability...";
+if (shell_exec("which $CFG->conversion_tool") != '')
+{
+    print "<br>Command \"$CFG->conversion_tool\" founded and executable";
+    //Todo Check FFMPEG codecs availability
+}
+else
+{
+    print "<br>Command \"$CFG->conversion_tool\" NOT found or not executable. Please check the config.php file to change the conversion_tool command or install it.";
+}
