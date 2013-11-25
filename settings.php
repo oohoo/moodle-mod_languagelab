@@ -21,7 +21,6 @@ $settings->add(new admin_setting_configtext('languagelab_red5server', get_string
 $settings->add(new admin_setting_configtext('languagelab_red5serverfolder', get_string('red5serverfolder', 'languagelab'), get_string('red5serverfolder_help', 'languagelab'), 'oflaDemo', PARAM_RAW));
 $settings->add(new admin_setting_configtext('languagelab_folder', get_string('folder', 'languagelab'), get_string('folder_help', 'languagelab'), 'moodle', PARAM_TEXT));
 $settings->add(new admin_setting_configtext('languagelab_prefix', get_string('prefix', 'languagelab'), get_string('prefix_help', 'languagelab'), 'mdl', PARAM_RAW));
-$settings->add(new admin_setting_configtext('languagelab_max_users', get_string('max_users', 'languagelab'), get_string('max_users_help', 'languagelab'), '25', PARAM_INT));
 $settings->add(new admin_setting_configcheckbox('languagelab_stealthMode', get_string('stealthMode', 'languagelab'), get_string('stealthMode_help', 'languagelab'), '0', 1, 0));
 $settings->add(new admin_setting_configtext('languagelab_adapter_server', get_string('adapter_server', 'languagelab'), get_string('adapter_server_help', 'languagelab'), '', PARAM_TEXT));
 $settings->add(new admin_setting_configtext('languagelab_adapter_file', get_string('adapter_file', 'languagelab'), get_string('adapter_file_help', 'languagelab'), 'adapter', PARAM_TEXT));
@@ -31,36 +30,5 @@ $settings->add(new admin_setting_configtext('languagelab_secondsRefreshHistory',
 $settings->add(new admin_setting_configtext('languagelab_secondsRefreshClassmonitor', get_string('secondsRefreshClassmonitor', 'languagelab'), get_string('secondsRefreshClassmonitor_help', 'languagelab'), '5000', PARAM_INT));
 $settings->add(new admin_setting_configtext('languagelab_secondsRefreshStudentView', get_string('secondsRefreshStudentView', 'languagelab'), get_string('secondsRefreshStudentView_help', 'languagelab'), '5000', PARAM_INT));
 
-
-/*
- STILL WORK TODO with this page... 
- The idea: replace all
-$list_settings = array();
-$list_settings[] = 'red5serverprotocol';
-$list_settings[] = 'red5server';
-$list_settings[] = 'red5serverfolder';
-$list_settings[] = 'folder';
-$list_settings[] = 'prefix';
-$list_settings[] = 'max_users';
-$list_settings[] = 'stealthMode';
-$list_settings[] = 'adapter_server';
-$list_settings[] = 'adapter_file';
-$list_settings[] = 'adapter_access';
-$list_settings[] = 'salt';
-$list_settings[] = 'secondsRefreshHistory';
-$list_settings[] = 'secondsRefreshClassmonitor';
-$list_settings[] = 'secondsRefreshStudentView';
-
-$title = '';
-$description = '';
-foreach ($list_settings as $settingname)
-{
-    $title .= 'languagelab_' . $settingname . ' ';
-    $description .= get_string($settingname, 'languagelab') . '<br>';
-    $description .= get_string($settingname . '_help', 'languagelab') . '<br>';
-}
-
-$settings->add(new admin_setting_heading('languagelab_header', '<span style="display:none;">' . $title . '</span>', '<span style="display:none;">' . $description . '</span>'));
-$redirect = $CFG->wwwroot . '/mod/languagelab/admin_settings.php';
-$settings->add(new admin_setting_configtext('languagelab_redirect', '<script type="text/javascript">window.location.href ="' . $redirect . '"</script>', 'You should be redirected to <a href="' . $redirect . '">' . $redirect . '</a>. Click on the link if you are not redirected automatically...', '', PARAM_RAW));
-*/
+//Removed parameters since they are not used
+//$settings->add(new admin_setting_configtext('languagelab_max_users', get_string('max_users', 'languagelab'), get_string('max_users_help', 'languagelab'), '25', PARAM_INT));
