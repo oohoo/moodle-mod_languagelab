@@ -106,7 +106,7 @@ function languagelab_add_instance($languagelab, $mform = null)
         $filename = $mform->get_new_filename('master_track');
         if ($filename !== false)
         {
-            $data = $mform->get_file_content('master_track');
+            $data = base64_encode($mform->get_file_content('master_track'));
 
             $filename = $CFG->languagelab_folder . '/' . $CFG->languagelab_prefix . 'mastertrack_' . rand(10000000, 99999999);
             languagelab_upload_mp3_file($data, $filename . '.mp3');
@@ -203,7 +203,7 @@ function languagelab_update_instance($languagelab, $mform = null)
             if ($filename !== false)
             {
 
-                $data = $mform->get_file_content('master_track');
+                $data = base64_encode($mform->get_file_content('master_track'));
 
                 $filename = $CFG->languagelab_folder . '/' . $CFG->languagelab_prefix . 'mastertrack_' . rand(10000000, 99999999);
                 languagelab_upload_mp3_file($data, $filename . '.mp3');
