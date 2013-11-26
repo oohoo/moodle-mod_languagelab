@@ -851,7 +851,7 @@ function languagelab_reset_userdata($data)
  * Execute a CURL Action on the adapter
  * @global stdClass $CFG
  * @param string $action The name of the action to perform
- * @param string $params The string of params to send to the adapter, like q=myfile.mp3&s=myfile2.mp3
+ * @param array/string $params The string of params to send to the adapter, like q=myfile.mp3&s=myfile2.mp3
  * @return string return the result of the call
  */
 function languagelab_adapter_call($action, $params)
@@ -878,7 +878,16 @@ function languagelab_adapter_call($action, $params)
     //Action convert
     $o = md5($action . $salt);
 
-    $vars = "q=$q&o=$o&$params";
+    if(is_array($params))
+    {
+        $vars = $params;
+        $vars['q'] = $q;
+        $vars['o'] = $o;
+    }
+    else
+    {
+        $vars = "q=$q&o=$o&$params";
+    }
 
     //Send request to red5 server using curl
     $ch = curl_init();

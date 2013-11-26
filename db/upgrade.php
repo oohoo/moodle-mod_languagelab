@@ -493,5 +493,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013112500, 'languagelab');
     }
     
+    if ($oldversion < 2013112600)
+    {
+        //Patch 2 RAP for the mastertrack upload
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013112600, 'languagelab');
+    }
+    
     return;
 }

@@ -474,7 +474,7 @@ function upload_mp3_file($filedata, $pathOnServer)
     //Is the Red5 Adapter Plugin set
     if (isset($CFG->languagelab_adapter_file))
     {
-        $result = languagelab_adapter_call('upload_mp3', "p=$pathOnServer&d=$filedata");
+        $result = languagelab_adapter_call('upload_mp3', array('p'=>$pathOnServer, 'd' => $filedata));
         return $result;
     }
     //*************End RAP********************************************
