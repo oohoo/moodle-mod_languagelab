@@ -500,5 +500,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2013112600, 'languagelab');
     }
     
+    if ($oldversion < 2013112700)
+    {
+        //Patch to force the sort on the students list
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2013112700, 'languagelab');
+    }
+    
     return;
 }

@@ -438,7 +438,7 @@ $(function() {
 
     $("#recordings").jstree(
             {
-                "plugins": ["themes", "json_data", "ui", "search"],
+                "plugins": ["themes", "json_data", "ui", "search", "sort"],
                 "themes": {
                     "theme": "default",
                     "dots": false,
