@@ -52,8 +52,17 @@ $PAGE->set_title($languagelab->name);
 $PAGE->set_heading($course->shortname);
 $PAGE->set_button(update_module_button($cm->id, $course->id, get_string('languagelab', 'languagelab')));
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
-$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_module::instance($cm->id);
+    $contextcourse = context_course::instance($course->id);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+}
 
 //print_object($context);
 // Output starts here

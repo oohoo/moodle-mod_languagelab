@@ -422,7 +422,7 @@ function migrate_all_flv_to_mp3_recording($activityid)
                     //If file must be moved
                     if ($bFileToMove)
                     {
-                        $newpath = $llabFolder . '/' . $activityid . '/' . $prefix . rand(10000000, 99999999);
+                        $newpath = $llabFolder . '/' . $activityid . '/' . $prefix . "_{$submission->userid}_" . rand(10000000, 99999999);
                         echo '...';
                         //Move the file
                         if (move_mp3_recording($path, $newpath) == 1)

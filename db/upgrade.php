@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * *************************************************************************
  * *             OWLL LANGUAGE LAB Version 3 for Moodle 2                 **
@@ -13,7 +13,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die; 
 
 function xmldb_languagelab_upgrade($oldversion = 0)
 {
@@ -505,6 +505,14 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         //Patch to force the sort on the students list
         // languagelab savepoint reached
         upgrade_mod_savepoint(true, 2013112700, 'languagelab');
+    }
+    
+    if ($oldversion < 2014020300)
+    {
+        // Patch for 2.6
+        // Add the due date to the calendar
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014020300, 'languagelab');
     }
     
     return;

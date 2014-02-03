@@ -78,8 +78,17 @@ $PAGE->set_title($languagelab->name);
 $PAGE->set_heading($course->shortname);
 $PAGE->set_button(update_module_button($cm->id, $course->id, get_string('languagelab', 'languagelab')));
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
-$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_module::instance($cm->id);
+    $contextcourse = context_course::instance($course->id);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+}
 
 //Get the fullscreen mode param
 if ($languagelab->fullscreen_student && !has_capability('mod/languagelab:teacherview', $context, null, true))
@@ -108,14 +117,14 @@ echo $OUTPUT->box_start();
 
 
 //Definition of the main variables kept in JS
-echo '<script type="text/javascript">
+echo '
+<script type="text/javascript">
     var playerRecorders = [];
     var playerOptions;
     var userLiveURI;
     var userRecordURI;
-    
 
-    </script>';
+</script>';
 
 $content = file_rewrite_pluginfile_urls($languagelab->description, 'pluginfile.php', $context->id, 'mod_languagelab', 'content', $languagelab->id);
 $formatoptions = array('noclean' => true, 'overflowdiv' => true);
@@ -219,6 +228,7 @@ echo '  var defaultUserPicture = "' . $CFG->wwwroot . '/theme/image.php?image=u/
 //Set the player parameters
 echo '  var rtmpserver = "' . '' . $CFG->languagelab_red5serverprotocol . '://' . $CFG->languagelab_red5server . '/' . $CFG->languagelab_red5serverfolder . '";';
 echo '  var files_prefix = "' . $CFG->languagelab_folder . '/' . $id . '/' . $CFG->languagelab_prefix . '";';
+echo '  var userid = ' .  $USER->id . ';';
 echo '  var urlmasterTrack = "' . $mastertrack . '";';
 echo '  var playeroptionsBtnOk = "' . get_string('playeroptionsBtnOk', 'languagelab') . '";';
 echo '  var useGradebook = ' . (($languagelab->use_grade_book == 1) ? 'true' : 'false') . ';';

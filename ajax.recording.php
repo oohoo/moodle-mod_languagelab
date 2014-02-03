@@ -53,9 +53,17 @@ $available = $languagelab_params->timeavailable < $now && ($now < $languagelab_p
 
 require_login($course, true, $cm);
 
-
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
-$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_module::instance($cm->id);
+    $contextcourse = context_course::instance($course->id);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+}
 
 if (groupmode($course, $cm) == SEPARATEGROUPS)
 {

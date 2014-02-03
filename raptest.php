@@ -23,7 +23,15 @@ require_once 'RAP/version.php';
 require_login(1, false);
 
 global $CFG, $PAGE, $OUTPUT;
-$context = get_context_instance(CONTEXT_SYSTEM);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_system'))
+{
+    $context = context_system::instance();
+}
+else
+{
+    $context = get_context_instance(CONTEXT_SYSTEM);
+}
 
 $PAGE->set_url('/admin/settings.php', array('section' => 'modsettinglanguagelab'));
 $PAGE->set_pagelayout('admin');

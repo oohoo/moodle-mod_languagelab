@@ -74,8 +74,17 @@ $PAGE->set_title($languagelab->name);
 $PAGE->set_heading($course->shortname);
 $PAGE->set_button(update_module_button($cm->id, $course->id, get_string('languagelab', 'languagelab')));
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
-$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_module::instance($cm->id);
+    $contextcourse = context_course::instance($course->id);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
+}
 
 if (groupmode($course, $cm) == SEPARATEGROUPS)
 {
@@ -194,11 +203,8 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
 
     echo '<div id="buttonsMonitor"  class="ui-corner-all">';
     echo '  <span id="searchField"  class="ui-corner-all ui-widget-header" title="' . get_string('filterStudents_help', 'languagelab') . '" >';
-    echo '      <label for="searchStudents">';
-    echo '          ' . get_string('filterStudents', 'languagelab');
-    echo '      </label>';
-    echo '          <input type="text" id="searchStudents" name="searchStudents" class="ui-corner-all" autocomplete="off"/>';
-    echo '</span>';
+    echo '          <input type="text" id="searchStudents" name="searchStudents" class="ui-corner-all" autocomplete="off" placeholder="' . get_string('filterStudents', 'languagelab') . '"/>';
+    echo '  </span>';
     echo '  <button id="micConfig" class="ui-corner-all">' . get_string('micConfig', 'languagelab') . '</button>';
     echo '  <button id="stealth" class="ui-corner-all" title="' . get_string('stealthMode_help', 'languagelab') . '">' . get_string('stealth', 'languagelab') . ' "<span class="status">' . get_string('stealthInactive', 'languagelab') . '</span>"</button>';
     echo '  <button id="speakToClass" class="ui-corner-all" title="' . get_string('speakToClasshelp', 'languagelab') . '">' . get_string('speakToClass', 'languagelab') . '</button>';

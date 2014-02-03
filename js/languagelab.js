@@ -222,7 +222,7 @@ function playerrecorder_ready_playerRecorderStudent()
 {
     //If Tmode, not publish a live feed
     var tmode = (typeof(teacherMode) != 'undefined' && teacherMode == true);
-    playerRecorders['playerRecorderStudent'].set_sPrefixFiles(files_prefix);
+    playerRecorders['playerRecorderStudent'].set_sPrefixFiles(files_prefix + '_' + userid + '_');
     playerRecorders['playerRecorderStudent'].setVideoMode(videoMode);
     playerRecorders['playerRecorderStudent'].init_rtmpConnection(rtmpserver, !tmode);
 }

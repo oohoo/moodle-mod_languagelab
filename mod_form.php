@@ -177,7 +177,7 @@ HERE;
         $mform->addRule('name', null, 'required', null, 'client');
 
         $mform->addElement('editor', 'content', get_string('description', 'languagelab'), null, $editoroptions);
-        $mform->addElement('static', 'txt', '', '<div id="descrLabLang"></div>');
+        $mform->addElement('static', 'txt', '', '<div id="descrLabLang" style="width: auto;"></div>');
 
         $mform->addElement('static', 'master_track_recorder', get_string('master_track_recorder', 'languagelab'), $recorder);
         $mform->addHelpButton('master_track_recorder', 'master_track_recorder', 'languagelab');

@@ -69,7 +69,16 @@ function languagelab_add_instance($languagelab, $mform = null)
 
     $draftitemid = $languagelab->content['itemid'];
     $cmid = $languagelab->coursemodule;
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+
+    //Replace get_context_instance by the class for moodle 2.6+
+    if (class_exists('context_module'))
+    {
+        $context = context_module::instance($cmid);
+    }
+    else
+    {
+        $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    }
     //Remove once re-implemented
     $languagelab->recording_timelimit = 0;
     $languagelab->contentformat = $languagelab->content['format'];
@@ -136,13 +145,24 @@ function languagelab_add_instance($languagelab, $mform = null)
     // we need to use context now, so we need to make sure all needed info is already in db
     $DB->set_field('course_modules', 'instance', $languagelab->id, array('id' => $cmid));
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    //Replace get_context_instance by the class for moodle 2.6+
+    if (class_exists('context_module'))
+    {
+        $context = context_module::instance($cmid);
+    }
+    else
+    {
+        $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    }
     $editoroptions = languagelab_get_editor_options($context);
     if ($draftitemid)
     {
         $languagelab->description = file_save_draft_area_files($draftitemid, $context->id, 'mod_languagelab', 'content', $languagelab->id, $editoroptions, $languagelab->description);
         $DB->update_record('languagelab', $languagelab);
     }
+    
+    //Update the student calendar
+    languagelab_update_calendar($languagelab);
 
     //Create the folder on the RTMP server
     languagelab_adapter_call('create_folder', 's=' . $CFG->languagelab_folder . '/' . $cmid);
@@ -161,9 +181,17 @@ function languagelab_add_instance($languagelab, $mform = null)
 function languagelab_update_instance($languagelab, $mform = null)
 {
     global $CFG, $DB;
-    
+
     $cmid = $languagelab->coursemodule;
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    //Replace get_context_instance by the class for moodle 2.6+
+    if (class_exists('context_module'))
+    {
+        $context = context_module::instance($cmid);
+    }
+    else
+    {
+        $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    }
     $draftitemid = $languagelab->content['itemid'];
     $languagelab->contentformat = $languagelab->content['format'];
     $languagelab->description = $languagelab->content['text'];
@@ -246,13 +274,24 @@ function languagelab_update_instance($languagelab, $mform = null)
         languagelab_update_grades($languagelab, 0, false);
     }
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    //Replace get_context_instance by the class for moodle 2.6+
+    if (class_exists('context_module'))
+    {
+        $context = context_module::instance($cmid);
+    }
+    else
+    {
+        $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    }
     $editoroptions = languagelab_get_editor_options($context);
     if ($draftitemid)
     {
         $languagelab->description = file_save_draft_area_files($draftitemid, $context->id, 'mod_languagelab', 'content', $languagelab->id, $editoroptions, $languagelab->description);
         $DB->update_record('languagelab', $languagelab);
     }
+    
+    //Update the student calendar
+    languagelab_update_calendar($languagelab);
 
     //Create the folder on the RTMP server
     languagelab_adapter_call('create_folder', 's=' . $CFG->languagelab_folder . '/' . $cmid);
@@ -878,7 +917,7 @@ function languagelab_adapter_call($action, $params)
     //Action convert
     $o = md5($action . $salt);
 
-    if(is_array($params))
+    if (is_array($params))
     {
         $vars = $params;
         $vars['q'] = $q;
@@ -943,4 +982,64 @@ function languagelab_get_previous_next_lab_url($ll_id, $getprevious = true)
         $url = $next->get_url();
     }
     return $url;
+}
+
+/**
+ * Update the calendar entries for this languagelab.
+ *
+ * @param stdClass $languagelab The language lab instance
+ * @return bool
+ */
+function languagelab_update_calendar($languagelab)
+{
+    global $DB, $CFG;
+    require_once($CFG->dirroot . '/calendar/lib.php');
+
+    if (class_exists('calendar_event') && $languagelab->timedue)
+    {
+        $event = new stdClass();
+
+        $params = array('modulename' => 'languagelab', 'instance' => $languagelab->id);
+        $event->id = $DB->get_field('event', 'id', $params);
+        $event->name = $languagelab->name;
+        $event->timestart = $languagelab->timedue;
+
+        // Convert the links to pluginfile. It is a bit hacky but at this stage the files
+        // might not have been saved in the module area yet.
+        $intro = $languagelab->description;
+        if ($draftid = file_get_submitted_draft_itemid('introeditor'))
+        {
+            $intro = file_rewrite_urls_to_pluginfile($intro, $draftid);
+        }
+
+        // We need to remove the links to files as the calendar is not ready
+        // to support module events with file areas.
+        $intro = strip_pluginfile_content($intro);
+        $event->description = array(
+            'text' => $intro,
+            'format' => $languagelab->contentformat
+        );
+
+        if ($event->id)
+        {
+            $calendarevent = calendar_event::load($event->id);
+            $calendarevent->update($event);
+        }
+        else
+        {
+            unset($event->id);
+            $event->courseid = $languagelab->course;
+            $event->groupid = 0;
+            $event->userid = 0;
+            $event->modulename = 'languagelab';
+            $event->instance = $languagelab->id;
+            $event->eventtype = 'due';
+            $event->timeduration = 0;
+            calendar_event::create($event);
+        }
+    }
+    else
+    {
+        $DB->delete_records('event', array('modulename' => 'languagelab', 'instance' => $languagelab->id));
+    }
 }

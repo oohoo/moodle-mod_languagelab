@@ -48,7 +48,15 @@ else
     error('You must specify a course_module ID or an instance ID');
 }
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_module::instance($cm->id);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+}
 
 //************************Get teacher information*****************************************
 require_login($course, true, $cm); //Needed to gather proper course language used
