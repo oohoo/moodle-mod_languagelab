@@ -291,7 +291,10 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '      ' . get_string('classmonitor', 'languagelab');
     echo '      </button>';
     echo '  </div>';
-    echo '  <div id="connectionScreen" class="ui-widget-overlay"><img src="pix/ajax-loader.gif" />&nbsp;Connecting to server ...</div>';
+    echo '  <div id="connectionScreen" class="overlay-screen ui-widget-overlay"><img src="pix/ajax-loader.gif" />&nbsp;Connecting to server ...</div>';
+    echo '  <div id="overlay" class="overlay-screen ui-widget-overlay" style="display: none;"></div>';
+    echo '  <div id="no-cam" class="overlay-screen" style="display: none;"><img src="pix/missing-camera-ico.png" />&nbsp;' . get_string('error_missing_camera', 'languagelab') . '</div>';
+    echo '  <div id="no-mic" class="overlay-screen" style="display: none;"><img src="pix/missing-microphone-ico.png" />&nbsp;' . get_string('error_missing_microphone', 'languagelab') . '</div>';
 
     //RECORDINGS
     echo '  <div class="blockRecordings">';
@@ -472,7 +475,10 @@ else
     echo '      ' . get_string('raiseHand', 'languagelab');
     echo '      </button>';
     echo '  </div>';
-    echo '  <div id="connectionScreen" class="ui-widget-overlay"><img src="pix/ajax-loader.gif" />&nbsp;' . get_string('connectiongServer', 'languagelab') . '</div>';
+    echo '  <div id="connectionScreen" class="overlay-screen ui-widget-overlay"><img src="pix/ajax-loader.gif" />&nbsp;' . get_string('connectiongServer', 'languagelab') . '</div>';
+    echo '  <div id="overlay" class="overlay-screen ui-widget-overlay" style="display: none;"></div>';
+    echo '  <div id="no-cam" class="overlay-screen" style="display: none;"><img src="pix/missing-camera-ico.png" />&nbsp;' . get_string('error_missing_camera', 'languagelab') . '</div>';
+    echo '  <div id="no-mic" class="overlay-screen" style="display: none;"><img src="pix/missing-microphone-ico.png" />&nbsp;' . get_string('error_missing_microphone', 'languagelab') . '</div>';
 
     echo '  <div class="blockCurrentRecording ui-corner-all">';
     echo '      <h3 class="titleRecording ui-widget-header ui-corner-all">' . get_string('titleRecording', 'languagelab');

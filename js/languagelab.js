@@ -21,7 +21,7 @@ YUI().use('node', function(Y)
     {
         var block = null;
         var msg = '';
-        if (typeof (teacherMode) != 'undefined')
+        if (typeof teacherMode !== 'undefined')
         {
             block = Y.one("#languageLabTeacher");
         }
@@ -30,26 +30,26 @@ YUI().use('node', function(Y)
             block = Y.one("#languageLabStudent");
         }
         //Check if jquery is here
-        if (typeof jQuery == 'undefined')
+        if (typeof jQuery === 'undefined')
         {
             msg = msg + 'JQuery is not loaded! Please check with your administrator! It could be a conflict with librairies in your theme!<br/>';
         }
         else
         {
             //Jquery is here now check jquery UI
-            if (typeof jQuery.ui == 'undefined')
+            if (typeof jQuery.ui === 'undefined')
             {
                 msg = msg + 'JQuery UI is not loaded! Please check with your administrator! Generally it is when you have jQuery in your theme librairy. Please add a condition to not include your theme jQuery for the Language Lab (Example of code condition: "if (typeof jQuery == \'undefined\'){//DISPLAY THE JQUERY OF THE THEME}")<br/>';
             }
             else
             {
                 //Check if the slider is available
-                if (typeof jQuery.ui.slider == 'undefined')
+                if (typeof jQuery.ui.slider === 'undefined')
                 {
                     msg = msg + 'JQuery UI is not correctly loaded! Please check with your administrator! Generally it is when you have jQuery UI in your theme librairy without all UI functionalities. Please add a condition to not include your theme jQuery for the Language Lab (Example of code condition: "if (typeof jQuery.ui == \'undefined\'){//DISPLAY THE JQUERY UI OF THE THEME}")<br/>';
                 }
                 //Jquery & UI are here now check jstree
-                if (typeof jQuery.jstree == 'undefined')
+                if (typeof jQuery.jstree === 'undefined')
                 {
                     msg = msg + 'Jstree is not correctly loaded! Please check with your administrator! Generally it is when you have jQuery in your theme librairy and it erase the previous include of the Jquery. Please add a condition to not include your theme jQuery for the Language Lab (Example of code condition: "if (typeof jQuery == \'undefined\'){//DISPLAY THE JQUERY OF THE THEME}")<br/>';
                 }
@@ -421,6 +421,25 @@ function selectPreviousNode()
             $("#recordings").jstree("select_node", $(this));
         }
     });
+}
+
+/**
+ * The camera is not detected
+ */
+function no_camera_detected()
+{
+    $("#connectionScreen").fadeOut();
+    $("#overlay").fadeIn();
+    $("#no-cam").fadeIn();
+}
+/**
+ * The microphone is not detected
+ */
+function no_mic_detected()
+{
+    $("#connectionScreen").fadeOut();
+    $("#overlay").fadeIn();
+    $("#no-mic").fadeIn();
 }
 
 $(function() {
