@@ -180,12 +180,14 @@ foreach ($recordings as $recording)
         $child->metadata->type = "feedback";
         $child->metadata->title = $child->data->title;
         $child->metadata->recURI = $childnode->path;
+        $child->metadata->mastertrack = '';
         $child->metadata->lastUpdate = formatTimeSince($childnode->timemodified);
         $child->metadata->author = fullname($teacher);
         $child->metadata->portrait = $teacherpicture;
         $child->metadata->tMessage = $childnode->message;
         $child->metadata->recordingid = $childnode->id;
         $child->metadata->studentid = $studentid;
+        $child->metadata->downloadName = format_name_download(fullname($teacher) . '_' . $child->data->title . '_' . $recording->id);
         if ($selectedelem != 0 && $selectedelem == $childnode->id)
         {
             $child->metadata->selected = true;

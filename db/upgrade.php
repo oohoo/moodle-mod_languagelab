@@ -515,5 +515,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014020300, 'languagelab');
     }
     
+    if ($oldversion < 2014022500)
+    {
+        // Patch a problem with the feedbacks
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014022500, 'languagelab');
+    }
+    
     return;
 }

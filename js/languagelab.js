@@ -21,7 +21,7 @@ YUI().use('node', function(Y)
     {
         var block = null;
         var msg = '';
-        if (typeof(teacherMode) != 'undefined')
+        if (typeof (teacherMode) != 'undefined')
         {
             block = Y.one("#languageLabTeacher");
         }
@@ -92,9 +92,9 @@ $(function()
     {
         var confirm = false;
         //If student
-        if (typeof(teacherMode) === 'undefined' || teacherMode === false)
+        if (typeof (teacherMode) === 'undefined' || teacherMode === false)
         {
-            if (typeof(userRecordURI) !== 'undefined' && userRecordURI !== '')
+            if (typeof userRecordURI !== 'undefined' && userRecordURI !== '')
             {
                 confirm = '';
             }
@@ -129,9 +129,9 @@ function getFlashMovieObject(movieName)
 //Hide or display the player options
 function toggleDisplayOptions()
 {
-    if (document.getElementById('divPlayerOptions').style.position == 'relative')
+    if (document.getElementById('divPlayerOptions').style.position === 'relative')
     {
-
+        //Do nothing...
     }
     else
     {
@@ -150,7 +150,7 @@ function getUserLiveURI(liveURI)
 function getUserRecordURI(recordURI)
 {
     //If mode Masterstrack
-    if (playerRecorders['playerRecorderMastertrack'] != undefined)
+    if (typeof playerRecorders['playerRecorderMastertrack'] !== 'undefined')
     {
         $('input[name="master_track_recording"]').val(recordURI);
     }
@@ -160,7 +160,7 @@ function getUserRecordURI(recordURI)
 //Run this function when player is ready
 function playeroptions_ready()
 {
-    if (playerOptions == undefined)
+    if (typeof playerOptions === 'undefined')
     {
         playerOptions = getFlashMovieObject('playerOptions');
         if (playerOptions.microphoneEnabled())
@@ -198,8 +198,8 @@ function playeroptions_open()
             $(this).dialog('widget').prev().css('position', 'absolute');
             $(this).dialog('widget').prev().outerWidth(rc.outerWidth());
             $(this).dialog('widget').prev().outerHeight(rc.outerHeight());
-            $(this).dialog('widget').prev().css('top',rc.offset().top);
-            $(this).dialog('widget').prev().css('left',rc.offset().left);
+            $(this).dialog('widget').prev().css('top', rc.offset().top);
+            $(this).dialog('widget').prev().css('left', rc.offset().left);
         }
     }).dialog('widget').css('z-index', 3001);
 }
@@ -207,11 +207,11 @@ function playeroptions_open()
 //Run this function when player is ready
 function playerrecorder_ready(idPlayer)
 {
-    if (playerRecorders[idPlayer] == undefined)
+    if (typeof playerRecorders[idPlayer] === 'undefined')
     {
         playerRecorders[idPlayer] = getFlashMovieObject(idPlayer);
     }
-    if (this['playerrecorder_ready_' + idPlayer] != undefined)
+    if (typeof this['playerrecorder_ready_' + idPlayer] !== 'undefined')
     {
         this['playerrecorder_ready_' + idPlayer].apply(this, []);
     }
@@ -221,7 +221,7 @@ function playerrecorder_ready(idPlayer)
 function playerrecorder_ready_playerRecorderStudent()
 {
     //If Tmode, not publish a live feed
-    var tmode = (typeof(teacherMode) != 'undefined' && teacherMode == true);
+    var tmode = (typeof teacherMode !== 'undefined' && teacherMode === true);
     playerRecorders['playerRecorderStudent'].set_sPrefixFiles(files_prefix + '_' + userid + '_');
     playerRecorders['playerRecorderStudent'].setVideoMode(videoMode);
     playerRecorders['playerRecorderStudent'].init_rtmpConnection(rtmpserver, !tmode);
@@ -230,7 +230,7 @@ function playerrecorder_ready_playerRecorderStudent()
 //Init the connection with the player
 function playerrecorder_ready_playerRecorderTeacher()
 {
-    playerRecorders['playerRecorderTeacher'].set_sPrefixFiles(files_prefix);
+    playerRecorders['playerRecorderTeacher'].set_sPrefixFiles(files_prefix + '_feedback_' + userid + '_');
     playerRecorders['playerRecorderTeacher'].setVideoMode(videoMode);
     playerRecorders['playerRecorderTeacher'].init_rtmpConnection(rtmpserver, false);
 }
@@ -238,7 +238,7 @@ function playerrecorder_ready_playerRecorderTeacher()
 //Init the connection with the player
 function playerrecorder_ready_playerRecorderMastertrack()
 {
-    playerRecorders['playerRecorderMastertrack'].set_sPrefixFiles(files_prefix);
+    playerRecorders['playerRecorderMastertrack'].set_sPrefixFiles(files_prefix + '_mastertrack_');
     playerRecorders['playerRecorderMastertrack'].init_rtmpConnection(rtmpserver, false);
 }
 
@@ -247,13 +247,13 @@ function RTMPServerReady(idPlayer)
 {
     $("#connectionScreen").fadeOut();
 
-    if (typeof(teacherMode) != 'undefined')
+    if (typeof teacherMode !== 'undefined')
     {
         //TEACHER MODE
     }
     else
     {
-        if (idPlayer == 'playerRecorderMastertrack') //ACTIVITY EDIT MODE
+        if (idPlayer === 'playerRecorderMastertrack') //ACTIVITY EDIT MODE
         {
             if (newRecording)
             {
@@ -270,16 +270,6 @@ function RTMPServerReady(idPlayer)
             $("#newRecording").click();
         }
     }
-}
-
-//Set the player for a new feedback
-function newFeedback()
-{
-    $("#titleFeedback").val(reFeedBack + $("#titleRecording").val());
-    playerRecorders['playerRecorderTeacher'].setPlayerMode(2);
-    $("#descriptionFeedback").val('');
-    $("#submitFeedback").removeAttr('disabled');
-    $("#submitFeedback").removeClass('btnDisabled');
 }
 
 //This function refresh the history only if the data changed (based on a checksum)
@@ -472,7 +462,7 @@ $(function() {
         selectedElem = data.rslt.obj.data('recordingid');
         selectedUser = data.rslt.obj.data('studentid');
         //TeacherMode
-        var tMode = (typeof(teacherMode) != 'undefined' && teacherMode == true);
+        var tMode = (typeof teacherMode !== 'undefined' && teacherMode == true);
 
         var elemType = $(".jstree-clicked", "#recordings").parent().data('type');
 
@@ -531,6 +521,10 @@ $(function() {
                     $("#nameTeacher").text('');
 
                     playerRecorders['playerRecorderTeacher'].setPlayerMode(2);
+                    userRecordURI = '';
+                    playerRecorders['playerRecorderTeacher'].refreshRecordFileName();
+                    playerRecorders['playerRecorderTeacher'].resetNetStreams();
+                    
                     $("#titleFeedback").val(reFeedBack + data.rslt.obj.data('title'));
                     $("#descriptionFeedback").val('');
                     $("#titleFeedback").removeAttr('readonly');
@@ -612,7 +606,7 @@ $(function() {
 
             playerRecorders['playerRecorderStudent'].resetNetStreams();
             playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('recURI'), false, videoMode);
-            if (data.rslt.obj.data('mastertrack') != '')
+            if (data.rslt.obj.data('mastertrack') !== '')
             {
                 playerRecorders['playerRecorderStudent'].addURIToNetStreams(data.rslt.obj.data('mastertrack'));
             }
@@ -650,7 +644,7 @@ $(function() {
         var canBeDeleted = false;
         var elemType = $(".jstree-clicked", "#recordings").parent().data('type');
 
-        if (elemType == 'record' || (typeof(teacherMode) != undefined && teacherMode == true && elemType == 'feedback'))
+        if (elemType == 'record' || (typeof teacherMode !== 'undefined' && teacherMode == true && elemType == 'feedback'))
         {
             canBeDeleted = true;
         }
@@ -683,7 +677,7 @@ $(function() {
                                     $("#newRecording").removeClass('btnDisabled');
                                     $("#refreshHistory").click();
                                     $("#newRecording").click();
-                                    if (typeof(teacherMode) != 'undefined' && teacherMode == true)
+                                    if (typeof teacherMode !== 'undefined' && teacherMode == true)
                                     {
                                         $("#gradeInactif").show();
 
@@ -950,7 +944,7 @@ $(function() {
     });
 
     //If the gradebook is used, delete the message
-    if (typeof(useGradebook) != 'undefined' && useGradebook)
+    if (typeof useGradebook !== 'undefined' && useGradebook)
     {
         $("#gradeInactif").text('');
     }
@@ -984,17 +978,17 @@ $(function() {
                 + "&rand=" + Math.random(),
                 function(data)
                 {
-
+                    //Nothing to do with the result
                 });
     });
 
-    if (typeof(secondsRefreshHistory) != 'undefined')
+    if (typeof secondsRefreshHistory !== 'undefined')
     {
         //SET TIMERS FOR UPDATE CONTENT OF THE HISTORY
         setTimeout('autoRefreshHistory()', secondsRefreshHistory);
     }
 
-    if (typeof(teacherMode) == 'undefined' && typeof(secondsRefreshStudentView) != 'undefined')
+    if (typeof teacherMode === 'undefined' && typeof (secondsRefreshStudentView) != 'undefined')
     {
         setTimeout('autoRefreshStudentLive()', secondsRefreshStudentView);
     }
