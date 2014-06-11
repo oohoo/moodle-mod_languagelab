@@ -529,5 +529,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014022501, 'languagelab');
     }
     
+    if ($oldversion < 2014061100)
+    {
+        // Patch a probleme with the calendar update and Moodle < 2.6
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014061100, 'languagelab');
+    }
+    
     return;
 }

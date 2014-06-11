@@ -1014,7 +1014,22 @@ function languagelab_update_calendar($languagelab)
 
         // We need to remove the links to files as the calendar is not ready
         // to support module events with file areas.
-        $intro = strip_pluginfile_content($intro);
+        // Function strip_pluginfile_content appears in moodle 2.6.
+        if(function_exists('strip_pluginfile_content'))
+        {
+            $intro = strip_pluginfile_content($intro);
+        }
+        else
+        {
+            //Do the strip_pluginfile_content manually
+            $baseurl = '@@PLUGINFILE@@';
+            // Looking for something like < .* "@@pluginfile@@.*" .* >
+            $pattern = '$<[^<>]+["\']' . $baseurl . '[^"\']*["\'][^<>]*>$';
+            $stripped = preg_replace($pattern, '', $intro);
+            // Use purify html to rebalence potentially mismatched tags and generally cleanup.
+            $intro = purify_html($stripped);
+        }
+        
         $event->description = array(
             'text' => $intro,
             'format' => $languagelab->contentformat
