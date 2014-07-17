@@ -536,5 +536,13 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014061100, 'languagelab');
     }
     
+    if ($oldversion < 2014071700)
+    {
+        // Update for Moodle 2.7
+        // Patch on JSTREE
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014071700, 'languagelab');
+    }
+    
     return;
 }

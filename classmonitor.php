@@ -65,7 +65,15 @@ $PAGE->requires->js('/mod/languagelab/js/languagelab-classmonitor.js', true);
 
 $PAGE->requires->css('/mod/languagelab/style-classmonitor.css');
 
-add_to_log($course->id, 'languagelab', 'view', "classmonitor.php?id=$cm->id", $languagelab->name, $cm->id);
+//Only for Moodle < 2.7
+if(!function_exists('moodle_major_version') || moodle_major_version() < '2.7')
+{
+    add_to_log($course->id, 'languagelab', 'view', "classmonitor.php?id=$cm->id", $languagelab->name, $cm->id);
+}
+else
+{
+    //TODO Log for Moodle 2.7+
+}
 
 /// Print the page header
 

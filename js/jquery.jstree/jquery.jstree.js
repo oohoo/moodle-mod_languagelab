@@ -4252,8 +4252,8 @@
 								.end()
 							.end()
 						.end()
-					.end()
-					.find("li.jstree-leaf")
+					.end();
+					obj.find("li.jstree-leaf")
 						.children("ins.jstree-icon").removeClass(s.closed + " ui-icon " + s.opened).end()
 						.children("a").addClass(s.item)
 							.children("ins.jstree-icon").addClass("ui-icon")

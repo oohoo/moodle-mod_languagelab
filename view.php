@@ -69,7 +69,15 @@ if ($embed)
     $PAGE->requires->css('/mod/languagelab/style-embed.css');
 }
 
-add_to_log($course->id, 'languagelab', 'view', "view.php?id=$cm->id", $languagelab->name, $cm->id);
+//Only for Moodle < 2.7
+if(!function_exists('moodle_major_version') || moodle_major_version() < '2.7')
+{
+    add_to_log($course->id, 'languagelab', 'view', "view.php?id=$cm->id", $languagelab->name, $cm->id);
+}
+else
+{
+    //TODO Log for Moodle 2.7+
+}
 
 /// Print the page header
 
@@ -224,7 +232,7 @@ echo '  var errorTitle = "' . get_string('errorTitle', 'languagelab') . '";';
 echo '  var recordingRequired = "' . get_string('recordingRequired', 'languagelab') . '";';
 echo '  var reFeedBack = "' . get_string('reFeedBack', 'languagelab') . '";';
 echo '  var gradeStudentWithRecordings = "' . get_string('gradeStudentWithRecordings', 'languagelab') . '";';
-echo '  var defaultUserPicture = "' . $CFG->wwwroot . '/theme/image.php?image=u/f2";';
+echo '  var defaultUserPicture = "' . $OUTPUT->pix_url('u/f2')->out(false) . '";';
 //Set the player parameters
 echo '  var rtmpserver = "' . '' . $CFG->languagelab_red5serverprotocol . '://' . $CFG->languagelab_red5server . '/' . $CFG->languagelab_red5serverfolder . '";';
 echo '  var files_prefix = "' . $CFG->languagelab_folder . '/' . $id . '/' . $CFG->languagelab_prefix . '";';
@@ -344,12 +352,12 @@ if (has_capability('mod/languagelab:teacherview', $context, null, true))
     echo '  <div class="blockStudentRecording ui-corner-all">';
     echo '      <h3 class="titleStudentRecording ui-widget-header ui-corner-all">' . get_string('student_recording', 'languagelab') . '</h3>';
     echo '          <div id="avatarStudent">';
-    echo '              <img id="imgStudent" src="' . $CFG->wwwroot . '/theme/image.php?image=u/f2"/>';
+    echo '              <img id="imgStudent" src="' . $OUTPUT->pix_url('u/f2')->out(false). '"/>';
     echo '              <span id="recordAgoStudent"></span></br>';
     echo '              <span id="nameStudent"></span>';
     echo '          </div>'; //END avatarStudent
     echo '          <div id="avatarTeacher">';
-    echo '              <img id="imgTeacher" src="' . $CFG->wwwroot . '/theme/image.php?image=u/f2"/>';
+    echo '              <img id="imgTeacher" src="' . $OUTPUT->pix_url('u/f2')->out(false) . '"/>';
     echo '              <span id="recordAgoTeacher"></span></br>';
     echo '              <span id="nameTeacher"></span>';
     echo '          </div>'; //END avatarTeacher

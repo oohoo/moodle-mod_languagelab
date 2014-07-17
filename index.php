@@ -26,7 +26,15 @@ if (!$course = $DB->get_record('course', array('id' => $id)))
 
 require_course_login($course);
 
-add_to_log($course->id, 'languagelab', 'view all', "index.php?id=$course->id", '');
+//Only for Moodle < 2.7
+if(!function_exists('moodle_major_version') || moodle_major_version() < '2.7')
+{
+    add_to_log($course->id, 'languagelab', 'view all', "index.php?id=$course->id", '');
+}
+else
+{
+    //TODO Log for Moodle 2.7+
+}
 
 /// Print the header
 
