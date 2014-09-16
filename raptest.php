@@ -49,7 +49,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
     {
         if ($CFG->languagelab_adapter_file == '' || $CFG->languagelab_adapter_server == '')
         {
-            echo 'Some configuration is missing. Have you completed the fields languagelab_adapter_server and languagelab_adapter_file in the Language Lab settings ?';
+            echo 'Some configuration is missing. Have you filled in the fields languagelab_adapter_server and languagelab_adapter_file in the Language Lab settings ?';
         }
         else
         {
@@ -109,7 +109,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
                 //Check the version of the adapter now
                 //Create the folder on the RTMP server
                 $adapter_version = languagelab_adapter_call('get_version', '');
-                echo 'Checking the version of the RAP files...<br/>';
+                echo 'Checking the version of the RAP...<br/>';
                 if ($adapter_version != $CFG->languagelab_rap_version)
                 {
                     echo 'The version of the RAP files is not the one expected by the language lab. Please check you have updated the version or your RAP files.';
@@ -118,7 +118,7 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
                 }
                 else
                 {
-                    echo 'RAP files version OK.';
+                    echo 'RAP version version OK.';
                 }
             }
             echo '<br/>--------------------------------------------------------------<br/>';
@@ -138,12 +138,12 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
 
             if (!$fp)
             {
-                echo "<br />The Red5 server is not accessible or not started: $errstr ($errno)<br />\n";
+                echo "<br />The streaming server is not accessible or not started: $errstr ($errno)<br />\n";
             }
             else
             {
                 fclose($fp);
-                echo '<br/>The Red5 server looks running and available.';
+                echo '<br/>The streaming server is running and available.';
             }
         }
     }
