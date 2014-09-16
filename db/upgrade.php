@@ -544,5 +544,13 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014071700, 'languagelab');
     }
     
+    if ($oldversion < 2014091600)
+    {
+        // Add few patch for PostgreSQL and for theme compatibility.
+        // Add a migration page for moving files on the streaming server.
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014091600, 'languagelab');
+    }
+    
     return;
 }

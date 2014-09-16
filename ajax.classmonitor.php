@@ -136,7 +136,10 @@ else if ($eventType != '')
     else if ($eventType == 'listened_remove')
     {
         //If the live_add already exists, delete it and don't insert the live remove
-        if ($addListened = $DB->get_record('languagelab_user_event', array('languagelab' => $languagelab->id, 'userid' => $studentid, 'type' => 'listened_add')))
+        //We use a SQL because get_records crashes with postgresql
+        $sql = 'SELECT * FROM {languagelab_user_event} WHERE languagelab = ? AND userid = ? AND ' . $DB->sql_compare_text('type') . ' = ?';
+        if ($addListened = $DB->get_records_sql($sql, array($languagelab->id, $studentid, 'listened_add')))
+        //if ($addListened = $DB->get_record('languagelab_user_event', array('languagelab' => $languagelab->id, 'userid' => $studentid, 'type' => 'listened_add')))
         {
             $DB->delete_records('languagelab_user_event', array('id' => $addListened->id));
             $insertEvent = false;
@@ -280,7 +283,10 @@ else
     $obj->json = $json;
     $obj->hands = array();
     //If there is student who raised the hand
-    if ($handsraised = $DB->get_records('languagelab_user_event', array('languagelab' => $languagelab->id, 'userid' => $USER->id, 'type' => 'raise_hand')))
+    //We use a SQL because get_records crashes with postgresql
+    $sql = 'SELECT * FROM {languagelab_user_event} WHERE languagelab = ? AND userid = ? AND ' . $DB->sql_compare_text('type') . ' = ?';
+    if ($handsraised = $DB->get_records_sql($sql, array($languagelab->id, $USER->id, 'raise_hand')))
+    //if ($handsraised = $DB->get_records('languagelab_user_event', array('languagelab' => $languagelab->id, 'userid' => $USER->id, 'type' => 'raise_hand')))
     {
         foreach ($handsraised as $handRaised)
         {

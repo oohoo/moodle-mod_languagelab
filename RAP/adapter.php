@@ -365,6 +365,71 @@ switch ($serverAction)
         }
 
         break;
+    case md5('move_single' . $salt):
+        $newpath = $_REQUEST['n'];
+        $ext = '';
+        $oldpath = '';
+        $ext = explode(':', $submissions);
+        if(count($ext) == 2)
+        {
+            $oldpath = $ext[1];
+            $ext = '.' . $ext[0];
+        }
+        else
+        {
+            $oldpath = $ext[0];
+            $ext = '.flv';
+        }
+        $newpath = explode(':', $newpath);
+        if(count($newpath) == 2)
+        {
+            $newpath = $newpath[1];
+        }
+        else
+        {
+            $newpath = $newpath[0];
+        }
+        
+        if (file_exists($path . $oldpath . $ext))
+        {
+            $oldfile = $path . $oldpath . $ext;
+            $newfile = $path . $newpath . $ext;
+
+            $folders = explode('/', $newpath);
+            //Delete the last one because it is the file
+            unset($folders[count($folders) - 1]);
+
+            $concatFolders = $path;
+            foreach ($folders as $folder)
+            {
+                $concatFolders .= $folder . '/';
+                if (!file_exists($concatFolders) || !is_dir($concatFolders))
+                {
+                    mkdir($concatFolders, 0777, true);
+                }
+            }
+
+            if (copy($oldfile, $newfile))
+            {
+                unlink($oldfile);
+            }
+
+            //Check if the mp3 file exists
+            if (file_exists($newfile) && is_file($newfile))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else
+        {
+            echo 0;
+        }
+
+        break;
     //Backup a language lab activity
     case md5('backup' . $salt);
         $submissions = json_decode($submissions);

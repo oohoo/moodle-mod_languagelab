@@ -25,6 +25,7 @@ $l = optional_param('l', 0, PARAM_INT);  // languagelab ID
 
 global $CFG, $DB, $PAGE;
 
+
 if ($id)
 {
     $cm = get_coursemodule_from_id('languagelab', $id, 0, false, MUST_EXIST);
@@ -66,6 +67,9 @@ $PAGE->requires->css('/mod/languagelab/style.css');
 $embed = optional_param('embed', false, PARAM_BOOL);
 if ($embed)
 {
+    //Change the layout to embedded
+    $PAGE->set_pagelayout('embedded');
+    //Keep the ccs just in case
     $PAGE->requires->css('/mod/languagelab/style-embed.css');
 }
 

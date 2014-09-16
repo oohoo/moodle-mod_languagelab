@@ -178,6 +178,98 @@ function convert_recording($filePath, $type = 'mp3')
     }
     //*************End RAP********************************************
 }
+/**
+ * Reorder recording
+ * @global type $CFG
+ * @global type $DB
+ * @param type $filePath the file path on the server
+ */
+function reorder_recording_mastertrack($filePath)
+{
+    global $CFG;
+    
+    $prefix = $CFG->languagelab_prefix;
+    $llabFolder = $CFG->languagelab_folder;
+    
+    //Is the Red5 Adapter Plugin set
+    if (isset($CFG->languagelab_adapter_file))
+    {
+        $suffix = '_mastertrack_' . rand(10000000, 99999999);
+        $newpath = "$llabFolder/$prefix$suffix";
+        $filetype = explode(':', $filePath);
+        if(count($filetype) == 2)
+        {
+            $filetype = $filetype[0];
+            $newpath = $filetype . ':' . $newpath;
+        }
+        
+        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath");
+        
+        if($result == 1)
+        {
+            return $newpath;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+    //*************End RAP********************************************
+}
+
+/**
+ * Reorder recording
+ * @global type $CFG
+ * @param type $filePath the file path on the server
+ * @param int $cmid The course module id
+ * @param int $userid The user id
+ * @param boolean $filePath True if feedback file
+ */
+function reorder_recording($filePath, $cmid, $userid, $feedback = false)
+{
+    global $CFG;
+    
+    $prefix = $CFG->languagelab_prefix;
+    $llabFolder = $CFG->languagelab_folder;
+    
+    //Is the Red5 Adapter Plugin set
+    if (isset($CFG->languagelab_adapter_file))
+    {
+        $suffix = '';
+        if($feedback)
+        {
+            $suffix .= "_feedback_";
+        }
+        $suffix .= $userid . '_' . rand(10000000, 99999999);
+        $newpath = "$llabFolder/$cmid/$prefix$suffix";
+        $filetype = explode(':', $filePath);
+        if(count($filetype) == 2)
+        {
+            $filetype = $filetype[0];
+            $newpath = $filetype . ':' . $newpath;
+        }
+        
+        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath");
+        
+        if($result == 1)
+        {
+            return $newpath;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+    //*************End RAP********************************************
+}
 
 /**
  * Convert the file from FLV to MP3
@@ -197,6 +289,151 @@ function move_mp3_recording($oldpath, $newpath)
     //*************End RAP********************************************
 }
 
+
+/**
+ * Rename and move all the recordings from their current place to the new folder / file prefix
+ * @param int $cmid The language lab cm ID. If Null do this on the whole server
+ * @param int $courseid The course ID. If Null do this on the whole server
+ * @global moodle_database $DB
+ * @global std_class $USER
+ * @global std_class $CFG
+ */
+function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
+{
+    global $DB, $USER, $CFG;
+    
+    $activities = array();
+    
+    if (!is_siteadmin($USER))
+    {
+        error('Only administrators can execute this function');
+    }
+    
+    echo "START MIGRATION<br/>";
+    
+    if($cmid != 0)
+    {
+        $cm = get_coursemodule_from_instance('languagelab', $cmid);
+        $activities[] = $DB->get_record('languagelab', array('id' => $cm->instance), '*', MUST_EXIST);
+        
+        echo "ACTIVITY ONLY MIGRATION - ID $cmid<br/>";
+    }
+    else if ($courseid != 0)
+    {
+        $activities = $DB->get_records('languagelab', array('course' => $courseid));
+        
+        echo "COURSE ONLY MIGRATION - COURSE ID $courseid<br/>";
+    }
+    else
+    {
+        echo "ALL ACTIVITIES MIGRATION<br/>";
+        $activities = $DB->get_records('languagelab', null, 'course ASC');
+    }
+    
+    $current_course = null;
+    $ind = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    
+    //Loop on the activities
+    foreach($activities as $languagelab)
+    {
+        $cm = get_coursemodule_from_instance('languagelab', $languagelab->id);
+        
+        if($current_course == null || $current_course->id != $languagelab->course)
+        {
+            if($current_course != null)
+            {
+                echo "END COURSE $current_course->shortname<br/>";
+            }
+            echo "<br/>";
+            
+            $current_course = get_course($languagelab->course);
+            echo "START COURSE $current_course->shortname<br/>";
+        }
+        echo "$ind START ACTIVITY $languagelab->id - $languagelab->name<br/>";
+        
+        if($languagelab->master_track != '')
+        {
+            $updateMastertrack = false;
+            echo "$ind$ind REORDERING MASTERTRACK...<br />";
+            $result = reorder_recording_mastertrack($languagelab->master_track);
+            //Convert the file
+            if ($result !== false)
+            {
+                $languagelab->master_track = $result;
+                echo "$ind$ind REORDER SUCCESSFUL<br />";
+                $updateMastertrack = true;
+            }
+            else
+            {
+                echo "$ind$ind <b>REORDER FAILED</b><br />";
+                $updateMastertrack = false;
+            }
+            
+            if($updateMastertrack)
+            {
+                $DB->update_record('languagelab', $languagelab);
+            }
+        }
+        
+        $recordings = $DB->get_records('languagelab_submissions', array('languagelab' => $languagelab->id, 'parentnode' => ''));
+        foreach($recordings as $recording)
+        {
+            $answers = $DB->get_records('languagelab_submissions', array('languagelab' => $languagelab->id, 'parentnode' => $recording->path));
+            
+            $updateRecording = false;
+            
+            echo "$ind$ind REORDERING RECORDING $recording->id...<br />";
+            $result = reorder_recording($recording->path, $cm->id, $recording->userid);
+            if($result !== false)
+            {
+                $recording->path = $result;
+                echo "$ind$ind REORDER SUCCESSFUL<br />";
+                $updateRecording = true;
+            }
+            else
+            {
+                echo "$ind$ind <b>REORDER FAILED</b><br />";
+                $updateRecording = false;
+            }
+            
+            foreach($answers as $answer)
+            {
+                $updateAnswer = false;
+                
+                echo "$ind$ind$ind REORDERING ANSWER $answer->id...<br />";
+                $result = reorder_recording($answer->path, $cm->id, $recording->userid, true);
+                if($result !== false)
+                {
+                    $answer->path = $result;
+                    echo "$ind$ind$ind REORDER SUCCESSFUL<br />";
+                    $updateAnswer = true;
+                }
+                else
+                {
+                    echo "$ind$ind$ind <b>REORDER FAILED</b><br />";
+                    $updateAnswer = false;
+                }
+                
+                if($updateRecording || $updateAnswer)
+                {
+                    $answer->parentnode = $recording->path;
+                    $DB->update_record('languagelab_submissions', $answer);
+                }
+            }
+            
+            if($updateRecording)
+            {
+                $DB->update_record('languagelab_submissions', $recording);
+            }
+        }
+        
+        echo "$ind END ACTIVITY $languagelab->id - $languagelab->name<br/>";
+        echo "<br/>";
+    }
+    echo "END COURSE $current_course->shortname<br/>";
+    echo "END MIGRATION<br/>";
+}
+
 /**
  * Convert the file from FLV to MP3
  * @global type $CFG
@@ -206,7 +443,7 @@ function move_mp3_recording($oldpath, $newpath)
 function migrate_all_flv_to_mp3_recording($activityid)
 {
     global $CFG, $DB, $USER;
-
+    
     $cm = get_coursemodule_from_id('languagelab', $activityid, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $languagelab = $DB->get_record('languagelab', array('id' => $cm->instance), '*', MUST_EXIST);

@@ -113,6 +113,8 @@ if (has_capability('mod/languagelab:manage', $context, null, true))
                 if ($adapter_version != $CFG->languagelab_rap_version)
                 {
                     echo 'The version of the RAP files is not the one expected by the language lab. Please check you have updated the version or your RAP files.';
+                    echo '<br/>Version expected = ' . $CFG->languagelab_rap_version;
+                    echo '<br/>Version found = ' . $adapter_version;
                 }
                 else
                 {
