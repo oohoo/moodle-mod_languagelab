@@ -365,11 +365,40 @@ switch ($serverAction)
         }
 
         break;
+    case md5('create_folder' . $salt):
+        $folder = $path . $submissions;
+        
+        if (!file_exists($folder) || !is_dir($folder))
+        {
+            mkdir($folder, 0777, true);
+        }
+        if (file_exists($folder) && is_dir($folder))
+        {
+            echo 1;
+        }
+        else
+        {
+            echo 0;
+        }
+        break;
     case md5('move_single' . $salt):
         $newpath = $_REQUEST['n'];
+        $keeporiginal = true;
         $ext = '';
         $oldpath = '';
         $ext = explode(':', $submissions);
+        
+        if(isset($_REQUEST['k']))
+        {
+            if($_REQUEST['k'] == 1)
+            {
+                $keeporiginal = true;
+            }
+            else if($_REQUEST['k'] == 0)
+            {
+                $keeporiginal = false;
+            }
+        }
         if(count($ext) == 2)
         {
             $oldpath = $ext[1];
@@ -411,7 +440,10 @@ switch ($serverAction)
 
             if (copy($oldfile, $newfile))
             {
-                unlink($oldfile);
+                if(!$keeporiginal)
+                {
+                    unlink($oldfile);
+                }
             }
 
             //Check if the mp3 file exists

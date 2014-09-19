@@ -183,8 +183,9 @@ function convert_recording($filePath, $type = 'mp3')
  * @global type $CFG
  * @global type $DB
  * @param type $filePath the file path on the server
+ * @param boolean $keep_originals If true, copy files, else move files
  */
-function reorder_recording_mastertrack($filePath)
+function reorder_recording_mastertrack($filePath, $keep_originals)
 {
     global $CFG;
     
@@ -203,7 +204,7 @@ function reorder_recording_mastertrack($filePath)
             $newpath = $filetype . ':' . $newpath;
         }
         
-        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath");
+        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath&k=$keep_originals");
         
         if($result == 1)
         {
@@ -228,8 +229,9 @@ function reorder_recording_mastertrack($filePath)
  * @param int $cmid The course module id
  * @param int $userid The user id
  * @param boolean $filePath True if feedback file
+ * @param boolean $keep_originals If true, copy files, else move files
  */
-function reorder_recording($filePath, $cmid, $userid, $feedback = false)
+function reorder_recording($filePath, $cmid, $userid, $feedback = false, $keep_originals = true)
 {
     global $CFG;
     
@@ -253,7 +255,7 @@ function reorder_recording($filePath, $cmid, $userid, $feedback = false)
             $newpath = $filetype . ':' . $newpath;
         }
         
-        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath");
+        $result = languagelab_adapter_call('move_single', "s=$filePath&n=$newpath&k=$keep_originals");
         
         if($result == 1)
         {
@@ -294,11 +296,12 @@ function move_mp3_recording($oldpath, $newpath)
  * Rename and move all the recordings from their current place to the new folder / file prefix
  * @param int $cmid The language lab cm ID. If Null do this on the whole server
  * @param int $courseid The course ID. If Null do this on the whole server
+ * @param boolean $keep_originals If yes, the recordings are kept in the old folder (copy). If false, it's moved
  * @global moodle_database $DB
  * @global std_class $USER
  * @global std_class $CFG
  */
-function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
+function migration_all_recordings_new_folder($cmid = 0, $courseid = 0, $keep_originals = true)
 {
     global $DB, $USER, $CFG;
     
@@ -351,11 +354,24 @@ function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
         }
         echo "$ind START ACTIVITY $languagelab->id - $languagelab->name<br/>";
         
+        //Create the folder for the activity if not existing
+        $result = languagelab_adapter_call('create_folder', "s=$CFG->languagelab_folder/$cm->id");
+        
+        echo "$ind$ind Create folder $cm->id...<br/>";
+        if($result == 1)
+        {
+            echo "$ind$ind Create folder Successful<br/>";
+        }
+        else
+        {
+            echo "$ind$ind Create folder FAILED<br/>";
+        }
+        //Create the Master track
         if($languagelab->master_track != '')
         {
             $updateMastertrack = false;
             echo "$ind$ind REORDERING MASTERTRACK...<br />";
-            $result = reorder_recording_mastertrack($languagelab->master_track);
+            $result = reorder_recording_mastertrack($languagelab->master_track, $keep_originals);
             //Convert the file
             if ($result !== false)
             {
@@ -375,6 +391,7 @@ function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
             }
         }
         
+        //Create the recordings
         $recordings = $DB->get_records('languagelab_submissions', array('languagelab' => $languagelab->id, 'parentnode' => ''));
         foreach($recordings as $recording)
         {
@@ -383,7 +400,7 @@ function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
             $updateRecording = false;
             
             echo "$ind$ind REORDERING RECORDING $recording->id...<br />";
-            $result = reorder_recording($recording->path, $cm->id, $recording->userid);
+            $result = reorder_recording($recording->path, $cm->id, $recording->userid, false, $keep_originals);
             if($result !== false)
             {
                 $recording->path = $result;
@@ -401,7 +418,7 @@ function migration_all_recordings_new_folder($cmid = 0, $courseid = 0)
                 $updateAnswer = false;
                 
                 echo "$ind$ind$ind REORDERING ANSWER $answer->id...<br />";
-                $result = reorder_recording($answer->path, $cm->id, $recording->userid, true);
+                $result = reorder_recording($answer->path, $cm->id, $recording->userid, true, $keep_originals);
                 if($result !== false)
                 {
                     $answer->path = $result;

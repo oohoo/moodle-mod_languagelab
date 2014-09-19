@@ -552,5 +552,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014091600, 'languagelab');
     }
     
+    if ($oldversion < 2014091900)
+    {
+        // Update the migration tool
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014091900, 'languagelab');
+    }
+    
     return;
 }
