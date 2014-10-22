@@ -559,5 +559,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014091900, 'languagelab');
     }
     
+    if ($oldversion < 2014101700)
+    {
+        // Add a verification when the mastertrack does not exist - RAP
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2014101700, 'languagelab');
+    }
+    
     return;
 }

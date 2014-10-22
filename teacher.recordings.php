@@ -93,7 +93,17 @@ else
         //check to find out if MP3.
         if (strpos($languagelab->master_track, '.mp3') == false)
         {
-            $mastertrack = $languagelab->master_track;
+            //Check if the mastertrack recording exists
+            $mastertrack_exists = languagelab_adapter_call('check_file_exist', "p=$languagelab->master_track");
+            //If the mastertrack exists OR if the result is empty (because the RAP is not well configured)
+            if($mastertrack_exists == 1 || $mastertrack_exists == '')
+            {
+                $mastertrack = $languagelab->master_track;
+            }
+            else
+            {
+                $mastertrack = '';
+            }
         }
         else
         {

@@ -199,6 +199,37 @@ switch ($serverAction)
         $filepath = $_REQUEST['p'];
         file_put_contents($path . $filepath, $datafile);
         break;
+     case md5('check_file_exist' . $salt):
+        //Save a file ont the red5 folder
+        $filepath = $_REQUEST['p'];
+        
+        $ext = '';
+        $oldpath = '';
+        $ext = explode(':', $filepath);
+        
+        if(count($ext) == 2)
+        {
+            $filepath = $ext[1];
+            $ext = '.' . $ext[0];
+        }
+        else
+        {
+            $filepath = $ext[0];
+            $ext = '.flv';
+        }
+        
+        
+        $fullpath = $path . $filepath . $ext;
+        //Check if the file exists
+        if (file_exists($newfile) && is_file($fullpath))
+        {
+            echo 1;
+        }
+        else
+        {
+            echo 0;
+        }
+        break;
     case md5('download_mp3' . $salt):
         //return a file to download
         $filepath = $_REQUEST['p'];
@@ -262,7 +293,7 @@ switch ($serverAction)
         //return a zip of group of files to download
         $filepaths = explode(';', $_REQUEST['p']);
         $newNames = explode(';', $_REQUEST['n']);
-        $zipName = $_REQUEST['z'];
+        $zipName = $CFG->temp_folder . $_REQUEST['z'];
 
         $zip = new ZipArchive;
         if (file_exists($zipName . '.zip'))
