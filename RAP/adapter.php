@@ -221,7 +221,7 @@ switch ($serverAction)
         
         $fullpath = $path . $filepath . $ext;
         //Check if the file exists
-        if (file_exists($newfile) && is_file($fullpath))
+        if (file_exists($fullpath) && is_file($fullpath))
         {
             echo 1;
         }
