@@ -37,11 +37,15 @@ elseif ($l)
     $languagelab = $DB->get_record('languagelab', array('id' => $l), '*', MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $languagelab->course), '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('languagelab', $languagelab->id, $course->id, false, MUST_EXIST);
+    $id = $cm->id;
 }
 else
 {
     error('You must specify a course_module ID or an instance ID');
 }
+
+//Create the folder on the RTMP server in case it does not already exists
+languagelab_adapter_call('create_folder', 's=' . $CFG->languagelab_folder . '/' . $id);
 
 require_login($course, true, $cm);
 

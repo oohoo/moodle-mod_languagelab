@@ -17,7 +17,7 @@
 //DO NOT MODIFY THIS FILE
 include('config.php');
 //Load file that contains the server information for Moodle
-$xml = simplexml_load_file($CFG->xml_path);
+$xml = simplexml_load_string(file_get_contents($CFG->xml_path));
 $serverInfo = $_REQUEST['q'];
 $serverAction = $_REQUEST['o'];
 $submissions = $_REQUEST['s'];
@@ -32,6 +32,7 @@ else
     $filename = '';
 }
 //security
+$security = false;
 if (isset($_REQUEST['r']))
 {
     $security = $_REQUEST['r'];

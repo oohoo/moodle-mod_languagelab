@@ -18,7 +18,7 @@ include('config.php');
 include('version.php');
 //DO NOT MODIFY THIS FILE
 //Load file that contains the server information for Moodle
-$xml = simplexml_load_file($CFG->xml_path);
+$xml = simplexml_load_string(file_get_contents($CFG->xml_path));
 $serverInfo = $_REQUEST['q'];
 $serverAction = $_REQUEST['o'];
 $submissions = $_REQUEST['s'];
@@ -33,6 +33,7 @@ else
     $filename = '';
 }
 //security
+$security = false;
 if (isset($_REQUEST['r']))
 {
     $security = $_REQUEST['r'];
@@ -396,22 +397,6 @@ switch ($serverAction)
         }
 
         break;
-    case md5('create_folder' . $salt):
-        $folder = $path . $submissions;
-        
-        if (!file_exists($folder) || !is_dir($folder))
-        {
-            mkdir($folder, 0777, true);
-        }
-        if (file_exists($folder) && is_dir($folder))
-        {
-            echo 1;
-        }
-        else
-        {
-            echo 0;
-        }
-        break;
     case md5('move_single' . $salt):
         $newpath = $_REQUEST['n'];
         $keeporiginal = true;
@@ -570,21 +555,19 @@ switch ($serverAction)
         }
         break;
     case md5('create_folder' . $salt):
-        //Create folder if not exists
-        if (!file_exists($path . $submissions) || !is_dir($path . $submissions))
+        $folder = $path . $submissions;
+        
+        if (!file_exists($folder) || !is_dir($folder))
         {
-            if (mkdir($path . $submissions, 0777, true))
-            {
-                echo 1;
-            }
-            else
-            {
-                echo 0;
-            }
+            mkdir($folder, 0777, true);
+        }
+        if (file_exists($folder) && is_dir($folder))
+        {
+            echo 1;
         }
         else
         {
-            echo 1;
+            echo 0;
         }
         break;
 }

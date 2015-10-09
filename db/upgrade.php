@@ -573,5 +573,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2014112600, 'languagelab');
     }
     
+    if ($oldversion < 2015100900)
+    {
+        // Fix Issue in RAP for create folder
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2015100900, 'languagelab');
+    }
+    
     return;
 }
