@@ -65,7 +65,7 @@ else
     $contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
 }
 
-if (groupmode($course, $cm) == SEPARATEGROUPS)
+if (groups_get_activity_groupmode($cm, $course) == SEPARATEGROUPS)
 {
     $groupid = get_current_group($course->id);
 }

@@ -112,7 +112,7 @@ if ($languagelab->fullscreen_student && !has_capability('mod/languagelab:teacher
     $PAGE->set_pagelayout('embedded');
 }
 
-if (groupmode($course, $cm) == SEPARATEGROUPS)
+if (groups_get_activity_groupmode($cm, $course) == SEPARATEGROUPS)
 {
     $groupid = get_current_group($course->id);
 }

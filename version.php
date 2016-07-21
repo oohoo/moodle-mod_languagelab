@@ -14,9 +14,9 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-$module->version = 2015100900;  // The current module version (Date: YYYYMMDDXX)
-$module->requires = 2010112400;
-$module->maturity = MATURITY_STABLE;
-$module->release = '3.2.2 (Build: 2015100900)';
-$module->cron = 0;           // Period for cron to check this module (secs)
-$module->component = 'mod_languagelab';
+$plugin->version = 2016072100;  // The current module version (Date: YYYYMMDDXX)
+$plugin->requires = 2010112400;
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = '3.2.3 (Build: 2016072100)';
+$plugin->cron = 0;           // Period for cron to check this module (secs)
+$plugin->component = 'mod_languagelab';

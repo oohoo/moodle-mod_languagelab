@@ -62,7 +62,7 @@
 }
 .overlay-screen
 {
-    position:absolute;
+    position:absolute !important;
     top: 0;
     z-index: 10;
     background: #000;

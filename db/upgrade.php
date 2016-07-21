@@ -580,5 +580,12 @@ function xmldb_languagelab_upgrade($oldversion = 0)
         upgrade_mod_savepoint(true, 2015100900, 'languagelab');
     }
     
+    if ($oldversion < 2016072100)
+    {
+        // Upgrade Moodle 3.0
+        // languagelab savepoint reached
+        upgrade_mod_savepoint(true, 2016072100, 'languagelab');
+    }
+    
     return;
 }
